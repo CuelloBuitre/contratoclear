@@ -1,0 +1,140 @@
+{
+  "nav": {
+    "logo": "ClausulaAI",
+    "pricing": "Pricing",
+    "login": "Log in",
+    "dashboard": "My analyses",
+    "history": "History",
+    "logout": "Log out"
+  },
+  "landing": {
+    "hero": {
+      "title": "About to sign a rental contract in Spain?",
+      "subtitle": "Analyze your contract with AI in seconds. Detect illegal and abusive clauses under current Spanish LAU law.",
+      "cta": "Analyze my contract — from €3.99",
+      "trustBadge": "Updated to {{date}}"
+    },
+    "hook": {
+      "illegal": "Illegal clauses are void even if you already signed",
+      "updated": "Updated to {{date}} — always current legislation",
+      "demo": "See how it works before paying"
+    },
+    "demo": {
+      "title": "Real analysis examples",
+      "scenario1": {
+        "label": "Good contract",
+        "badge": "Good"
+      },
+      "scenario2": {
+        "label": "Abusive clauses",
+        "badge": "Acceptable"
+      },
+      "scenario3": {
+        "label": "Illegal contract",
+        "badge": "Bad"
+      }
+    },
+    "features": {
+      "title": "What we analyze",
+      "items": [
+        "Security deposit and additional guarantees",
+        "Minimum contract duration",
+        "Rent updates (INE index)",
+        "Property management fees",
+        "Landlord access to the property",
+        "Early termination clauses"
+      ]
+    }
+  },
+  "pricing": {
+    "title": "Choose your plan",
+    "subtitle": "No mandatory subscription. Pay only for what you need.",
+    "plans": {
+      "single": {
+        "name": "1 analysis",
+        "price": "€3.99",
+        "description": "For a one-off contract review",
+        "cta": "Buy now"
+      },
+      "pack": {
+        "name": "Pack of 3",
+        "price": "€9.99",
+        "description": "Valid 90 days. For multiple options.",
+        "cta": "Buy pack",
+        "badge": "Most popular"
+      },
+      "pro": {
+        "name": "Pro",
+        "price": "€19/month",
+        "description": "Unlimited analyses. For agents and managers.",
+        "cta": "Subscribe"
+      }
+    }
+  },
+  "login": {
+    "title": "Access your account",
+    "emailLabel": "Email address",
+    "emailPlaceholder": "you@email.com",
+    "continueWithEmail": "Continue with email",
+    "continueWithGoogle": "Continue with Google",
+    "separator": "or",
+    "noAccount": "No account? One is created automatically.",
+    "checkEmail": "Check your email for the sign-in link."
+  },
+  "dashboard": {
+    "title": "Analyze contract",
+    "creditsRemaining": "{{count}} analysis available",
+    "creditsRemaining_other": "{{count}} analyses available",
+    "creditsExpiry": "Expires on {{date}}",
+    "noCredits": "You have no analyses available.",
+    "getMore": "Get more"
+  },
+  "upload": {
+    "title": "Drop your contract here",
+    "subtitle": "or click to select",
+    "hint": "PDF, maximum 10 MB",
+    "analyzing": "Analyzing contract…",
+    "uploading": "Uploading file…",
+    "error": "Error analyzing. Please try again."
+  },
+  "analysis": {
+    "updatedAt": "Analysis based on {{date}} legislation",
+    "score": {
+      "buena": "Favorable contract",
+      "aceptable": "Acceptable contract",
+      "mala": "Problematic contract"
+    },
+    "clauseStatus": {
+      "ok": "Correct",
+      "advertencia": "Warning",
+      "ilegal": "Illegal"
+    },
+    "recommendation": "Recommendation",
+    "downloadPdf": "Download PDF report",
+    "backToHistory": "Back to history"
+  },
+  "history": {
+    "title": "My analyses",
+    "empty": "You haven't analyzed any contracts yet.",
+    "analyzeCta": "Analyze my first contract"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "message": "The page you're looking for doesn't exist.",
+    "cta": "Back to home"
+  },
+  "errors": {
+    "generic": "Something went wrong. Please try again.",
+    "unauthorized": "You must be logged in to continue.",
+    "noCredits": "You have no credits. Purchase a plan to continue.",
+    "fileTooLarge": "File is too large. Maximum 10 MB.",
+    "invalidFileType": "Only PDF files are accepted."
+  },
+  "footer": {
+    "tagline": "AI-powered rental contract analysis",
+    "legal": "Legal notice",
+    "privacy": "Privacy",
+    "contact": "Contact",
+    "copyright": "© {{year}} ClausulaAI. All rights reserved."
+  }
+}

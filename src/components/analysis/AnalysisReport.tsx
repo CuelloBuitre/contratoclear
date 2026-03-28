@@ -11,6 +11,27 @@ interface AnalysisReportProps {
 export default function AnalysisReport({ result }: AnalysisReportProps) {
   const { t } = useTranslation()
 
+  // Scanned PDF / unreadable document
+  if (result.puntuacion === 'error') {
+    return (
+      <div className="space-y-4">
+        <div className="flex flex-wrap items-center gap-3">
+          <LegalUpdateBadge lastUpdated={result.last_updated} />
+        </div>
+        <div className="rounded-xl border border-gray-200 bg-gray-50 p-6 text-center">
+          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-gray-100">
+            <svg className="h-7 w-7 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5}
+                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </div>
+          <p className="mb-2 text-sm font-semibold text-gray-700">{t('analysis.score.error')}</p>
+          <p className="text-sm leading-relaxed text-gray-500">{result.recomendacion}</p>
+        </div>
+      </div>
+    )
+  }
+
   const okCount = result.clausulas.filter((c) => c.estado === 'ok').length
   const warningCount = result.clausulas.filter((c) => c.estado === 'advertencia').length
   const illegalCount = result.clausulas.filter((c) => c.estado === 'ilegal').length

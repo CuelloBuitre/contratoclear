@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useTranslation } from 'react-i18next'
 
 // ── Lucide-style inline SVG icons ─────────────────────────────────────────────
 
@@ -65,24 +66,28 @@ function IconCheck({ className }: { className?: string }) {
   )
 }
 
-// ── Steps definition ──────────────────────────────────────────────────────────
+// ── Step icons ────────────────────────────────────────────────────────────────
 
-const STEPS = [
-  { label: 'Leyendo tu contrato...',        Icon: IconFileText,      activatesAt: 0    },
-  { label: 'Identificando cláusulas...',    Icon: IconSearch,        activatesAt: 3000 },
-  { label: 'Consultando la LAU 2025...',    Icon: IconBookOpen,      activatesAt: 6000 },
-  { label: 'Detectando irregularidades...', Icon: IconAlertTriangle, activatesAt: 9000 },
-  { label: 'Preparando tu informe...',      Icon: IconCheckCircle,   activatesAt: 12000 },
-]
+const STEP_ICONS = [IconFileText, IconSearch, IconBookOpen, IconAlertTriangle, IconCheckCircle]
+const STEP_DELAYS = [0, 3000, 6000, 9000, 12000]
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function AnalysisLoader() {
+  const { t } = useTranslation()
   const [activeStep, setActiveStep] = useState(0)
 
+  const stepLabels = [
+    t('loader.step1'),
+    t('loader.step2'),
+    t('loader.step3'),
+    t('loader.step4'),
+    t('loader.step5'),
+  ]
+
   useEffect(() => {
-    const timers = STEPS.slice(1).map((step, i) =>
-      setTimeout(() => setActiveStep(i + 1), step.activatesAt),
+    const timers = STEP_DELAYS.slice(1).map((delay, i) =>
+      setTimeout(() => setActiveStep(i + 1), delay),
     )
     return () => timers.forEach(clearTimeout)
   }, [])
@@ -133,8 +138,8 @@ export default function AnalysisLoader() {
       {/* ── Progress bar ───────────────────────────────────────────────── */}
       <div className="mb-8 w-full">
         <div className="mb-1.5 flex justify-between text-xs text-gray-400">
-          <span>Analizando</span>
-          <span>~15 segundos</span>
+          <span>{t('loader.analyzing')}</span>
+          <span>{t('loader.estimatedTime')}</span>
         </div>
         <div className="h-1.5 w-full overflow-hidden rounded-full bg-gray-100">
           <div
@@ -146,7 +151,8 @@ export default function AnalysisLoader() {
 
       {/* ── Step list ──────────────────────────────────────────────────── */}
       <div className="w-full space-y-3">
-        {STEPS.map((step, i) => {
+        {stepLabels.map((label, i) => {
+          const StepIcon = STEP_ICONS[i]
           const isCompleted = i < activeStep
           const isActive = i === activeStep
           const isInactive = i > activeStep
@@ -173,7 +179,7 @@ export default function AnalysisLoader() {
                 {isCompleted ? (
                   <IconCheck className="h-4 w-4 text-green-600" />
                 ) : (
-                  <step.Icon
+                  <StepIcon
                     className={[
                       'h-4 w-4 transition-colors duration-500',
                       isActive ? 'text-white' : '',
@@ -192,7 +198,7 @@ export default function AnalysisLoader() {
                   isInactive ? 'text-gray-300' : '',
                 ].join(' ')}
               >
-                {step.label}
+                {label}
               </span>
 
               {/* Active pulse dot */}
@@ -211,9 +217,9 @@ export default function AnalysisLoader() {
                 </div>
               )}
 
-              {/* Completed checkmark label */}
+              {/* Completed label */}
               {isCompleted && (
-                <span className="ml-auto text-xs font-medium text-green-500">Listo</span>
+                <span className="ml-auto text-xs font-medium text-green-500">✓</span>
               )}
             </div>
           )
@@ -222,7 +228,7 @@ export default function AnalysisLoader() {
 
       {/* ── Footer note ────────────────────────────────────────────────── */}
       <p className="mt-8 text-center text-xs text-gray-400">
-        La IA está aplicando la normativa LAU vigente a tu contrato.
+        {t('loader.note')}
       </p>
     </div>
   )

@@ -67,10 +67,21 @@ version: 1.3
 - La pérdida automática de fianza sin proceso judicial es discutible legalmente
 - El desahucio requiere siempre proceso judicial`
 
+// ── Constants ────────────────────────────────────────────────────────────────
+const MAX_PDF_BYTES = 10 * 1024 * 1024  // 10 MB
+const RATE_LIMIT_PER_HOUR = 10          // max analyses/hour for non-pro users
+
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
+}
+
+function json(body: unknown, status = 200) {
+  return new Response(JSON.stringify(body), {
+    status,
+    headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+  })
 }
 
 Deno.serve(async (req) => {
@@ -82,10 +93,7 @@ Deno.serve(async (req) => {
     // ── 1. Verify auth token ──────────────────────────────────────────────────
     const authHeader = req.headers.get('Authorization')
     if (!authHeader) {
-      return new Response(JSON.stringify({ error: 'No authorization header' }), {
-        status: 401,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      })
+      return json({ error: 'No authorization header' }, 401)
     }
 
     // Per-request anon client — forwards the user's JWT so getUser() validates it
@@ -97,10 +105,7 @@ Deno.serve(async (req) => {
 
     const { data: { user }, error: authError } = await supabaseClient.auth.getUser()
     if (authError || !user) {
-      return new Response(
-        JSON.stringify({ error: 'Unauthorized', details: authError?.message }),
-        { status: 401, headers: { ...corsHeaders, 'Content-Type': 'application/json' } },
-      )
+      return json({ error: 'Unauthorized', details: authError?.message }, 401)
     }
 
     // Admin client — service role, used only for DB operations
@@ -109,8 +114,7 @@ Deno.serve(async (req) => {
       Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') ?? '',
     )
 
-    // ── 2. Check credits ──────────────────────────────────────────────────────
-
+    // ── 2. Load profile ───────────────────────────────────────────────────────
     const { data: profile, error: profileError } = await supabaseAdmin
       .from('profiles')
       .select('plan, credits_remaining, credits_expiry')
@@ -118,39 +122,59 @@ Deno.serve(async (req) => {
       .single()
 
     if (profileError || !profile) {
-      return new Response(JSON.stringify({ error: 'Profile not found' }), {
-        status: 404,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      })
+      return json({ error: 'Profile not found' }, 404)
+    }
+
+    // ── 3. Plan-based access control ──────────────────────────────────────────
+    // plan === 'none': no credits, reject immediately
+    if (profile.plan === 'none') {
+      return json({ error: 'no_credits' }, 403)
     }
 
     const isPro = profile.plan === 'pro'
-    const creditsExpired =
-      profile.credits_expiry && new Date(profile.credits_expiry) < new Date()
 
+    // Non-pro: check credits
     if (!isPro) {
+      const creditsExpired =
+        profile.credits_expiry && new Date(profile.credits_expiry) < new Date()
+
       if (profile.credits_remaining <= 0 || creditsExpired) {
-        return new Response(JSON.stringify({ error: 'no_credits' }), {
-          status: 402,
-          headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-        })
+        return json({ error: 'no_credits' }, 402)
       }
     }
 
-    // ── 3. Parse request body ─────────────────────────────────────────────────
+    // ── 4. Rate limiting (non-pro: max 10/hour) ───────────────────────────────
+    if (!isPro) {
+      const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString()
+
+      const { count, error: countError } = await supabaseAdmin
+        .from('analyses')
+        .select('*', { count: 'exact', head: true })
+        .eq('user_id', user.id)
+        .gte('created_at', oneHourAgo)
+
+      if (!countError && count !== null && count >= RATE_LIMIT_PER_HOUR) {
+        return json({ error: 'rate_limit_exceeded' }, 429)
+      }
+    }
+
+    // ── 5. Parse and validate request body ────────────────────────────────────
     const { pdfBase64, filename } = await req.json() as {
       pdfBase64: string
       filename: string
     }
 
     if (!pdfBase64 || !filename) {
-      return new Response(JSON.stringify({ error: 'Missing pdfBase64 or filename' }), {
-        status: 400,
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-      })
+      return json({ error: 'Missing pdfBase64 or filename' }, 400)
     }
 
-    // ── 4. Build prompts from embedded legal context ──────────────────────────
+    // PDF size check: base64 encodes at ~4/3 ratio, so multiply by 0.75 for byte estimate
+    const estimatedPdfBytes = Math.floor(pdfBase64.length * 0.75)
+    if (estimatedPdfBytes > MAX_PDF_BYTES) {
+      return json({ error: 'pdf_too_large' }, 400)
+    }
+
+    // ── 6. Build prompts from embedded legal context ──────────────────────────
     const lastUpdatedMatch = LEY_CONTEXT.match(/last_updated:\s*(.+)/)
     const lastUpdated = lastUpdatedMatch ? lastUpdatedMatch[1].trim() : 'fecha desconocida'
 
@@ -179,9 +203,19 @@ ${LEY_CONTEXT}`
 
 Analiza entre 6 y 9 cláusulas: fianza, garantías adicionales, duración, prórrogas,
 renta y actualización, gastos de gestión, obras, acceso del arrendador, subarriendo, resolución.
-"ilegal" = infringe la normativa inyectada. "advertencia" = perjudicial pero legal. "ok" = correcto.`
+"ilegal" = infringe la normativa inyectada. "advertencia" = perjudicial pero legal. "ok" = correcto.
 
-    // ── 5. Call Claude API ────────────────────────────────────────────────────
+Si el contrato contiene cláusulas inusuales, poco comunes o no listadas anteriormente que potencialmente infrinjan la LAU, vulneren derechos del inquilino o sean desproporcionadamente favorables al arrendador, inclúyelas también en el análisis. No te limites a las cláusulas listadas — analiza todo el contrato.
+
+Si el PDF no contiene texto extraíble (parece ser una imagen escaneada), devuelve exactamente este JSON de error:
+{
+  "puntuacion": "error",
+  "last_updated": "${lastUpdated}",
+  "clausulas": [],
+  "recomendacion": "El documento parece ser una imagen escaneada y no contiene texto extraíble. Por favor, usa un PDF con texto seleccionable o solicita al arrendador una versión digital del contrato."
+}`
+
+    // ── 7. Call Claude API ────────────────────────────────────────────────────
     const anthropic = new Anthropic({
       apiKey: Deno.env.get('ANTHROPIC_API_KEY') ?? '',
     })
@@ -218,7 +252,7 @@ renta y actualización, gastos de gestión, obras, acceso del arrendador, subarr
 
     const analysisResult = JSON.parse(rawContent.text)
 
-    // ── 6. Save analysis to DB ────────────────────────────────────────────────
+    // ── 8. Save analysis to DB ────────────────────────────────────────────────
     const { data: analysis, error: insertError } = await supabaseAdmin
       .from('analyses')
       .insert({
@@ -235,7 +269,7 @@ renta y actualización, gastos de gestión, obras, acceso del arrendador, subarr
       throw new Error(`Failed to save analysis: ${insertError.message}`)
     }
 
-    // ── 7. Decrement credits (atomic, skip for pro) ───────────────────────────
+    // ── 9. Decrement credits atomically (skip for pro) ────────────────────────
     if (!isPro) {
       await supabaseAdmin
         .from('profiles')
@@ -243,15 +277,10 @@ renta y actualización, gastos de gestión, obras, acceso del arrendador, subarr
         .eq('id', user.id)
     }
 
-    return new Response(JSON.stringify({ analysis }), {
-      status: 200,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    })
+    return json({ analysis })
+
   } catch (err) {
     const message = err instanceof Error ? err.message : 'Internal server error'
-    return new Response(JSON.stringify({ error: message }), {
-      status: 500,
-      headers: { ...corsHeaders, 'Content-Type': 'application/json' },
-    })
+    return json({ error: message }, 500)
   }
 })

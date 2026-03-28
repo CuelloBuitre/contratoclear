@@ -1,67 +1,14 @@
+import { useState } from 'react'
 import { useParams, Link } from 'react-router'
 import { useTranslation } from 'react-i18next'
-import {
-  PDFDownloadLink,
-  Document,
-  Page,
-  Text,
-  View,
-  StyleSheet,
-} from '@react-pdf/renderer'
+import { PDFDownloadLink } from '@react-pdf/renderer'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import AnalysisReport from '@/components/analysis/AnalysisReport'
+import AnalysisPDFReport from '@/components/analysis/AnalysisPDFReport'
 import ScoreBadge from '@/components/analysis/ScoreBadge'
 import { useAnalysis } from '@/queries/analyses'
-import type { Analysis as AnalysisType, Puntuacion } from '@/types'
-
-// ── PDF ───────────────────────────────────────────────────────────────────────
-
-const pdf = StyleSheet.create({
-  page: { padding: 40, fontSize: 10, fontFamily: 'Helvetica' },
-  title: { fontSize: 18, fontWeight: 'bold', marginBottom: 4 },
-  meta: { fontSize: 9, color: '#6366f1', marginBottom: 20 },
-  sectionTitle: { fontSize: 11, fontWeight: 'bold', marginTop: 16, marginBottom: 6 },
-  clauseContainer: { marginBottom: 10 },
-  clauseHeader: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 2 },
-  clauseTitle: { fontWeight: 'bold', flex: 1, marginRight: 8 },
-  clauseStatus: { fontSize: 9, textTransform: 'uppercase' },
-  clauseDesc: { color: '#374151', marginBottom: 2 },
-  clauseAction: { color: '#4f46e5' },
-  divider: { borderBottomWidth: 1, borderBottomColor: '#e5e7eb', marginTop: 8 },
-  recommendation: { color: '#374151', lineHeight: 1.5 },
-})
-
-function AnalysisPDF({ analysis }: { analysis: AnalysisType }) {
-  return (
-    <Document title={`Análisis — ${analysis.filename}`}>
-      <Page size="A4" style={pdf.page}>
-        <Text style={pdf.title}>{analysis.filename}</Text>
-        <Text style={pdf.meta}>
-          Análisis según normativa de {analysis.result_json.last_updated}
-          {' · '}
-          {new Date(analysis.created_at).toLocaleDateString('es-ES')}
-        </Text>
-
-        <Text style={pdf.sectionTitle}>Cláusulas analizadas</Text>
-        {analysis.result_json.clausulas.map((clause, i) => (
-          <View key={i} style={pdf.clauseContainer}>
-            <View style={pdf.clauseHeader}>
-              <Text style={pdf.clauseTitle}>{clause.titulo}</Text>
-              <Text style={pdf.clauseStatus}>{clause.estado}</Text>
-            </View>
-            <Text style={pdf.clauseDesc}>{clause.descripcion}</Text>
-            {clause.accion ? <Text style={pdf.clauseAction}>→ {clause.accion}</Text> : null}
-            <View style={pdf.divider} />
-          </View>
-        ))}
-
-        <Text style={pdf.sectionTitle}>Recomendación</Text>
-        <Text style={pdf.recommendation}>{analysis.result_json.recomendacion}</Text>
-      </Page>
-    </Document>
-  )
-}
+import type { Puntuacion } from '@/types'
 
 // ── Score header gradient ─────────────────────────────────────────────────────
 
@@ -69,6 +16,7 @@ const scoreGradient: Record<Puntuacion, string> = {
   buena: 'from-green-50 to-white border-green-100',
   aceptable: 'from-amber-50 to-white border-amber-100',
   mala: 'from-red-50 to-white border-red-100',
+  error: 'from-gray-50 to-white border-gray-100',
 }
 
 // ── Page ──────────────────────────────────────────────────────────────────────
@@ -77,6 +25,7 @@ export default function Analysis() {
   const { id } = useParams<{ id: string }>()
   const { t } = useTranslation()
   const { data: analysis, isLoading, error } = useAnalysis(id!)
+  const [copied, setCopied] = useState(false)
 
   if (isLoading) {
     return (
@@ -110,7 +59,19 @@ export default function Analysis() {
   }
 
   const pdfFilename = `informe-${analysis.filename.replace(/\.pdf$/i, '')}.pdf`
-  const gradient = scoreGradient[analysis.result_json.puntuacion]
+  const gradient = scoreGradient[analysis.result_json.puntuacion] ?? scoreGradient.error
+  const isError = analysis.result_json.puntuacion === 'error'
+  const illegalCount = isError ? 0 : analysis.result_json.clausulas.filter((c) => c.estado === 'ilegal').length
+
+  function handleShare() {
+    const text = illegalCount > 0
+      ? t('analysis.shareText', { count: illegalCount })
+      : t('analysis.shareTextZero')
+    navigator.clipboard.writeText(text).then(() => {
+      setCopied(true)
+      setTimeout(() => setCopied(false), 2000)
+    })
+  }
 
   return (
     <div className="flex min-h-screen flex-col bg-gray-50">
@@ -145,26 +106,53 @@ export default function Analysis() {
               </h1>
             </div>
 
-            {/* Download button */}
-            <PDFDownloadLink
-              document={<AnalysisPDF analysis={analysis} />}
-              fileName={pdfFilename}
-              className="inline-flex shrink-0 items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-3.5 py-2 text-xs font-medium text-gray-700 shadow-sm transition-colors hover:border-gray-300 hover:bg-gray-50"
-            >
-              {({ loading }) =>
-                loading ? (
-                  <span className="opacity-50">Generando…</span>
+            {/* Action buttons */}
+            <div className="flex shrink-0 items-center gap-2">
+              {/* Share button */}
+              <button
+                type="button"
+                onClick={handleShare}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-3.5 py-2 text-xs font-medium text-gray-700 shadow-sm transition-colors hover:border-gray-300 hover:bg-gray-50"
+              >
+                {copied ? (
+                  <>
+                    <svg className="h-3.5 w-3.5 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    <span className="text-green-600">{t('analysis.copied')}</span>
+                  </>
                 ) : (
                   <>
                     <svg className="h-3.5 w-3.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                        d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                        d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
                     </svg>
-                    {t('analysis.downloadPdf')}
+                    {t('analysis.shareButton')}
                   </>
-                )
-              }
-            </PDFDownloadLink>
+                )}
+              </button>
+
+              {/* PDF download */}
+              <PDFDownloadLink
+                document={<AnalysisPDFReport analysis={analysis} />}
+                fileName={pdfFilename}
+                className="inline-flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-3.5 py-2 text-xs font-medium text-gray-700 shadow-sm transition-colors hover:border-gray-300 hover:bg-gray-50"
+              >
+                {({ loading }) =>
+                  loading ? (
+                    <span className="opacity-50">Generando…</span>
+                  ) : (
+                    <>
+                      <svg className="h-3.5 w-3.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                          d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                      </svg>
+                      {t('analysis.downloadPdf')}
+                    </>
+                  )
+                }
+              </PDFDownloadLink>
+            </div>
           </div>
         </div>
       </div>

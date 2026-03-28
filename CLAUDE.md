@@ -250,7 +250,7 @@ create table analyses (
   id uuid default gen_random_uuid() primary key,
   user_id uuid references profiles(id) on delete cascade not null,
   filename text not null,
-  puntuacion text not null,                     -- buena | aceptable | mala
+  puntuacion text not null,                     -- buena | aceptable | mala | error
   result_json jsonb not null,                   -- full Claude API response
   law_version text not null,                    -- from ley-context.md last_updated
   created_at timestamptz default now()
@@ -305,7 +305,7 @@ create policy "edge function can insert analyses"
 
 export type Plan = 'none' | 'single' | 'pack' | 'pro'
 export type ClauseStatus = 'ok' | 'advertencia' | 'ilegal'
-export type Puntuacion = 'buena' | 'aceptable' | 'mala'
+export type Puntuacion = 'buena' | 'aceptable' | 'mala' | 'error'
 
 export interface Clause {
   titulo: string
@@ -500,7 +500,19 @@ const USER_PROMPT = `Analiza este contrato y devuelve exactamente este JSON:
 
 Analiza entre 6 y 9 cláusulas: fianza, garantías adicionales, duración, prórrogas,
 renta y actualización, gastos de gestión, obras, acceso del arrendador, subarriendo, resolución.
-"ilegal" = infringe la normativa inyectada. "advertencia" = perjudicial pero legal. "ok" = correcto.`
+"ilegal" = infringe la normativa inyectada. "advertencia" = perjudicial pero legal. "ok" = correcto.
+
+Si el contrato contiene cláusulas inusuales, poco comunes o no listadas anteriormente que potencialmente
+infrinjan la LAU, vulneren derechos del inquilino o sean desproporcionadamente favorables al arrendador,
+inclúyelas también en el análisis. No te limites a las cláusulas listadas — analiza todo el contrato.
+
+Si el PDF no contiene texto extraíble (parece ser una imagen escaneada), devuelve exactamente este JSON de error:
+{
+  "puntuacion": "error",
+  "last_updated": "${lastUpdated}",
+  "clausulas": [],
+  "recomendacion": "El documento parece ser una imagen escaneada y no contiene texto extraíble. Por favor, usa un PDF con texto seleccionable o solicita al arrendador una versión digital del contrato."
+}`
 ```
 
 ---

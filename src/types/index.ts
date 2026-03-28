@@ -1,6 +1,6 @@
 export type Plan = 'none' | 'single' | 'pack' | 'pro'
 export type ClauseStatus = 'ok' | 'advertencia' | 'ilegal'
-export type Puntuacion = 'buena' | 'aceptable' | 'mala'
+export type Puntuacion = 'buena' | 'aceptable' | 'mala' | 'error'
 
 export interface Clause {
   titulo: string

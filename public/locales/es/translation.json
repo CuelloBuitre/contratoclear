@@ -63,35 +63,83 @@
   "pricing": {
     "title": "Elige tu plan",
     "subtitle": "Sin suscripción obligatoria. Paga solo lo que necesitas.",
+    "conversionCopy": "Vas a comprometerte a pagar 900€/mes durante 5 años — son 54.000€ en total. Revisar que el contrato es legal te cuesta 3,99€.",
+    "loginRequired": "Inicia sesión para continuar",
+    "currentPlan": "Tu plan actual",
+    "processing": "Redirigiendo al pago...",
+    "oneTime": "Pago único",
+    "perMonth": "al mes",
+    "billedMonthly": "Facturado mensualmente · Cancela cuando quieras",
+    "save": "Ahorra 17%",
+    "validDays": "Válido 90 días",
     "plans": {
       "single": {
         "name": "1 análisis",
         "price": "3,99€",
         "description": "Para revisar un contrato puntual",
-        "cta": "Comprar ahora"
+        "cta": "Comprar ahora",
+        "features": [
+          "1 análisis completo de contrato",
+          "Informe PDF descargable",
+          "Válido 1 año desde la compra",
+          "Normativa LAU siempre actualizada"
+        ]
       },
       "pack": {
         "name": "Pack 3 análisis",
         "price": "9,99€",
-        "description": "Válidos 90 días. Para varias opciones.",
+        "description": "Para comparar varias opciones",
         "cta": "Comprar pack",
-        "badge": "Más popular"
+        "badge": "Más popular",
+        "features": [
+          "3 análisis completos",
+          "Informe PDF descargable",
+          "Historial guardado 90 días",
+          "Normativa LAU siempre actualizada"
+        ]
       },
       "pro": {
-        "name": "Pro",
-        "price": "19€/mes",
-        "description": "Análisis ilimitados. Para agentes y gestores.",
-        "cta": "Suscribirse"
+        "name": "Pro ilimitado",
+        "price": "19€",
+        "description": "Para agentes y gestores inmobiliarios",
+        "cta": "Suscribirse al Pro",
+        "features": [
+          "Análisis ilimitados",
+          "Historial completo sin caducidad",
+          "Soporte prioritario por email",
+          "Ideal para agencias y gestores"
+        ]
       }
+    },
+    "faq": {
+      "title": "Preguntas frecuentes",
+      "items": [
+        {
+          "q": "¿El análisis sustituye a un abogado?",
+          "a": "No. ClausulaAI proporciona información orientativa basada en la LAU vigente. Para decisiones legales complejas, consulta con un abogado colegiado."
+        },
+        {
+          "q": "¿Qué pasa con mis créditos si no los uso?",
+          "a": "El pack de 3 análisis caduca a los 90 días. El análisis individual es válido durante 1 año. El plan Pro es ilimitado mientras esté activo."
+        },
+        {
+          "q": "¿Puedo cancelar el plan Pro cuando quiera?",
+          "a": "Sí, puedes cancelar en cualquier momento desde tu cuenta. El acceso Pro se mantiene hasta el final del período facturado."
+        }
+      ]
     }
   },
   "login": {
     "title": "Accede a tu cuenta",
+    "titleSub": "Analiza tu contrato en segundos",
     "registerTitle": "Crear cuenta",
+    "registerTitleSub": "Empieza a proteger tus derechos como inquilino",
     "emailLabel": "Correo electrónico",
     "emailPlaceholder": "tu@email.com",
     "passwordLabel": "Contraseña",
     "passwordPlaceholder": "Mínimo 8 caracteres",
+    "confirmPasswordLabel": "Confirmar contraseña",
+    "confirmPasswordPlaceholder": "Repite tu contraseña",
     "submitLogin": "Iniciar sesión",
     "submitRegister": "Crear cuenta",
     "continueWithGoogle": "Continuar con Google",
@@ -99,8 +147,24 @@
     "switchToRegister": "¿No tienes cuenta? Regístrate",
     "switchToLogin": "¿Ya tienes cuenta? Inicia sesión",
     "checkEmail": "Revisa tu correo para confirmar tu cuenta.",
+    "checkEmailSub": "Te hemos enviado un enlace de confirmación. Haz clic en él y luego inicia sesión.",
     "errorInvalidCredentials": "Correo o contraseña incorrectos.",
-    "errorEmailInUse": "Este correo ya tiene una cuenta."
+    "errorEmailInUse": "Este correo ya tiene una cuenta.",
+    "errorPasswordMismatch": "Las contraseñas no coinciden.",
+    "showPassword": "Mostrar contraseña",
+    "hidePassword": "Ocultar contraseña",
+    "passwordStrength": {
+      "weak": "Débil",
+      "medium": "Media",
+      "strong": "Fuerte"
+    },
+    "passwordRequirement": {
+      "minLength": "Mínimo 8 caracteres",
+      "uppercase": "Una letra mayúscula",
+      "number": "Un número",
+      "special": "Un carácter especial (!@#$%^&*)"
+    },
+    "backToLogin": "Volver al inicio de sesión"
   },
   "dashboard": {
     "title": "Analizar contrato",
@@ -161,6 +225,37 @@
     "newAnalysis": "Nuevo análisis",
     "clauses": "cláusulas"
   },
+  "heroAnim": {
+    "filename": "contrato_alquiler.pdf",
+    "fileSize": "PDF · 2.4 MB",
+    "analyzing": "Analizando contrato...",
+    "score": "Contrato problemático",
+    "clause1": "Garantía adicional excesiva",
+    "clause2": "Actualización de renta con IPC",
+    "clause3": "Acceso sin previo aviso",
+    "clause4": "Fianza legal",
+    "badge": "Vista previa"
+  },
+  "payment": {
+    "success": {
+      "title": "¡Pago completado!",
+      "subtitle": "Tu cuenta ha sido actualizada con los créditos de análisis.",
+      "detail": "Ya puedes analizar tus contratos de alquiler.",
+      "cta": "Analizar mi contrato"
+    },
+    "cancel": {
+      "title": "Pago cancelado",
+      "subtitle": "No se ha realizado ningún cobro a tu tarjeta.",
+      "detail": "Puedes volver a elegir tu plan cuando quieras.",
+      "cta": "Ver planes"
+    }
+  },
+  "cookies": {
+    "message": "Usamos cookies propias y de terceros para mejorar tu experiencia y analizar el uso del sitio. Puedes aceptarlas o rechazarlas.",
+    "accept": "Aceptar cookies",
+    "decline": "Solo esenciales",
+    "learnMore": "Más información"
+  },
   "notFound": {
     "title": "Página no encontrada",
     "message": "La página que buscas no existe.",
@@ -175,6 +270,46 @@
     "invalidFileType": "Solo se aceptan archivos PDF.",
     "rateLimitExceeded": "Demasiados análisis en la última hora. Espera unos minutos.",
     "noCreditsServer": "Sin créditos disponibles. Compra un plan para continuar."
+  },
+  "calculator": {
+    "title": "¿Sabes cuánto vas a pagar en total durante tu contrato?",
+    "subtitle": "Mueve el deslizador para calcular tu compromiso real",
+    "perYear": "Al año pagas",
+    "fiveYears": "En 5 años (duración mínima legal)",
+    "sevenYears": "En 7 años (si el arrendador es empresa)",
+    "punchline": "Proteger {{total}} te cuesta 3,99€",
+    "percentage": "Eso es el {{pct}}% de tu compromiso total",
+    "cta": "Analizar mi contrato — 3,99€",
+    "pricingAverage": "La media del alquiler en España es 950 €/mes",
+    "pricingTotal": "Eso son 57.000 € durante los 5 años de contrato",
+    "pricingCost": "Revisar que tu contrato es legal: 3,99 €"
+  },
+  "chat": {
+    "title": "Pregunta sobre tu contrato",
+    "badge": "Nuevo",
+    "placeholder": "Escribe tu pregunta...",
+    "send": "Enviar",
+    "limitReached": "Has alcanzado el límite de 10 mensajes por análisis.",
+    "error": "Error al conectar. Inténtalo de nuevo.",
+    "suggestedQuestions": [
+      "¿Puedo pedir la devolución de mi fianza?",
+      "¿Es legal la cláusula de actualización de renta?",
+      "¿Qué pasa si el propietario incumple el contrato?",
+      "¿Puedo rescindir el contrato antes de tiempo?"
+    ],
+    "typing": "Escribiendo...",
+    "disclaimer": "Orientación basada en la LAU vigente. No sustituye asesoramiento legal profesional."
+  },
+  "landing": {
+    "impact": {
+      "number": "54.000€",
+      "subtitle": "Es lo que te comprometes a pagar en 5 años de alquiler",
+      "punchline": "Revisar que el contrato es legal te cuesta 3,99€",
+      "subtext": "Menos de lo que cuesta un café con leche.",
+      "cta": "Analizar mi contrato ahora",
+      "pricingTitle": "54.000€ de compromiso. 3,99€ para protegerlo.",
+      "pricingSub": "El coste de no revisar puede ser mucho mayor."
+    }
   },
   "footer": {
     "tagline": "Análisis de contratos de alquiler con IA",

@@ -6,6 +6,7 @@ import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import AnalysisReport from '@/components/analysis/AnalysisReport'
 import AnalysisPDFReport from '@/components/analysis/AnalysisPDFReport'
+import ContractChat from '@/components/analysis/ContractChat'
 import ScoreBadge from '@/components/analysis/ScoreBadge'
 import { useAnalysis } from '@/queries/analyses'
 import type { Puntuacion } from '@/types'
@@ -163,6 +164,12 @@ export default function Analysis() {
           <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
             <AnalysisReport result={analysis.result_json} />
           </div>
+
+          {!isError && (
+            <div className="mt-4">
+              <ContractChat analysisId={analysis.id} result={analysis.result_json} />
+            </div>
+          )}
         </div>
       </main>
 

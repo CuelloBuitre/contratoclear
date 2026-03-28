@@ -24,3 +24,162 @@
   0%, 100% { opacity: 1; }
   50%       { opacity: 0.4; }
 }
+
+/* ── Hero product animation — 10 s loop ─────────────────────────────────────
+   Phase 1: 0 –  2 s (  0 – 20 %): PDF card slides in
+   Phase 2: 2 –  4 s ( 20 – 40 %): Loading / steps
+   Phase 3: 4 –  9 s ( 40 – 90 %): Results
+   Fade:    9 – 10 s ( 90 –100 %): everything out, reset
+────────────────────────────────────────────────────────────────────────── */
+
+/* Phase wrappers */
+@keyframes hero-p1 {
+  0%   { opacity: 0; transform: translateY(-18px); }
+  6%   { opacity: 1; transform: translateY(0); }
+  17%  { opacity: 1; }
+  22%  { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+@keyframes hero-p2 {
+  0%, 19% { opacity: 0; }
+  23%     { opacity: 1; }
+  37%     { opacity: 1; }
+  42%     { opacity: 0; }
+  100%    { opacity: 0; }
+}
+
+@keyframes hero-p3 {
+  0%, 41% { opacity: 0; transform: translateY(8px); }
+  48%     { opacity: 1; transform: translateY(0); }
+  87%     { opacity: 1; }
+  94%     { opacity: 0; }
+  100%    { opacity: 0; }
+}
+
+/* Loading progress bar */
+@keyframes hero-bar {
+  0%, 20% { width: 0%; }
+  39%     { width: 95%; }
+  100%    { width: 95%; }
+}
+
+/* Step rows — background-color + color animate the icon via currentColor */
+@keyframes hero-s1 {
+  0%, 20%    { background-color: #f9fafb; color: #9ca3af; }
+  21%, 24.9% { background-color: #1a1a2e; color: white; }
+  25%, 94%   { background-color: #f0fdf4; color: #15803d; }
+  95%, 100%  { background-color: #f9fafb; color: #9ca3af; }
+}
+@keyframes hero-s2 {
+  0%, 24.9%  { background-color: #f9fafb; color: #9ca3af; }
+  25%, 28.9% { background-color: #1a1a2e; color: white; }
+  29%, 94%   { background-color: #f0fdf4; color: #15803d; }
+  95%, 100%  { background-color: #f9fafb; color: #9ca3af; }
+}
+@keyframes hero-s3 {
+  0%, 28.9%  { background-color: #f9fafb; color: #9ca3af; }
+  29%, 32.9% { background-color: #1a1a2e; color: white; }
+  33%, 94%   { background-color: #f0fdf4; color: #15803d; }
+  95%, 100%  { background-color: #f9fafb; color: #9ca3af; }
+}
+@keyframes hero-s4 {
+  0%, 32.9%  { background-color: #f9fafb; color: #9ca3af; }
+  33%, 36.9% { background-color: #1a1a2e; color: white; }
+  37%, 94%   { background-color: #f0fdf4; color: #15803d; }
+  95%, 100%  { background-color: #f9fafb; color: #9ca3af; }
+}
+@keyframes hero-s5 {
+  0%, 36.9%  { background-color: #f9fafb; color: #9ca3af; }
+  37%, 39.9% { background-color: #1a1a2e; color: white; }
+  40%, 94%   { background-color: #f0fdf4; color: #15803d; }
+  95%, 100%  { background-color: #f9fafb; color: #9ca3af; }
+}
+
+/* Result clause cards — staggered slide-in */
+@keyframes hero-c1 {
+  0%, 43%  { opacity: 0; transform: translateX(-10px); }
+  51%      { opacity: 1; transform: translateX(0); }
+  87%      { opacity: 1; }
+  94%      { opacity: 0; }
+  100%     { opacity: 0; }
+}
+@keyframes hero-c2 {
+  0%, 50%  { opacity: 0; transform: translateX(-10px); }
+  58%      { opacity: 1; transform: translateX(0); }
+  87%      { opacity: 1; }
+  94%      { opacity: 0; }
+  100%     { opacity: 0; }
+}
+@keyframes hero-c3 {
+  0%, 57%  { opacity: 0; transform: translateX(-10px); }
+  65%      { opacity: 1; transform: translateX(0); }
+  87%      { opacity: 1; }
+  94%      { opacity: 0; }
+  100%     { opacity: 0; }
+}
+@keyframes hero-c4 {
+  0%, 64%  { opacity: 0; transform: translateX(-10px); }
+  72%      { opacity: 1; transform: translateX(0); }
+  87%      { opacity: 1; }
+  94%      { opacity: 0; }
+  100%     { opacity: 0; }
+}
+
+/* Score badge drop-in */
+@keyframes hero-score {
+  0%, 41%  { opacity: 0; transform: translateY(-6px); }
+  47%      { opacity: 1; transform: translateY(0); }
+  87%      { opacity: 1; }
+  94%      { opacity: 0; }
+  100%     { opacity: 0; }
+}
+
+/* Reduced motion — pause the whole animation tree */
+@media (prefers-reduced-motion: reduce) {
+  .hero-animation * {
+    animation-play-state: paused !important;
+  }
+}
+
+/* ── Rent slider ─────────────────────────────────────────────────────────── */
+input[type="range"].rent-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: 3px;
+  cursor: pointer;
+  outline: none;
+}
+
+input[type="range"].rent-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: transform 0.15s ease;
+}
+
+input[type="range"].rent-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
+input[type="range"].rent-slider::-moz-range-thumb {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: white;
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+input[type="range"].rent-slider::-moz-range-track {
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.15);
+}

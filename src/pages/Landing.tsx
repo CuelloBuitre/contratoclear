@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
 import DemoSection from '@/components/landing/DemoSection'
+import HeroAnimation from '@/components/landing/HeroAnimation'
+import RentCalculator from '@/components/landing/RentCalculator'
 
 const FEATURES = [
   {
@@ -87,7 +89,7 @@ export default function Landing() {
       <Navbar />
 
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-[#1a1a2e] pb-24 pt-16 sm:pb-32 sm:pt-20">
+      <section className="relative overflow-hidden bg-[#1a1a2e] pb-16 pt-12 sm:pb-20 sm:pt-16 lg:pb-24">
         {/* Subtle grid pattern */}
         <div
           aria-hidden="true"
@@ -99,69 +101,98 @@ export default function Landing() {
           }}
         />
 
-        <div className="relative mx-auto max-w-4xl px-4 text-center sm:px-6">
-          {/* Update badge */}
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-medium text-white/70">
-            <span className="h-1.5 w-1.5 rounded-full bg-green-400" />
-            {t('landing.hero.trustBadge', { date: 'marzo 2026' })}
-          </div>
+        <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="flex flex-col items-center gap-10 lg:flex-row lg:items-center lg:gap-16">
 
-          {/* Headline */}
-          <h1 className="text-4xl font-extrabold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
-            Tu contrato, analizado<br className="hidden sm:block" />
-            <span className="text-indigo-400"> en segundos.</span>
-          </h1>
+            {/* ── Left: headline + CTA ─────────────────────────────────── */}
+            <div className="flex-1 text-center lg:text-left">
+              {/* Update badge */}
+              <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-medium text-white/70">
+                <span className="h-1.5 w-1.5 rounded-full bg-green-400" />
+                {t('landing.hero.trustBadge', { date: 'marzo 2026' })}
+              </div>
 
-          <p className="mx-auto mt-5 max-w-2xl text-lg text-white/60 sm:text-xl">
-            {t('landing.hero.subtitle')}
-          </p>
+              {/* Headline */}
+              <h1 className="text-4xl font-extrabold leading-tight tracking-tight text-white sm:text-5xl lg:text-5xl xl:text-6xl">
+                Tu contrato,<br />
+                <span className="text-indigo-400">analizado en segundos.</span>
+              </h1>
 
-          {/* Hook */}
-          <div className="mx-auto mt-6 max-w-xl rounded-xl border border-amber-400/20 bg-amber-400/10 px-5 py-3">
-            <p className="text-sm font-medium text-amber-300">
-              {t('landing.hook.illegal')}
-            </p>
-          </div>
+              <p className="mx-auto mt-5 max-w-xl text-base text-white/60 lg:mx-0 sm:text-lg">
+                {t('landing.hero.subtitle')}
+              </p>
 
-          {/* CTA */}
-          <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-            <Link
-              to="/login"
-              className="inline-flex items-center gap-2 rounded-xl bg-white px-7 py-3.5 text-base font-bold text-[#1a1a2e] shadow-lg transition-opacity hover:opacity-90"
-            >
-              {t('landing.hero.cta')}
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </Link>
-            <a
-              href="#demo"
-              className="text-sm font-medium text-white/60 underline underline-offset-4 transition-colors hover:text-white"
-            >
-              {t('landing.hook.demo')}
-            </a>
-          </div>
+              {/* Hook */}
+              <div className="mx-auto mt-5 max-w-xl rounded-xl border border-amber-400/20 bg-amber-400/10 px-5 py-3 lg:mx-0">
+                <p className="text-sm font-medium text-amber-300">
+                  {t('landing.hook.illegal')}
+                </p>
+              </div>
 
-          {/* Social proof */}
-          <div className="mt-12 flex flex-wrap items-center justify-center gap-6 border-t border-white/10 pt-8 text-xs text-white/40">
-            <span className="flex items-center gap-1.5">
-              <svg className="h-4 w-4 text-green-400" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-              </svg>
-              Sin suscripción obligatoria
-            </span>
-            <span className="flex items-center gap-1.5">
-              <svg className="h-4 w-4 text-green-400" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-              </svg>
-              Resultado en &lt;30 segundos
-            </span>
-            <span className="flex items-center gap-1.5">
-              <svg className="h-4 w-4 text-green-400" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-              </svg>
-              Normativa LAU actualizada
-            </span>
+              {/* CTA */}
+              <div className="mt-7 flex flex-col items-center gap-3 sm:flex-row sm:justify-center lg:justify-start">
+                <Link
+                  to="/login"
+                  className="inline-flex items-center gap-2 rounded-xl bg-white px-7 py-3.5 text-base font-bold text-[#1a1a2e] shadow-lg transition-opacity hover:opacity-90"
+                >
+                  {t('landing.hero.cta')}
+                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                  </svg>
+                </Link>
+                <a
+                  href="#demo"
+                  className="text-sm font-medium text-white/60 underline underline-offset-4 transition-colors hover:text-white"
+                >
+                  {t('landing.hook.demo')}
+                </a>
+              </div>
+
+              {/* Social proof */}
+              <div className="mt-8 flex flex-wrap items-center justify-center gap-5 border-t border-white/10 pt-6 text-xs text-white/40 lg:justify-start">
+                <span className="flex items-center gap-1.5">
+                  <svg className="h-3.5 w-3.5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  Sin suscripción obligatoria
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <svg className="h-3.5 w-3.5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  Resultado en &lt;30 s
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <svg className="h-3.5 w-3.5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                  </svg>
+                  LAU marzo 2026
+                </span>
+              </div>
+            </div>
+
+            {/* ── Right: product animation ──────────────────────────── */}
+            <div className="w-full flex-shrink-0 lg:w-[380px]">
+              {/* Glow background */}
+              <div className="relative">
+                <div
+                  aria-hidden="true"
+                  className="absolute inset-0 rounded-3xl opacity-30 blur-2xl"
+                  style={{ background: 'radial-gradient(ellipse at center, #6366f1 0%, transparent 70%)' }}
+                />
+                <div className="relative">
+                  {/* Preview badge */}
+                  <div className="mb-3 flex justify-center lg:justify-start">
+                    <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/50">
+                      <span className="h-1.5 w-1.5 rounded-full bg-indigo-400" />
+                      {t('heroAnim.badge')}
+                    </span>
+                  </div>
+                  <HeroAnimation />
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>
@@ -191,7 +222,7 @@ export default function Landing() {
       </div>
 
       {/* ── How it works ─────────────────────────────────────────────────── */}
-      <section className="bg-white py-20 sm:py-24">
+      <section className="bg-white py-14 sm:py-16">
         <div className="mx-auto max-w-4xl px-4 sm:px-6">
           <div className="mb-12 text-center">
             <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-indigo-600">Proceso</p>
@@ -279,6 +310,9 @@ export default function Landing() {
           </div>
         </div>
       </section>
+
+      {/* ── Rent calculator ───────────────────────────────────────────────── */}
+      <RentCalculator />
 
       {/* ── Pricing teaser ───────────────────────────────────────────────── */}
       <section className="bg-white py-20 sm:py-24">

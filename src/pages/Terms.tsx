@@ -22,7 +22,8 @@ export default function Terms() {
             <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-indigo-600">Legal</p>
             <h1 className="text-3xl font-extrabold text-gray-900">Términos y Condiciones</h1>
             <p className="mt-2 text-sm text-gray-500">
-              Última actualización: marzo 2026 · Contacto: hola@clausulaai.es
+              Última actualización: marzo 2026 · Contacto:{' '}
+              <a href="mailto:hola@clausulaai.es" className="font-medium text-indigo-600 hover:underline">hola@clausulaai.es</a>
             </p>
           </div>
 
@@ -89,7 +90,8 @@ export default function Terms() {
               <p>
                 Dado que el servicio se presta de forma inmediata (el análisis se realiza en el momento del pago),
                 los créditos utilizados no son reembolsables. Si experimentas un error técnico que impida la correcta
-                prestación del servicio, contacta con nosotros en <strong>hola@clausulaai.es</strong> y
+                prestación del servicio, contacta con nosotros en{' '}
+                <a href="mailto:hola@clausulaai.es" className="font-medium text-indigo-600 hover:underline">hola@clausulaai.es</a>{' '}y
                 evaluaremos cada caso individualmente.
               </p>
             </Section>

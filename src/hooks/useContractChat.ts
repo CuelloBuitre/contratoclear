@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useAuthStore } from '@/store/useAppStore'
+import { useAuthStore, handleSessionExpired } from '@/store/useAppStore'
 
 export interface ChatMessage {
   role: 'user' | 'assistant'
@@ -48,6 +48,11 @@ export function useContractChat() {
         }),
       })
 
+      if (res.status === 401) {
+        handleSessionExpired()
+        throw new Error('session_expired')
+      }
+
       const data = await res.json() as { response?: string; error?: string }
 
       if (!res.ok || !data.response) {
@@ -67,6 +72,7 @@ export function useContractChat() {
       setMessages((prev) => [...prev, assistantMessage])
 
     } catch (err) {
+      if (err instanceof Error && err.message === 'session_expired') return
       setError(err instanceof Error ? err.message : 'Error inesperado')
       // Remove the user message that failed
       setMessages((prev) => prev.slice(0, -1))

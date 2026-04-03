@@ -31,7 +31,8 @@ export default function Privacy() {
             <Section title="1. Responsable del tratamiento">
               <p>
                 El responsable del tratamiento de tus datos personales es <strong>ClausulaAI</strong>,
-                con dirección de contacto en <strong>hola@clausulaai.es</strong>.
+                con dirección de contacto en{' '}
+                <a href="mailto:hola@clausulaai.es" className="font-medium text-indigo-600 hover:underline">hola@clausulaai.es</a>.
               </p>
             </Section>
 

@@ -53,6 +53,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 
 interface PlanCardProps {
   highlighted?: boolean
+  amber?: boolean
   badge?: string
   name: string
   price: string
@@ -68,6 +69,7 @@ interface PlanCardProps {
 
 function PlanCard({
   highlighted,
+  amber,
   badge,
   name,
   price,
@@ -85,15 +87,17 @@ function PlanCard({
   return (
     <div
       className={[
-        'relative flex flex-col rounded-2xl border p-7 transition-shadow',
+        'relative flex flex-col rounded-2xl p-7 transition-shadow',
         highlighted
-          ? 'border-[#1a1a2e] bg-[#1a1a2e] shadow-2xl'
-          : 'border-gray-200 bg-white shadow-sm hover:shadow-md',
+          ? 'border border-[#1a1a2e] bg-[#1a1a2e] shadow-2xl'
+          : amber
+            ? 'border-2 border-amber-600 bg-white shadow-xl'
+            : 'border border-gray-200 bg-white shadow-sm hover:shadow-md',
       ].join(' ')}
     >
       {/* Popular badge */}
       {badge && (
-        <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full bg-indigo-500 px-4 py-1 text-xs font-bold text-white shadow">
+        <span className={`absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full px-4 py-1 text-xs font-bold text-white shadow ${amber ? 'bg-amber-600' : 'bg-indigo-500'}`}>
           {badge}
         </span>
       )}
@@ -207,7 +211,8 @@ export default function Pricing() {
     {
       type: 'pack' as PriceType,
       priceId: packPriceId,
-      highlighted: true,
+      highlighted: false,
+      amber: true,
       badge: t('pricing.plans.pack.badge'),
       name: t('pricing.plans.pack.name'),
       price: t('pricing.plans.pack.price'),
@@ -273,6 +278,7 @@ export default function Pricing() {
               <PlanCard
                 key={plan.type}
                 highlighted={plan.highlighted}
+                amber={'amber' in plan ? plan.amber : undefined}
                 badge={'badge' in plan ? plan.badge : undefined}
                 name={plan.name}
                 price={plan.price}

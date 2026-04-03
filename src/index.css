@@ -6,6 +6,25 @@
   --color-brand-light: #16213e;
   --color-accent: #e94560;
   --font-sans: 'Inter Variable', sans-serif;
+  --font-display: 'DM Serif Display', serif;
+}
+
+/* ── Global polish ───────────────────────────────────────────────────────── */
+
+/* Smooth color/opacity transitions on interactive elements */
+a, button {
+  transition-property: color, background-color, border-color, opacity;
+  transition-duration: 0.15s;
+  transition-timing-function: ease;
+}
+
+/* Card hover lift utility */
+.card-lift {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.card-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
 @keyframes scan-beam {
@@ -182,4 +201,20 @@ input[type="range"].rent-slider::-moz-range-track {
   height: 6px;
   border-radius: 3px;
   background: rgba(255, 255, 255, 0.15);
+}
+
+/* ── Display typography ──────────────────────────────────────────────────── */
+
+.heading-display {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.heading-section {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
 }

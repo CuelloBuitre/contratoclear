@@ -5,15 +5,27 @@
     "login": "Sign in",
     "dashboard": "My analyses",
     "history": "History",
+    "profile": "My profile",
     "logout": "Sign out"
   },
   "landing": {
     "hero": {
+      "badge": "✓ Updated to current LAU 2026",
+      "headline": "Do you know how much you're committing to in your next rental?",
       "title": "Analyze your rental contract in seconds",
-      "subtitle": "Discover illegal clauses, warnings and everything you should negotiate before signing. Updated to current law.",
+      "subtitle": "Detect illegal clauses, warnings, and everything you should negotiate before signing.",
+      "sliderLabel": "Your monthly rent",
+      "perYear": "Per year",
+      "fiveYears": "In 5 years",
+      "sevenYears": "In 7 years",
+      "punchline": "Protecting {{amount}} costs you €3.99",
+      "pct": "{{pct}}% of your total commitment",
       "cta": "Analyze my contract — from €3.99",
       "ctaSecondary": "See demo",
-      "trustBadge": "Updated to {{date}}"
+      "trustBadge": "Updated to {{date}}",
+      "trustItem1": "No subscription",
+      "trustItem2": "Result in 10 seconds",
+      "trustItem3": "LAU 2026 updated"
     },
     "stats": {
       "contracts": "active rental contracts in Spain",
@@ -34,7 +46,21 @@
       "scenario2": { "label": "Abusive clauses", "sublabel": "Negotiate before signing" },
       "scenario3": { "label": "Illegal contract", "sublabel": "Illegal clauses are void even if you sign" }
     },
+    "why": {
+      "title": "Why ClausulaAI?",
+      "subtitle": "Designed so tenants have the same information as landlords.",
+      "item1Title": "Always up to date",
+      "item1Desc": "We incorporate every legal change the day after it's published in the BOE.",
+      "item2Title": "AI trained in law",
+      "item2Desc": "Analysis based on LAU, Housing Act 12/2023 and INE Resolution 2024.",
+      "item3Title": "Result in seconds",
+      "item3Desc": "Upload the PDF and get the complete clause-by-clause analysis in under 30 seconds."
+    },
+    "pricing": {
+      "overline": "Pricing"
+    },
     "howItWorks": {
+      "overline": "Process",
       "title": "How it works",
       "step1Title": "Upload your contract",
       "step1Desc": "Drag or select the PDF of your rental contract. Maximum 10 MB.",
@@ -44,6 +70,7 @@
       "step3Desc": "Clause-by-clause results with color coding. Download the PDF report."
     },
     "features": {
+      "overline": "Full coverage",
       "title": "What do we analyze?",
       "items": [
         "Deposit and additional guarantees",
@@ -58,6 +85,15 @@
       "title": "Illegal clauses are void even if you signed them.",
       "subtitle": "Check yours now and sign with confidence.",
       "cta": "Analyze my contract"
+    },
+    "impact": {
+      "number": "€54,000",
+      "subtitle": "That's what you commit to paying over 5 years of renting",
+      "punchline": "Making sure the contract is legal costs €3.99",
+      "subtext": "Less than the price of a coffee.",
+      "cta": "Analyze my contract now",
+      "pricingTitle": "€54,000 commitment. €3.99 to protect it.",
+      "pricingSub": "The cost of not checking can be much higher."
     }
   },
   "pricing": {
@@ -129,6 +165,9 @@
       ]
     }
   },
+  "auth": {
+    "sessionExpired": "Your session has expired. Please sign in again."
+  },
   "login": {
     "title": "Sign in to your account",
     "titleSub": "Analyze your contract in seconds",
@@ -164,7 +203,34 @@
       "number": "One number",
       "special": "One special character (!@#$%^&*)"
     },
-    "backToLogin": "Back to sign in"
+    "backToLogin": "Back to sign in",
+    "forgotPassword": "Forgot your password?"
+  },
+  "forgotPassword": {
+    "title": "Reset password",
+    "titleSub": "We'll send you a link to reset your password",
+    "emailLabel": "Email address",
+    "emailPlaceholder": "you@email.com",
+    "submit": "Send reset link",
+    "success": "Check your email to continue",
+    "successSub": "We sent a recovery link to {{email}}. If you don't see it in a few minutes, check your spam folder.",
+    "backToLogin": "Back to sign in",
+    "errorGeneric": "We couldn't process the request. Please try again."
+  },
+  "resetPassword": {
+    "title": "New password",
+    "titleSub": "Choose a strong password for your account",
+    "newPasswordLabel": "New password",
+    "newPasswordPlaceholder": "Minimum 8 characters",
+    "confirmPasswordLabel": "Confirm password",
+    "confirmPasswordPlaceholder": "Repeat your password",
+    "submit": "Update password",
+    "success": "Password updated!",
+    "successSub": "Redirecting to dashboard...",
+    "errorMismatch": "Passwords do not match.",
+    "errorExpired": "The link has expired or was already used. Request a new one.",
+    "errorGeneric": "Could not update the password. Please try again.",
+    "backToForgot": "Request a new link"
   },
   "dashboard": {
     "title": "Analyze contract",
@@ -269,7 +335,10 @@
     "pdfTooLarge": "The PDF exceeds the 10 MB limit.",
     "invalidFileType": "Only PDF files are accepted.",
     "rateLimitExceeded": "Too many analyses in the last hour. Please wait a few minutes.",
-    "noCreditsServer": "No credits available. Buy a plan to continue."
+    "noCreditsServer": "No credits available. Buy a plan to continue.",
+    "boundary": "Something went wrong. Please reload the page.",
+    "boundaryRetry": "Try again",
+    "boundaryAnalysis": "Could not display the analysis. Please try again."
   },
   "calculator": {
     "title": "Do you know how much you'll pay over your entire contract?",
@@ -300,16 +369,40 @@
     "typing": "Typing...",
     "disclaimer": "Guidance based on current LAU regulations. Does not replace professional legal advice."
   },
-  "landing": {
-    "impact": {
-      "number": "€54,000",
-      "subtitle": "That's what you commit to paying over 5 years of renting",
-      "punchline": "Making sure the contract is legal costs €3.99",
-      "subtext": "Less than the price of a coffee.",
-      "cta": "Analyze my contract now",
-      "pricingTitle": "€54,000 commitment. €3.99 to protect it.",
-      "pricingSub": "The cost of not checking can be much higher."
-    }
+  "profile": {
+    "title": "My profile",
+    "memberSince": "Member since {{date}}",
+    "planSection": "Current plan",
+    "plan": {
+      "none": "No plan",
+      "single": "1 analysis",
+      "pack": "Pack of 3 analyses",
+      "pro": "Pro unlimited"
+    },
+    "creditsUnlimited": "Unlimited analyses",
+    "creditsLabel": "Analyses available",
+    "creditsRemaining": "{{count}} analyses",
+    "expiryLabel": "Expires on",
+    "creditsExpiry": "{{date}}",
+    "creditsNone": "You have no analyses available.",
+    "upgradeCta": "View plans",
+    "securitySection": "Security",
+    "currentPasswordLabel": "Current password",
+    "currentPasswordPlaceholder": "Your current password",
+    "newPasswordLabel": "New password",
+    "newPasswordPlaceholder": "Minimum 8 characters",
+    "confirmPasswordLabel": "Confirm new password",
+    "confirmPasswordPlaceholder": "Repeat the new password",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "changePasswordSubmit": "Update password",
+    "changePasswordSuccess": "Password updated successfully.",
+    "errorCurrentPassword": "The current password is incorrect.",
+    "errorPasswordMismatch": "Passwords do not match.",
+    "errorPasswordGeneric": "Could not update the password. Please try again.",
+    "dangerSection": "Danger zone",
+    "signOutAllDesc": "Sign out from all devices where you are currently logged in.",
+    "signOutAllButton": "Sign out all sessions"
   },
   "footer": {
     "tagline": "AI-powered rental contract analysis",

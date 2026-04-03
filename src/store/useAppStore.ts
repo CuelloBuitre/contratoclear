@@ -32,7 +32,14 @@ export const useAuthStore = create<AuthStore>((set) => ({
     const { data: { session } } = await supabase.auth.getSession()
     set({ user: session?.user ?? null, session: session ?? null, isLoading: false })
 
-    supabase.auth.onAuthStateChange((_event, newSession) => {
+    supabase.auth.onAuthStateChange((event, newSession) => {
+      if (event === 'SIGNED_OUT') {
+        set({ user: null, session: null, profile: null, isLoading: false })
+        if (window.location.pathname !== '/login') {
+          window.location.href = '/login'
+        }
+        return
+      }
       set({
         user: newSession?.user ?? null,
         session: newSession ?? null,
@@ -69,3 +76,13 @@ export const useUploadStore = create<UploadStore>((set) => ({
   setError: (message) => set({ status: 'error', errorMessage: message }),
   reset: () => set({ file: null, status: 'idle', progress: 0, errorMessage: null }),
 }))
+
+// ── Session expiry handler — call from any hook or interceptor ────────────────
+
+export function handleSessionExpired() {
+  useAuthStore.getState().reset()
+  sessionStorage.setItem('auth_flash', 'auth.sessionExpired')
+  if (window.location.pathname !== '/login') {
+    window.location.href = '/login'
+  }
+}

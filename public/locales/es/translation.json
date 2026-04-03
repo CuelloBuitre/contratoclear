@@ -5,13 +5,25 @@
     "login": "Entrar",
     "dashboard": "Mis análisis",
     "history": "Historial",
+    "profile": "Mi perfil",
     "logout": "Cerrar sesión"
   },
   "landing": {
     "hero": {
-      "title": "Analiza tu contrato de alquiler en segundos",
-      "subtitle": "Descubre cláusulas ilegales, advertencias y todo lo que debes negociar antes de firmar. Actualizado a la ley vigente.",
+      "badge": "✓ Actualizado a la LAU vigente 2026",
+      "headline": "¿Sabes cuánto vas a comprometer en tu próximo alquiler?",
+      "subtitle": "Detecta cláusulas ilegales, advertencias y todo lo que debes negociar antes de firmar.",
+      "sliderLabel": "Tu alquiler mensual",
+      "perYear": "Al año",
+      "fiveYears": "En 5 años",
+      "sevenYears": "En 7 años",
+      "punchline": "Proteger {{amount}} te cuesta 3,99€",
+      "pct": "El {{pct}}% de tu compromiso total",
       "cta": "Analizar mi contrato — desde 3,99€",
+      "trustItem1": "Sin suscripción",
+      "trustItem2": "Resultado en 10 segundos",
+      "trustItem3": "LAU 2026 actualizada",
+      "title": "Analiza tu contrato de alquiler en segundos",
       "ctaSecondary": "Ver demo",
       "trustBadge": "Actualizado a {{date}}"
     },
@@ -35,6 +47,7 @@
       "scenario3": { "label": "Contrato ilegal", "sublabel": "Las cláusulas ilegales son nulas aunque las firmes" }
     },
     "howItWorks": {
+      "overline": "Proceso",
       "title": "Cómo funciona",
       "step1Title": "Sube tu contrato",
       "step1Desc": "Arrastra o selecciona el PDF de tu contrato de alquiler. Máximo 10 MB.",
@@ -44,6 +57,7 @@
       "step3Desc": "Resultado cláusula a cláusula con código de colores. Descarga el PDF del informe."
     },
     "features": {
+      "overline": "Cobertura completa",
       "title": "¿Qué analizamos?",
       "items": [
         "Fianza y garantías adicionales",
@@ -54,10 +68,32 @@
         "Cláusulas de resolución anticipada"
       ]
     },
+    "why": {
+      "title": "¿Por qué ClausulaAI?",
+      "subtitle": "Diseñado para que el inquilino tenga la misma información que el propietario.",
+      "item1Title": "Siempre actualizado",
+      "item1Desc": "Incorporamos cada cambio legal al día siguiente de su publicación en el BOE.",
+      "item2Title": "IA entrenada en derecho",
+      "item2Desc": "Análisis basado en la LAU, Ley de Vivienda 12/2023 y Resolución INE 2024.",
+      "item3Title": "Resultado en segundos",
+      "item3Desc": "Sube el PDF y recibe el análisis completo cláusula a cláusula en menos de 30 segundos."
+    },
+    "pricing": {
+      "overline": "Precios"
+    },
     "finalCta": {
       "title": "Las cláusulas ilegales son nulas aunque las hayas firmado.",
       "subtitle": "Comprueba el tuyo ahora y firma con seguridad.",
       "cta": "Analizar mi contrato"
+    },
+    "impact": {
+      "number": "54.000€",
+      "subtitle": "Es lo que te comprometes a pagar en 5 años de alquiler",
+      "punchline": "Revisar que el contrato es legal te cuesta 3,99€",
+      "subtext": "Menos de lo que cuesta un café con leche.",
+      "cta": "Analizar mi contrato ahora",
+      "pricingTitle": "54.000€ de compromiso. 3,99€ para protegerlo.",
+      "pricingSub": "El coste de no revisar puede ser mucho mayor."
     }
   },
   "pricing": {
@@ -129,6 +165,9 @@
       ]
     }
   },
+  "auth": {
+    "sessionExpired": "Tu sesión ha expirado. Por favor, inicia sesión de nuevo."
+  },
   "login": {
     "title": "Accede a tu cuenta",
     "titleSub": "Analiza tu contrato en segundos",
@@ -164,7 +203,34 @@
       "number": "Un número",
       "special": "Un carácter especial (!@#$%^&*)"
     },
-    "backToLogin": "Volver al inicio de sesión"
+    "backToLogin": "Volver al inicio de sesión",
+    "forgotPassword": "¿Olvidaste tu contraseña?"
+  },
+  "forgotPassword": {
+    "title": "Recuperar contraseña",
+    "titleSub": "Te enviaremos un enlace para restablecer tu contraseña",
+    "emailLabel": "Correo electrónico",
+    "emailPlaceholder": "tu@email.com",
+    "submit": "Enviar enlace",
+    "success": "Revisa tu email para continuar",
+    "successSub": "Hemos enviado un enlace de recuperación a {{email}}. Si no lo ves en unos minutos, revisa la carpeta de spam.",
+    "backToLogin": "Volver al inicio de sesión",
+    "errorGeneric": "No pudimos procesar la solicitud. Inténtalo de nuevo."
+  },
+  "resetPassword": {
+    "title": "Nueva contraseña",
+    "titleSub": "Elige una contraseña segura para tu cuenta",
+    "newPasswordLabel": "Nueva contraseña",
+    "newPasswordPlaceholder": "Mínimo 8 caracteres",
+    "confirmPasswordLabel": "Confirmar contraseña",
+    "confirmPasswordPlaceholder": "Repite tu contraseña",
+    "submit": "Actualizar contraseña",
+    "success": "¡Contraseña actualizada!",
+    "successSub": "Redirigiendo al panel...",
+    "errorMismatch": "Las contraseñas no coinciden.",
+    "errorExpired": "El enlace ha expirado o ya fue usado. Solicita uno nuevo.",
+    "errorGeneric": "No se pudo actualizar la contraseña. Inténtalo de nuevo.",
+    "backToForgot": "Solicitar nuevo enlace"
   },
   "dashboard": {
     "title": "Analizar contrato",
@@ -269,7 +335,10 @@
     "pdfTooLarge": "El PDF supera el límite de 10 MB.",
     "invalidFileType": "Solo se aceptan archivos PDF.",
     "rateLimitExceeded": "Demasiados análisis en la última hora. Espera unos minutos.",
-    "noCreditsServer": "Sin créditos disponibles. Compra un plan para continuar."
+    "noCreditsServer": "Sin créditos disponibles. Compra un plan para continuar.",
+    "boundary": "Algo salió mal. Por favor, recarga la página.",
+    "boundaryRetry": "Reintentar",
+    "boundaryAnalysis": "No se pudo mostrar el análisis. Por favor, inténtalo de nuevo."
   },
   "calculator": {
     "title": "¿Sabes cuánto vas a pagar en total durante tu contrato?",
@@ -300,16 +369,40 @@
     "typing": "Escribiendo...",
     "disclaimer": "Orientación basada en la LAU vigente. No sustituye asesoramiento legal profesional."
   },
-  "landing": {
-    "impact": {
-      "number": "54.000€",
-      "subtitle": "Es lo que te comprometes a pagar en 5 años de alquiler",
-      "punchline": "Revisar que el contrato es legal te cuesta 3,99€",
-      "subtext": "Menos de lo que cuesta un café con leche.",
-      "cta": "Analizar mi contrato ahora",
-      "pricingTitle": "54.000€ de compromiso. 3,99€ para protegerlo.",
-      "pricingSub": "El coste de no revisar puede ser mucho mayor."
-    }
+  "profile": {
+    "title": "Mi perfil",
+    "memberSince": "Miembro desde {{date}}",
+    "planSection": "Plan actual",
+    "plan": {
+      "none": "Sin plan",
+      "single": "1 análisis",
+      "pack": "Pack 3 análisis",
+      "pro": "Pro ilimitado"
+    },
+    "creditsUnlimited": "Análisis ilimitados",
+    "creditsLabel": "Análisis disponibles",
+    "creditsRemaining": "{{count}} análisis",
+    "expiryLabel": "Caducan el",
+    "creditsExpiry": "{{date}}",
+    "creditsNone": "No tienes análisis disponibles.",
+    "upgradeCta": "Ver planes",
+    "securitySection": "Seguridad",
+    "currentPasswordLabel": "Contraseña actual",
+    "currentPasswordPlaceholder": "Tu contraseña actual",
+    "newPasswordLabel": "Nueva contraseña",
+    "newPasswordPlaceholder": "Mínimo 8 caracteres",
+    "confirmPasswordLabel": "Confirmar nueva contraseña",
+    "confirmPasswordPlaceholder": "Repite la nueva contraseña",
+    "showPassword": "Mostrar contraseña",
+    "hidePassword": "Ocultar contraseña",
+    "changePasswordSubmit": "Actualizar contraseña",
+    "changePasswordSuccess": "Contraseña actualizada correctamente.",
+    "errorCurrentPassword": "La contraseña actual es incorrecta.",
+    "errorPasswordMismatch": "Las contraseñas no coinciden.",
+    "errorPasswordGeneric": "No se pudo actualizar la contraseña. Inténtalo de nuevo.",
+    "dangerSection": "Zona de peligro",
+    "signOutAllDesc": "Cierra la sesión en todos los dispositivos donde estés conectado.",
+    "signOutAllButton": "Cerrar todas las sesiones"
   },
   "footer": {
     "tagline": "Análisis de contratos de alquiler con IA",

@@ -2,8 +2,10 @@ import { useState } from 'react'
 import { useParams, Link } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import { PDFDownloadLink } from '@react-pdf/renderer'
+import { motion } from 'framer-motion'
 import Navbar from '@/components/layout/Navbar'
 import Footer from '@/components/layout/Footer'
+import ErrorBoundary from '@/components/ErrorBoundary'
 import AnalysisReport from '@/components/analysis/AnalysisReport'
 import AnalysisPDFReport from '@/components/analysis/AnalysisPDFReport'
 import ContractChat from '@/components/analysis/ContractChat'
@@ -95,7 +97,14 @@ export default function Analysis() {
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-2">
-                <ScoreBadge puntuacion={analysis.result_json.puntuacion} />
+                <motion.div
+                  initial={{ scale: 0.7, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ type: 'spring', stiffness: 380, damping: 20, delay: 0.05 }}
+                  className="inline-flex"
+                >
+                  <ScoreBadge puntuacion={analysis.result_json.puntuacion} />
+                </motion.div>
                 <span className="text-xs text-gray-400">
                   {new Date(analysis.created_at).toLocaleDateString('es-ES', {
                     day: 'numeric', month: 'long', year: 'numeric',
@@ -161,15 +170,17 @@ export default function Analysis() {
       {/* Report body */}
       <main className="flex-1">
         <div className="mx-auto max-w-2xl px-4 py-8 sm:px-6">
-          <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
-            <AnalysisReport result={analysis.result_json} />
-          </div>
-
-          {!isError && (
-            <div className="mt-4">
-              <ContractChat analysisId={analysis.id} result={analysis.result_json} />
+          <ErrorBoundary message={t('errors.boundaryAnalysis')}>
+            <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
+              <AnalysisReport result={analysis.result_json} />
             </div>
-          )}
+
+            {!isError && (
+              <div className="mt-4">
+                <ContractChat analysisId={analysis.id} result={analysis.result_json} />
+              </div>
+            )}
+          </ErrorBoundary>
         </div>
       </main>
 

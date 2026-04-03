@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router'
 import { supabase } from '@/lib/supabase'
 import { analysisKeys, profileKeys } from '@/queries/keys'
 import { analysisResultSchema } from '@/schemas'
-import { useUploadStore } from '@/store/useAppStore'
+import { useUploadStore, handleSessionExpired } from '@/store/useAppStore'
 import type { Analysis } from '@/types'
 
 const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024 // 10 MB
@@ -40,8 +40,6 @@ export function useAnalyzeContract() {
 
       setStatus('analyzing')
       const { data: { session } } = await supabase.auth.getSession()
-      console.log('Session:', session)
-      console.log('Token:', session?.access_token)
       if (!session) throw new Error('unauthorized')
 
       const token = session.access_token
@@ -56,6 +54,11 @@ export function useAnalyzeContract() {
         },
         body: JSON.stringify({ pdfBase64, filename: file.name }),
       })
+
+      if (res.status === 401) {
+        handleSessionExpired()
+        throw new Error('session_expired')
+      }
 
       if (!res.ok) {
         const { error } = await res.json() as { error: string }
@@ -76,6 +79,7 @@ export function useAnalyzeContract() {
       navigate(`/analysis/${analysis.id}`)
     },
     onError: (error: Error) => {
+      if (error.message === 'session_expired') return
       setError(error.message)
     },
   })

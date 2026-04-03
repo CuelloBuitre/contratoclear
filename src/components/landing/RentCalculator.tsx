@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router'
 import { useTranslation } from 'react-i18next'
+import { animate } from 'framer-motion'
 
 const DEFAULT_RENT = 950
 const MIN_RENT = 400
@@ -12,6 +13,33 @@ function fmt(n: number): string {
   return n.toLocaleString('es-ES')
 }
 
+/** Smoothly animates a displayed number from its previous value to `target`. */
+function useAnimatedNumber(target: number) {
+  const [displayed, setDisplayed] = useState(target)
+  const prevRef = useRef(target)
+
+  useEffect(() => {
+    const from = prevRef.current
+    prevRef.current = target
+    if (from === target) return
+
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    if (prefersReduced) {
+      setDisplayed(target)
+      return
+    }
+
+    const controls = animate(from, target, {
+      duration: 0.45,
+      ease: 'easeOut',
+      onUpdate: (v) => setDisplayed(Math.round(v)),
+    })
+    return () => controls.stop()
+  }, [target])
+
+  return displayed
+}
+
 export default function RentCalculator() {
   const { t } = useTranslation()
   const [rent, setRent] = useState(DEFAULT_RENT)
@@ -21,6 +49,8 @@ export default function RentCalculator() {
   const sevenYears = rent * 12 * 7
   const pct = ((PRICE / fiveYears) * 100).toFixed(4)
   const fillPct = ((rent - MIN_RENT) / (MAX_RENT - MIN_RENT)) * 100
+
+  const displayedFiveYears = useAnimatedNumber(fiveYears)
 
   return (
     <section className="bg-[#1a1a2e] py-20 sm:py-24">
@@ -77,8 +107,11 @@ export default function RentCalculator() {
           {/* 5-year — THE WOW NUMBER */}
           <div className="rounded-2xl border border-white/25 bg-white/10 px-6 py-10 text-center">
             <p className="text-sm font-semibold text-white/60">{t('calculator.fiveYears')}</p>
-            <p className="mt-4 text-6xl font-extrabold tabular-nums text-white sm:text-7xl">
-              {fmt(fiveYears)}€
+            <p
+              className="mt-4 text-6xl font-extrabold tabular-nums text-white sm:text-7xl"
+              style={{ fontFamily: "'DM Serif Display', serif" }}
+            >
+              {fmt(displayedFiveYears)}€
             </p>
           </div>
 
@@ -101,7 +134,7 @@ export default function RentCalculator() {
 
           <Link
             to="/login"
-            className="mt-8 inline-flex items-center gap-2 rounded-xl bg-white px-8 py-3.5 text-base font-bold text-[#1a1a2e] shadow-lg transition-opacity hover:opacity-90"
+            className="mt-8 inline-flex items-center gap-2 rounded-xl bg-white px-8 py-3.5 text-base font-bold text-[#1a1a2e] shadow-lg transition-opacity hover:opacity-90 active:scale-[0.97]"
           >
             {t('calculator.cta')}
             <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

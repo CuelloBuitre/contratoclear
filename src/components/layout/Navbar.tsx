@@ -52,7 +52,12 @@ export default function Navbar() {
                 >
                   {t('nav.history')}
                 </Link>
-                <span className="mx-2 hidden text-xs text-white/30 lg:block">{user.email}</span>
+                <Link
+                  to="/profile"
+                  className="rounded-lg px-3 py-2 text-sm font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+                >
+                  {t('nav.profile')}
+                </Link>
                 <button
                   onClick={handleSignOut}
                   className="rounded-lg border border-white/20 px-3 py-1.5 text-sm font-medium text-white/70 transition-colors hover:border-white/40 hover:text-white"
@@ -118,6 +123,13 @@ export default function Navbar() {
                 className="block rounded-lg px-3 py-2.5 text-sm font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white"
               >
                 {t('nav.history')}
+              </Link>
+              <Link
+                to="/profile"
+                onClick={closeMenu}
+                className="block rounded-lg px-3 py-2.5 text-sm font-medium text-white/70 transition-colors hover:bg-white/10 hover:text-white"
+              >
+                {t('nav.profile')}
               </Link>
               <button
                 onClick={handleSignOut}

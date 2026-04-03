@@ -16,14 +16,15 @@ export default function Footer() {
 
           {/* Links */}
           <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
-            <Link to="#" className="hover:text-white transition-colors">{t('footer.legal')}</Link>
-            <Link to="#" className="hover:text-white transition-colors">{t('footer.privacy')}</Link>
-            <Link to="#" className="hover:text-white transition-colors">{t('footer.contact')}</Link>
+            <Link to="/terms" className="transition-colors hover:text-white">{t('footer.legal')}</Link>
+            <Link to="/privacy" className="transition-colors hover:text-white">{t('footer.privacy')}</Link>
+            <a href="mailto:hola@clausulaai.es" className="transition-colors hover:text-white">{t('footer.contact')}</a>
           </div>
         </div>
 
-        <div className="mt-8 border-t border-white/10 pt-6 text-center text-xs">
-          {t('footer.copyright', { year: new Date().getFullYear() })}
+        <div className="mt-8 border-t border-white/10 pt-6 space-y-2 text-center text-xs">
+          <p>{t('footer.copyright', { year: new Date().getFullYear() })}</p>
+          <p className="text-white/40">{t('footer.disclaimer')}</p>
         </div>
       </div>
     </footer>

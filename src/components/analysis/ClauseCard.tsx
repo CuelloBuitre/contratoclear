@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { AnimatePresence, motion } from 'framer-motion'
 import type { Clause } from '@/types'
 
 interface ClauseCardProps {
@@ -8,19 +9,16 @@ interface ClauseCardProps {
 
 const statusStyles = {
   ok: {
-    border: 'border-green-200',
-    badge: 'bg-green-100 text-green-800',
-    dot: 'bg-green-500',
+    leftBorder: 'border-l-[#16a34a]',
+    badge: 'bg-[#16a34a] text-white',
   },
   advertencia: {
-    border: 'border-amber-200',
-    badge: 'bg-amber-100 text-amber-800',
-    dot: 'bg-amber-500',
+    leftBorder: 'border-l-[#d97706]',
+    badge: 'bg-[#d97706] text-white',
   },
   ilegal: {
-    border: 'border-red-200',
-    badge: 'bg-red-100 text-red-800',
-    dot: 'bg-red-500',
+    leftBorder: 'border-l-[#dc2626]',
+    badge: 'bg-[#dc2626] text-white',
   },
 }
 
@@ -30,42 +28,53 @@ export default function ClauseCard({ clause }: ClauseCardProps) {
   const s = statusStyles[clause.estado]
 
   return (
-    <div className={`overflow-hidden rounded-lg border ${s.border} bg-white`}>
-      <button
+    <div className={`overflow-hidden rounded-xl border border-gray-200 border-l-4 ${s.leftBorder} bg-white`}>
+      <motion.button
         type="button"
         onClick={() => setIsOpen((v) => !v)}
         aria-expanded={isOpen}
-        className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left transition-colors hover:bg-gray-50"
+        whileTap={{ scale: 0.98 }}
+        className="flex min-h-[44px] w-full items-center justify-between gap-3 px-4 py-3 text-left transition-colors hover:bg-gray-50"
       >
-        <div className="flex min-w-0 items-center gap-2.5">
-          <span className={`h-2.5 w-2.5 shrink-0 rounded-full ${s.dot}`} />
-          <span className="truncate text-sm font-medium text-gray-800">{clause.titulo}</span>
-        </div>
+        <span className="truncate text-sm font-medium text-gray-800">{clause.titulo}</span>
         <div className="flex shrink-0 items-center gap-2">
-          <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${s.badge}`}>
+          <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${s.badge}`}>
             {t(`analysis.clauseStatus.${clause.estado}`)}
           </span>
-          <svg
-            className={`h-4 w-4 text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+          <motion.svg
+            animate={{ rotate: isOpen ? 180 : 0 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            className="h-4 w-4 text-gray-400"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
           >
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
+          </motion.svg>
         </div>
-      </button>
+      </motion.button>
 
-      {isOpen && (
-        <div className="space-y-2 border-t border-gray-100 bg-gray-50 px-4 py-3">
-          <p className="text-sm text-gray-700">{clause.descripcion}</p>
-          {clause.accion && (
-            <p className="text-sm font-medium text-gray-900">
-              <span className="text-indigo-600">→</span> {clause.accion}
-            </p>
-          )}
-        </div>
-      )}
+      <AnimatePresence initial={false}>
+        {isOpen && (
+          <motion.div
+            key="content"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            className="overflow-hidden"
+          >
+            <div className="space-y-2 border-t border-gray-100 bg-gray-50 px-4 py-3">
+              <p className="text-sm leading-[1.7] text-gray-700">{clause.descripcion}</p>
+              {clause.accion && (
+                <p className="text-sm font-medium text-gray-900">
+                  <span className="text-indigo-600">→</span> {clause.accion}
+                </p>
+              )}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
 }

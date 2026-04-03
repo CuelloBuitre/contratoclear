@@ -69,7 +69,7 @@ function IconCheck({ className }: { className?: string }) {
 // ── Step icons ────────────────────────────────────────────────────────────────
 
 const STEP_ICONS = [IconFileText, IconSearch, IconBookOpen, IconAlertTriangle, IconCheckCircle]
-const STEP_DELAYS = [0, 3000, 6000, 9000, 12000]
+const STEP_DELAYS = [0, 5000, 10000, 15000, 20000]
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
@@ -117,7 +117,7 @@ export default function AnalysisLoader() {
             className="absolute left-0 right-0 h-10 pointer-events-none"
             style={{
               background: 'linear-gradient(to bottom, transparent, rgba(99,102,241,0.25), rgba(99,102,241,0.15), transparent)',
-              animation: 'scan-beam 2.2s ease-in-out infinite',
+              animation: 'scan-beam 3s ease-in-out infinite',
             }}
           />
 
@@ -144,7 +144,7 @@ export default function AnalysisLoader() {
         <div className="h-1.5 w-full overflow-hidden rounded-full bg-gray-100">
           <div
             className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-[#1a1a2e]"
-            style={{ animation: 'progress-fill 13s linear forwards' }}
+            style={{ animation: 'progress-fill 20s linear forwards' }}
           />
         </div>
       </div>

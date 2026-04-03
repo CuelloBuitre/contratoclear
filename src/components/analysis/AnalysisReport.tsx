@@ -1,11 +1,44 @@
 import { useTranslation } from 'react-i18next'
+import { motion, type Variants } from 'framer-motion'
 import ScoreBadge from '@/components/analysis/ScoreBadge'
 import LegalUpdateBadge from '@/components/analysis/LegalUpdateBadge'
 import ClauseCard from '@/components/analysis/ClauseCard'
+import { useCountUp } from '@/hooks/useCountUp'
 import type { AnalysisResult } from '@/types'
 
 interface AnalysisReportProps {
   result: AnalysisResult
+}
+
+const clauseContainer: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } },
+}
+const clauseItem: Variants = {
+  hidden: { opacity: 0, y: 10 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.3, ease: 'easeOut' as const } },
+}
+
+function StatCount({
+  value,
+  borderBg,
+  textColor,
+  labelColor,
+  label,
+}: {
+  value: number
+  borderBg: string
+  textColor: string
+  labelColor: string
+  label: string
+}) {
+  const displayed = useCountUp(value, true)
+  return (
+    <div className={`rounded-lg border ${borderBg} px-3 py-3 text-center`}>
+      <p className={`text-2xl font-bold ${textColor}`}>{displayed}</p>
+      <p className={`mt-0.5 text-xs ${labelColor}`}>{label}</p>
+    </div>
+  )
 }
 
 export default function AnalysisReport({ result }: AnalysisReportProps) {
@@ -44,28 +77,44 @@ export default function AnalysisReport({ result }: AnalysisReportProps) {
         <LegalUpdateBadge lastUpdated={result.last_updated} />
       </div>
 
-      {/* Stats */}
+      {/* Stats with count-up */}
       <div className="grid grid-cols-3 gap-3">
-        <div className="rounded-lg border border-green-200 bg-green-50 px-3 py-3 text-center">
-          <p className="text-2xl font-bold text-green-700">{okCount}</p>
-          <p className="mt-0.5 text-xs text-green-600">{t('analysis.clauseStatus.ok')}</p>
-        </div>
-        <div className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-3 text-center">
-          <p className="text-2xl font-bold text-amber-700">{warningCount}</p>
-          <p className="mt-0.5 text-xs text-amber-600">{t('analysis.clauseStatus.advertencia')}</p>
-        </div>
-        <div className="rounded-lg border border-red-200 bg-red-50 px-3 py-3 text-center">
-          <p className="text-2xl font-bold text-red-700">{illegalCount}</p>
-          <p className="mt-0.5 text-xs text-red-600">{t('analysis.clauseStatus.ilegal')}</p>
-        </div>
+        <StatCount
+          value={okCount}
+          borderBg="border-green-200 bg-green-50"
+          textColor="text-green-700"
+          labelColor="text-green-600"
+          label={t('analysis.clauseStatus.ok')}
+        />
+        <StatCount
+          value={warningCount}
+          borderBg="border-amber-200 bg-amber-50"
+          textColor="text-amber-700"
+          labelColor="text-amber-600"
+          label={t('analysis.clauseStatus.advertencia')}
+        />
+        <StatCount
+          value={illegalCount}
+          borderBg="border-red-200 bg-red-50"
+          textColor="text-red-700"
+          labelColor="text-red-600"
+          label={t('analysis.clauseStatus.ilegal')}
+        />
       </div>
 
-      {/* Clauses */}
-      <div className="space-y-2">
+      {/* Clauses — staggered slide-in */}
+      <motion.div
+        className="space-y-2"
+        variants={clauseContainer}
+        initial="hidden"
+        animate="show"
+      >
         {result.clausulas.map((clause, i) => (
-          <ClauseCard key={i} clause={clause} />
+          <motion.div key={i} variants={clauseItem}>
+            <ClauseCard clause={clause} />
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
 
       {/* Recommendation */}
       <div className="rounded-lg border border-indigo-100 bg-indigo-50 px-4 py-4">

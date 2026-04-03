@@ -5,15 +5,27 @@
     "login": "Sign in",
     "dashboard": "My analyses",
     "history": "History",
+    "profile": "My profile",
     "logout": "Sign out"
   },
   "landing": {
     "hero": {
+      "badge": "✓ Updated to current LAU 2026",
+      "headline": "Do you know how much you're committing to in your next rental?",
       "title": "Analyze your rental contract in seconds",
-      "subtitle": "Discover illegal clauses, warnings and everything you should negotiate before signing. Updated to current law.",
+      "subtitle": "Detect illegal clauses, warnings, and everything you should negotiate before signing.",
+      "sliderLabel": "Your monthly rent",
+      "perYear": "Per year",
+      "fiveYears": "In 5 years",
+      "sevenYears": "In 7 years",
+      "punchline": "Protecting {{amount}} costs you €3.99",
+      "pct": "{{pct}}% of your total commitment",
       "cta": "Analyze my contract — from €3.99",
       "ctaSecondary": "See demo",
-      "trustBadge": "Updated to {{date}}"
+      "trustBadge": "Updated to {{date}}",
+      "trustItem1": "No subscription",
+      "trustItem2": "Result in 10 seconds",
+      "trustItem3": "LAU 2026 updated"
     },
     "stats": {
       "contracts": "active rental contracts in Spain",
@@ -34,7 +46,21 @@
       "scenario2": { "label": "Abusive clauses", "sublabel": "Negotiate before signing" },
       "scenario3": { "label": "Illegal contract", "sublabel": "Illegal clauses are void even if you sign" }
     },
+    "why": {
+      "title": "Why ClausulaAI?",
+      "subtitle": "Designed so tenants have the same information as landlords.",
+      "item1Title": "Always up to date",
+      "item1Desc": "We incorporate every legal change the day after it's published in the BOE.",
+      "item2Title": "AI trained in law",
+      "item2Desc": "Analysis based on LAU, Housing Act 12/2023 and INE Resolution 2024.",
+      "item3Title": "Result in seconds",
+      "item3Desc": "Upload the PDF and get the complete clause-by-clause analysis in under 30 seconds."
+    },
+    "pricing": {
+      "overline": "Pricing"
+    },
     "howItWorks": {
+      "overline": "Process",
       "title": "How it works",
       "step1Title": "Upload your contract",
       "step1Desc": "Drag or select the PDF of your rental contract. Maximum 10 MB.",
@@ -44,6 +70,7 @@
       "step3Desc": "Clause-by-clause results with color coding. Download the PDF report."
     },
     "features": {
+      "overline": "Full coverage",
       "title": "What do we analyze?",
       "items": [
         "Deposit and additional guarantees",
@@ -58,40 +85,100 @@
       "title": "Illegal clauses are void even if you signed them.",
       "subtitle": "Check yours now and sign with confidence.",
       "cta": "Analyze my contract"
+    },
+    "impact": {
+      "number": "€54,000",
+      "subtitle": "That's what you commit to paying over 5 years of renting",
+      "punchline": "Making sure the contract is legal costs €3.99",
+      "subtext": "Less than the price of a coffee.",
+      "cta": "Analyze my contract now",
+      "pricingTitle": "€54,000 commitment. €3.99 to protect it.",
+      "pricingSub": "The cost of not checking can be much higher."
     }
   },
   "pricing": {
     "title": "Choose your plan",
     "subtitle": "No mandatory subscription. Pay only what you need.",
+    "conversionCopy": "You're committing to paying €900/month for 5 years — that's €54,000 total. Making sure the contract is legal costs €3.99.",
+    "loginRequired": "Sign in to continue",
+    "currentPlan": "Your current plan",
+    "processing": "Redirecting to payment...",
+    "oneTime": "One-time payment",
+    "perMonth": "per month",
+    "billedMonthly": "Billed monthly · Cancel anytime",
+    "save": "Save 17%",
+    "validDays": "Valid 90 days",
     "plans": {
       "single": {
         "name": "1 analysis",
         "price": "€3.99",
         "description": "For a one-off contract review",
-        "cta": "Buy now"
+        "cta": "Buy now",
+        "features": [
+          "1 complete contract analysis",
+          "Downloadable PDF report",
+          "Valid 1 year from purchase",
+          "LAU regulations always up to date"
+        ]
       },
       "pack": {
         "name": "Pack of 3 analyses",
         "price": "€9.99",
-        "description": "Valid 90 days. For multiple options.",
+        "description": "For comparing multiple options",
         "cta": "Buy pack",
-        "badge": "Most popular"
+        "badge": "Most popular",
+        "features": [
+          "3 complete analyses",
+          "Downloadable PDF report",
+          "History saved for 90 days",
+          "LAU regulations always up to date"
+        ]
       },
       "pro": {
-        "name": "Pro",
-        "price": "€19/mo",
-        "description": "Unlimited analyses. For agents and managers.",
-        "cta": "Subscribe"
+        "name": "Pro unlimited",
+        "price": "€19",
+        "description": "For real estate agents and managers",
+        "cta": "Subscribe to Pro",
+        "features": [
+          "Unlimited analyses",
+          "Full history, no expiry",
+          "Priority email support",
+          "Ideal for agencies and managers"
+        ]
       }
+    },
+    "faq": {
+      "title": "Frequently asked questions",
+      "items": [
+        {
+          "q": "Does the analysis replace a lawyer?",
+          "a": "No. ClausulaAI provides guidance based on current LAU regulations. For complex legal decisions, consult a qualified lawyer."
+        },
+        {
+          "q": "What happens to my credits if I don't use them?",
+          "a": "The 3-analysis pack expires after 90 days. The single analysis is valid for 1 year. The Pro plan is unlimited while active."
+        },
+        {
+          "q": "Can I cancel the Pro plan anytime?",
+          "a": "Yes, you can cancel at any time from your account. Pro access continues until the end of the billing period."
+        }
+      ]
     }
+  },
+  "auth": {
+    "sessionExpired": "Your session has expired. Please sign in again."
   },
   "login": {
     "title": "Sign in to your account",
+    "titleSub": "Analyze your contract in seconds",
     "registerTitle": "Create account",
+    "registerTitleSub": "Start protecting your rights as a tenant",
     "emailLabel": "Email address",
     "emailPlaceholder": "you@email.com",
     "passwordLabel": "Password",
     "passwordPlaceholder": "Minimum 8 characters",
+    "confirmPasswordLabel": "Confirm password",
+    "confirmPasswordPlaceholder": "Repeat your password",
     "submitLogin": "Sign in",
     "submitRegister": "Create account",
     "continueWithGoogle": "Continue with Google",
@@ -99,8 +186,51 @@
     "switchToRegister": "No account? Register",
     "switchToLogin": "Already have an account? Sign in",
     "checkEmail": "Check your email to confirm your account.",
+    "checkEmailSub": "We sent you a confirmation link. Click it and then sign in.",
     "errorInvalidCredentials": "Incorrect email or password.",
-    "errorEmailInUse": "This email already has an account."
+    "errorEmailInUse": "This email already has an account.",
+    "errorPasswordMismatch": "Passwords do not match.",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "passwordStrength": {
+      "weak": "Weak",
+      "medium": "Medium",
+      "strong": "Strong"
+    },
+    "passwordRequirement": {
+      "minLength": "Minimum 8 characters",
+      "uppercase": "One uppercase letter",
+      "number": "One number",
+      "special": "One special character (!@#$%^&*)"
+    },
+    "backToLogin": "Back to sign in",
+    "forgotPassword": "Forgot your password?"
+  },
+  "forgotPassword": {
+    "title": "Reset password",
+    "titleSub": "We'll send you a link to reset your password",
+    "emailLabel": "Email address",
+    "emailPlaceholder": "you@email.com",
+    "submit": "Send reset link",
+    "success": "Check your email to continue",
+    "successSub": "We sent a recovery link to {{email}}. If you don't see it in a few minutes, check your spam folder.",
+    "backToLogin": "Back to sign in",
+    "errorGeneric": "We couldn't process the request. Please try again."
+  },
+  "resetPassword": {
+    "title": "New password",
+    "titleSub": "Choose a strong password for your account",
+    "newPasswordLabel": "New password",
+    "newPasswordPlaceholder": "Minimum 8 characters",
+    "confirmPasswordLabel": "Confirm password",
+    "confirmPasswordPlaceholder": "Repeat your password",
+    "submit": "Update password",
+    "success": "Password updated!",
+    "successSub": "Redirecting to dashboard...",
+    "errorMismatch": "Passwords do not match.",
+    "errorExpired": "The link has expired or was already used. Request a new one.",
+    "errorGeneric": "Could not update the password. Please try again.",
+    "backToForgot": "Request a new link"
   },
   "dashboard": {
     "title": "Analyze contract",
@@ -161,6 +291,37 @@
     "newAnalysis": "New analysis",
     "clauses": "clauses"
   },
+  "heroAnim": {
+    "filename": "contrato_alquiler.pdf",
+    "fileSize": "PDF · 2.4 MB",
+    "analyzing": "Analyzing contract...",
+    "score": "Problematic contract",
+    "clause1": "Excessive additional guarantee",
+    "clause2": "Rent increase with CPI",
+    "clause3": "Access without notice",
+    "clause4": "Legal deposit",
+    "badge": "Preview"
+  },
+  "payment": {
+    "success": {
+      "title": "Payment complete!",
+      "subtitle": "Your account has been updated with analysis credits.",
+      "detail": "You can now analyze your rental contracts.",
+      "cta": "Analyze my contract"
+    },
+    "cancel": {
+      "title": "Payment cancelled",
+      "subtitle": "Nothing has been charged to your card.",
+      "detail": "You can come back and choose a plan whenever you're ready.",
+      "cta": "View plans"
+    }
+  },
+  "cookies": {
+    "message": "We use first-party and third-party cookies to improve your experience and analyze site usage. You can accept or decline them.",
+    "accept": "Accept cookies",
+    "decline": "Essential only",
+    "learnMore": "Learn more"
+  },
   "notFound": {
     "title": "Page not found",
     "message": "The page you're looking for doesn't exist.",
@@ -174,7 +335,74 @@
     "pdfTooLarge": "The PDF exceeds the 10 MB limit.",
     "invalidFileType": "Only PDF files are accepted.",
     "rateLimitExceeded": "Too many analyses in the last hour. Please wait a few minutes.",
-    "noCreditsServer": "No credits available. Buy a plan to continue."
+    "noCreditsServer": "No credits available. Buy a plan to continue.",
+    "boundary": "Something went wrong. Please reload the page.",
+    "boundaryRetry": "Try again",
+    "boundaryAnalysis": "Could not display the analysis. Please try again."
+  },
+  "calculator": {
+    "title": "Do you know how much you'll pay over your entire contract?",
+    "subtitle": "Move the slider to calculate your real commitment",
+    "perYear": "Per year you pay",
+    "fiveYears": "Over 5 years (minimum legal duration)",
+    "sevenYears": "Over 7 years (if landlord is a company)",
+    "punchline": "Protecting {{total}} costs you €3.99",
+    "percentage": "That's {{pct}}% of your total commitment",
+    "cta": "Analyze my contract — €3.99",
+    "pricingAverage": "The average rent in Spain is €950/month",
+    "pricingTotal": "That's €57,000 over the 5-year contract",
+    "pricingCost": "Checking your contract is legal: €3.99"
+  },
+  "chat": {
+    "title": "Ask about your contract",
+    "badge": "New",
+    "placeholder": "Type your question...",
+    "send": "Send",
+    "limitReached": "You've reached the 10-message limit for this analysis.",
+    "error": "Connection error. Please try again.",
+    "suggestedQuestions": [
+      "Can I get my deposit back?",
+      "Is the rent increase clause legal?",
+      "What happens if the landlord breaches the contract?",
+      "Can I terminate the contract early?"
+    ],
+    "typing": "Typing...",
+    "disclaimer": "Guidance based on current LAU regulations. Does not replace professional legal advice."
+  },
+  "profile": {
+    "title": "My profile",
+    "memberSince": "Member since {{date}}",
+    "planSection": "Current plan",
+    "plan": {
+      "none": "No plan",
+      "single": "1 analysis",
+      "pack": "Pack of 3 analyses",
+      "pro": "Pro unlimited"
+    },
+    "creditsUnlimited": "Unlimited analyses",
+    "creditsLabel": "Analyses available",
+    "creditsRemaining": "{{count}} analyses",
+    "expiryLabel": "Expires on",
+    "creditsExpiry": "{{date}}",
+    "creditsNone": "You have no analyses available.",
+    "upgradeCta": "View plans",
+    "securitySection": "Security",
+    "currentPasswordLabel": "Current password",
+    "currentPasswordPlaceholder": "Your current password",
+    "newPasswordLabel": "New password",
+    "newPasswordPlaceholder": "Minimum 8 characters",
+    "confirmPasswordLabel": "Confirm new password",
+    "confirmPasswordPlaceholder": "Repeat the new password",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "changePasswordSubmit": "Update password",
+    "changePasswordSuccess": "Password updated successfully.",
+    "errorCurrentPassword": "The current password is incorrect.",
+    "errorPasswordMismatch": "Passwords do not match.",
+    "errorPasswordGeneric": "Could not update the password. Please try again.",
+    "dangerSection": "Danger zone",
+    "signOutAllDesc": "Sign out from all devices where you are currently logged in.",
+    "signOutAllButton": "Sign out all sessions"
   },
   "footer": {
     "tagline": "AI-powered rental contract analysis",

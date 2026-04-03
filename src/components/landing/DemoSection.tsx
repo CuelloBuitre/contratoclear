@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { Link } from 'react-router'
+import { AnimatePresence, motion, useInView, useReducedMotion, type Variants } from 'framer-motion'
 import ScoreBadge from '@/components/analysis/ScoreBadge'
 import LegalUpdateBadge from '@/components/analysis/LegalUpdateBadge'
 import type { AnalysisResult, Clause, ClauseStatus } from '@/types'
@@ -116,7 +117,7 @@ const SCENARIOS: Array<{ label: string; sublabel: string; result: AnalysisResult
   },
 ]
 
-// ── Mini clause card for demo (no external state dependencies) ────────────────
+// ── Status config ─────────────────────────────────────────────────────────────
 
 const statusConfig: Record<ClauseStatus, { dot: string; badge: string; border: string; bg: string }> = {
   ok: { dot: 'bg-green-500', badge: 'bg-green-100 text-green-800', border: 'border-green-200', bg: 'bg-green-50' },
@@ -130,15 +131,18 @@ const statusLabel: Record<ClauseStatus, string> = {
   ilegal: 'Ilegal',
 }
 
+// ── Mini clause card ──────────────────────────────────────────────────────────
+
 function DemoClauseCard({ clause }: { clause: Clause }) {
   const [open, setOpen] = useState(false)
   const s = statusConfig[clause.estado]
 
   return (
     <div className={`overflow-hidden rounded-xl border ${s.border} bg-white`}>
-      <button
+      <motion.button
         type="button"
         onClick={() => setOpen((v) => !v)}
+        whileTap={{ scale: 0.98 }}
         className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left transition-colors hover:bg-gray-50"
       >
         <div className="flex min-w-0 items-center gap-2.5">
@@ -149,30 +153,59 @@ function DemoClauseCard({ clause }: { clause: Clause }) {
           <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${s.badge}`}>
             {statusLabel[clause.estado]}
           </span>
-          <svg
-            className={`h-3.5 w-3.5 text-gray-400 transition-transform ${open ? 'rotate-180' : ''}`}
+          <motion.svg
+            animate={{ rotate: open ? 180 : 0 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            className="h-3.5 w-3.5 text-gray-400"
             fill="none" viewBox="0 0 24 24" stroke="currentColor"
           >
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
+          </motion.svg>
         </div>
-      </button>
-      {open && (
-        <div className={`border-t ${s.border} ${s.bg} px-4 py-3 space-y-1.5`}>
-          <p className="text-sm text-gray-700">{clause.descripcion}</p>
-          <p className="text-sm font-medium text-gray-900">
-            <span className="text-indigo-600">→</span> {clause.accion}
-          </p>
-        </div>
-      )}
+      </motion.button>
+
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            key="content"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2, ease: 'easeOut' }}
+            className="overflow-hidden"
+          >
+            <div className={`border-t ${s.border} ${s.bg} px-4 py-3 space-y-1.5`}>
+              <p className="text-sm text-gray-700">{clause.descripcion}</p>
+              <p className="text-sm font-medium text-gray-900">
+                <span className="text-indigo-600">→</span> {clause.accion}
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   )
+}
+
+// ── Stagger variants ──────────────────────────────────────────────────────────
+
+const clauseContainer: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } },
+}
+const clauseItem: Variants = {
+  hidden: { opacity: 0, x: -12 },
+  show: { opacity: 1, x: 0, transition: { duration: 0.32, ease: 'easeOut' as const } },
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
 export default function DemoSection() {
   const [active, setActive] = useState(0)
+  const shouldReduceMotion = useReducedMotion()
+  const sectionRef = useRef<HTMLDivElement>(null)
+  const isInView = useInView(sectionRef, { once: true, margin: '-80px' })
+
   const scenario = SCENARIOS[active]
   const result = scenario.result
 
@@ -182,7 +215,7 @@ export default function DemoSection() {
 
   return (
     <section className="bg-white py-20 sm:py-24">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6">
+      <div ref={sectionRef} className="mx-auto max-w-3xl px-4 sm:px-6">
         {/* Heading */}
         <div className="mb-10 text-center">
           <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-indigo-600">Demostración</p>
@@ -197,10 +230,11 @@ export default function DemoSection() {
         {/* Tab selector */}
         <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:gap-3">
           {SCENARIOS.map((s, i) => (
-            <button
+            <motion.button
               key={i}
               type="button"
               onClick={() => setActive(i)}
+              whileTap={shouldReduceMotion ? {} : { scale: 0.97 }}
               className={[
                 'flex-1 rounded-xl border px-4 py-3 text-left transition-all',
                 active === i
@@ -214,7 +248,7 @@ export default function DemoSection() {
               <p className={`mt-0.5 text-xs ${active === i ? 'text-white/70' : 'text-gray-400'}`}>
                 {s.sublabel}
               </p>
-            </button>
+            </motion.button>
           ))}
         </div>
 
@@ -242,12 +276,20 @@ export default function DemoSection() {
             </div>
           </div>
 
-          {/* Clauses */}
-          <div className="space-y-2">
+          {/* Clauses — staggered, re-triggers on scenario change via key */}
+          <motion.div
+            key={active}
+            className="space-y-2"
+            variants={shouldReduceMotion ? {} : clauseContainer}
+            initial={shouldReduceMotion ? false : 'hidden'}
+            animate={isInView ? 'show' : 'hidden'}
+          >
             {result.clausulas.map((clause, i) => (
-              <DemoClauseCard key={i} clause={clause} />
+              <motion.div key={i} variants={shouldReduceMotion ? {} : clauseItem}>
+                <DemoClauseCard clause={clause} />
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           {/* Recommendation */}
           <div className="mt-4 rounded-xl border border-indigo-100 bg-indigo-50 px-4 py-3">
@@ -258,15 +300,20 @@ export default function DemoSection() {
 
         {/* CTA */}
         <div className="mt-10 text-center">
-          <Link
-            to="/login"
-            className="inline-flex items-center gap-2 rounded-xl bg-[#1a1a2e] px-8 py-4 text-base font-semibold text-white shadow-lg transition-opacity hover:opacity-90"
+          <motion.div
+            whileTap={shouldReduceMotion ? {} : { scale: 0.97 }}
+            className="inline-block rounded-xl"
           >
-            Analizar mi contrato — desde 3,99€
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-            </svg>
-          </Link>
+            <Link
+              to="/login"
+              className="inline-flex items-center gap-2 rounded-xl bg-[#1a1a2e] px-8 py-4 text-base font-semibold text-white shadow-lg transition-opacity hover:opacity-90"
+            >
+              Analizar mi contrato — desde 3,99€
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </Link>
+          </motion.div>
           <p className="mt-3 text-xs text-gray-400">Sin suscripción. Paga solo lo que necesitas.</p>
         </div>
       </div>

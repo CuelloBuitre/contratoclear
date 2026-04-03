@@ -32,6 +32,8 @@ ClausulaAI is a paid web app (SPA) that analyzes Spanish rental contracts using 
 | Build | Vite | **6.x** | Fastest, native React 19 support |
 | Styles | Tailwind CSS | **v4** | No config file — pure CSS @import, faster |
 | Components | shadcn/ui | **latest** | Full React 19 + Tailwind v4 support |
+| Animations | Framer Motion | **v12** | Page transitions, useCountUp, reduced-motion aware |
+| PDF export | @react-pdf/renderer | **v4** | Generate downloadable analysis PDFs |
 | Routing | React Router | **v7** (SPA mode) | Proven, simple, no SSR needed |
 | Server state | TanStack Query | **v5** | Supabase data caching + background sync |
 | Client state | Zustand | **v5** | UI state, upload state, auth state |
@@ -43,7 +45,7 @@ ClausulaAI is a paid web app (SPA) that analyzes Spanish rental contracts using 
 | Payments | Stripe | **latest** | Cards + Apple Pay + Google Pay + SEPA |
 | Backend | Supabase Edge Functions | Deno | analyze-contract + stripe-webhook |
 | Testing | Vitest + Testing Library | **latest** | Jest-compatible, runs on Vite |
-| Error tracking | Sentry | **latest** | Production error monitoring |
+| Error tracking | @sentry/react | **v8** | Production error monitoring (imported directly, no sentry.ts wrapper) |
 | Deploy | Vercel | — | Auto-deploy from GitHub main |
 
 ---
@@ -65,11 +67,20 @@ contratoclear/
 │   │   ├── analysis/
 │   │   │   ├── UploadZone.tsx          # PDF drag & drop upload
 │   │   │   ├── AnalysisReport.tsx      # Full results display
+│   │   │   ├── AnalysisLoader.tsx      # Loading skeleton while analysis runs
+│   │   │   ├── AnalysisPDFReport.tsx   # @react-pdf/renderer — downloadable PDF
 │   │   │   ├── ClauseCard.tsx          # Single clause (expandable)
+│   │   │   ├── ContractChat.tsx        # AI chat widget about the contract (10 msg limit)
+│   │   │   ├── LegalUpdateBadge.tsx    # "Actualizado a [date]" trust badge
 │   │   │   └── ScoreBadge.tsx          # buena/aceptable/mala badge
-│   │   └── payment/
-│   │       ├── PricingCards.tsx        # Plan selection UI
-│   │       └── CheckoutButton.tsx      # Triggers Stripe Checkout
+│   │   ├── landing/
+│   │   │   ├── DemoSection.tsx         # 3 interactive example analyses
+│   │   │   ├── HeroAnimation.tsx       # Hero section animation (framer-motion)
+│   │   │   └── RentCalculator.tsx      # Rent limit calculator widget
+│   │   ├── payment/
+│   │   │   ├── PricingCards.tsx        # Plan selection UI
+│   │   │   └── CheckoutButton.tsx      # Triggers Stripe Checkout via useCheckout
+│   │   └── CookieBanner.tsx            # GDPR cookie consent (global, rendered in App)
 │   ├── pages/
 │   │   ├── Landing.tsx                 # Marketing page with interactive demo
 │   │   ├── Pricing.tsx                 # Pricing page
@@ -77,28 +88,34 @@ contratoclear/
 │   │   ├── Dashboard.tsx               # Main app: upload + analyze
 │   │   ├── Analysis.tsx                # Results page (by analysis ID)
 │   │   ├── History.tsx                 # Past analyses list
+│   │   ├── PaymentSuccess.tsx          # Stripe redirect after successful payment
+│   │   ├── PaymentCancel.tsx           # Stripe redirect after cancelled payment
+│   │   ├── Privacy.tsx                 # Privacy policy
+│   │   ├── Terms.tsx                   # Terms of service
 │   │   └── NotFound.tsx                # 404
 │   ├── lib/
 │   │   ├── supabase.ts                 # Supabase client singleton
 │   │   ├── stripe.ts                   # Stripe.js init
-│   │   ├── sentry.ts                   # Sentry init
 │   │   └── utils.ts                    # cn() + shared helpers
-│   ├── stores/
-│   │   ├── authStore.ts                # Zustand: user session + profile
-│   │   └── uploadStore.ts              # Zustand: upload progress + state
+│   ├── store/
+│   │   └── useAppStore.ts              # ⚠️ SINGLE FILE — both useAuthStore + useUploadStore
 │   ├── queries/
 │   │   ├── keys.ts                     # TanStack Query key factory
 │   │   ├── analyses.ts                 # useAnalyses, useAnalysis hooks
 │   │   └── profile.ts                  # useProfile, useCredits hooks
 │   ├── hooks/
-│   │   └── useAnalyzeContract.ts       # Mutation: upload PDF → call Edge Function
+│   │   ├── useAnalyzeContract.ts       # Mutation: upload PDF → call Edge Function
+│   │   ├── useAuth.ts                  # signIn / signUp / signInWithGoogle / signOut
+│   │   ├── useCheckout.ts              # Calls create-checkout-session → redirects to Stripe
+│   │   ├── useContractChat.ts          # Chat state + contract-chat Edge Function (10 msg limit)
+│   │   └── useCountUp.ts              # Animated counter via framer-motion (respects prefers-reduced-motion)
 │   ├── types/
 │   │   └── index.ts                    # All TypeScript interfaces and types
 │   ├── schemas/
 │   │   └── index.ts                    # Zod schemas (shared validation)
 │   ├── i18n/
 │   │   └── index.ts                    # i18next config
-│   ├── App.tsx                         # React Router v7 routes
+│   ├── App.tsx                         # React Router v7 routes + AnimatePresence + RequireAuth guard
 │   ├── main.tsx                        # Entry point + providers
 │   └── index.css                       # Tailwind v4 @import directives
 ├── supabase/
@@ -109,6 +126,10 @@ contratoclear/
 │       ├── analyze-contract/
 │       │   ├── index.ts                # Claude API proxy + credit check
 │       │   └── ley-context.md          # ⚠️ LEGAL CONTEXT — update when laws change
+│       ├── contract-chat/
+│       │   └── index.ts                # Claude chat about a specific analysis (reads result_json from DB)
+│       ├── create-checkout-session/
+│       │   └── index.ts                # Creates Stripe Checkout session → returns URL
 │       └── stripe-webhook/
 │           └── index.ts                # Handles checkout.session.completed etc.
 ├── .env.example
@@ -146,24 +167,30 @@ export function useAnalyses() {
 ```
 
 ### Zustand — client state (UI state, not persisted)
-```typescript
-// src/stores/uploadStore.ts
-interface UploadStore {
-  file: File | null
-  status: 'idle' | 'uploading' | 'analyzing' | 'done' | 'error'
-  progress: number
-  setFile: (file: File | null) => void
-  setStatus: (status: UploadStore['status']) => void
-  reset: () => void
-}
 
+⚠️ **Both stores live in a single file: `src/store/useAppStore.ts`** — do not split them.
+
+```typescript
+// src/store/useAppStore.ts  (abbreviated)
+
+// Auth store — includes initialize() which sets up onAuthStateChange listener
+export const useAuthStore = create<AuthStore>((set) => ({
+  user: null,
+  session: null,      // full Supabase Session (has access_token for Edge Function calls)
+  profile: Profile | null,
+  isLoading: true,
+  initialize: async () => { /* calls supabase.auth.getSession() + onAuthStateChange */ },
+  reset: () => set({ user: null, session: null, profile: null, isLoading: false }),
+}))
+
+// Upload store
+type UploadStatus = 'idle' | 'uploading' | 'analyzing' | 'done' | 'error'
 export const useUploadStore = create<UploadStore>((set) => ({
   file: null,
   status: 'idle',
   progress: 0,
-  setFile: (file) => set({ file }),
-  setStatus: (status) => set({ status }),
-  reset: () => set({ file: null, status: 'idle', progress: 0 }),
+  errorMessage: null,
+  // setFile / setStatus / setProgress / setError / reset
 }))
 ```
 
@@ -369,6 +396,26 @@ export const analysisResultSchema = z.object({
 
 ---
 
+## Supabase Email Template — Password Reset
+
+⚠️ **Admin action required after deploy:** Update the Supabase password reset email template to match the brand.
+
+**Where:** Supabase Dashboard → Authentication → Email Templates → Reset Password
+
+**Recommended Spanish template:**
+```html
+<h2>Restablecer tu contraseña — ClausulaAI</h2>
+<p>Hemos recibido una solicitud para restablecer la contraseña de tu cuenta.</p>
+<p>Haz clic en el enlace de abajo para elegir una nueva contraseña:</p>
+<p><a href="{{ .ConfirmationURL }}">Restablecer contraseña</a></p>
+<p>Este enlace expira en 1 hora. Si no solicitaste este cambio, puedes ignorar este email.</p>
+<p>— El equipo de ClausulaAI</p>
+```
+
+The `redirectTo` in `supabase.auth.resetPasswordForEmail()` is set to `VITE_APP_URL/reset-password`. Supabase appends the recovery token as a URL hash fragment — the `/reset-password` page processes it automatically via the Supabase client.
+
+---
+
 ## Legal Update Strategy
 
 ### How it works
@@ -517,6 +564,33 @@ Si el PDF no contiene texto extraíble (parece ser una imagen escaneada), devuel
 
 ---
 
+## Features Built Since v1.0.0
+
+### ContractChat
+After viewing an analysis, users can ask follow-up questions about their specific contract. Implemented as a collapsible widget at the bottom of the Analysis page.
+
+- **Limit:** 10 messages per analysis (client + server enforced). After limit: show amber message, no more sends.
+- **Edge Function:** `contract-chat/index.ts` — receives `analysis_id`, `message`, `conversation_history[]`. Reads the `result_json` from DB to ground Claude's answers. Returns `{ response: string }`.
+- **Hook:** `useContractChat` — manages `messages: ChatMessage[]`, `isLoading`, `error`, `limitReached`. On error: removes the failed user message from state.
+- **Component:** `ContractChat.tsx` — collapsible, shows suggested questions when empty, typing dots animation, timestamps.
+
+### PDF Export
+Users can download their analysis as a formatted PDF from the Analysis page.
+
+- **Library:** `@react-pdf/renderer` v4 (renders entirely in-browser, no server needed)
+- **Component:** `AnalysisPDFReport.tsx` — receives `Analysis` type, renders branded PDF with score, clauses, recommendation, and law update date.
+
+### RentCalculator
+An interactive widget on the landing page that lets users estimate legal rent limits for their zone. Conversion tool to demonstrate product value before payment.
+
+### Page Transitions
+`App.tsx` wraps all routes in `<AnimatePresence>` from framer-motion. Each route fades + slides in (opacity 0→1, y 8→0, 0.18s). Respects `prefers-reduced-motion` via `useReducedMotion()`.
+
+### CookieBanner
+GDPR-compliant cookie consent. Rendered globally in `App.tsx` outside the route tree.
+
+---
+
 ## Landing Page — Demo Section
 
 The landing must show 3 interactive example analyses before any paywall. This is the primary conversion mechanism.
@@ -598,17 +672,24 @@ export default defineConfig({
 ## Current Status
 
 - [x] CLAUDE.md created
-- [ ] npm create vite@latest + install dependencies
-- [ ] shadcn/ui init
-- [ ] Supabase project configured + migrations applied
-- [ ] Stripe products created (single, pack, pro)
-- [ ] Auth flow (email + Google)
-- [ ] Edge Function: analyze-contract
-- [ ] Edge Function: stripe-webhook
-- [ ] Landing page with demo section
-- [ ] Dashboard + upload flow
-- [ ] Payment flow end-to-end
-- [ ] Sentry configured
+- [x] npm create vite@latest + install dependencies
+- [x] shadcn/ui init
+- [x] Supabase project configured + migrations applied
+- [x] Stripe products created (single, pack, pro)
+- [x] Auth flow (email + Google)
+- [x] Edge Function: analyze-contract
+- [x] Edge Function: stripe-webhook
+- [x] Edge Function: contract-chat
+- [x] Edge Function: create-checkout-session
+- [x] Landing page with demo section + RentCalculator
+- [x] Dashboard + upload flow
+- [x] Payment flow end-to-end (PaymentSuccess + PaymentCancel pages)
+- [x] ContractChat feature
+- [x] PDF export (AnalysisPDFReport)
+- [x] Privacy + Terms pages
+- [x] Cookie consent banner
+- [x] Page transitions (framer-motion)
+- [ ] Sentry configured (package installed, integration pending)
 - [ ] Deploy to Vercel
 
 ---
@@ -621,6 +702,7 @@ export default defineConfig({
 - Always show `result_json.last_updated` in the UI — it's a core trust feature
 - `ANTHROPIC_API_KEY` NEVER in frontend code
 - Use `@/` imports always, never relative paths except within the same folder
-- When creating Zustand stores, keep them small and focused — one concern per store
+- Zustand stores live in `src/store/useAppStore.ts` (single file, not `src/stores/`) — import from `@/store/useAppStore`
+- When adding new Zustand stores, add them to `useAppStore.ts`, do not create new store files
 - When creating TanStack Query hooks, always define `staleTime` explicitly
 - Mobile-first always: build for 375px width, then add `md:` and `lg:` breakpoints

@@ -1,0 +1,187 @@
+{
+  "nav": {
+    "logo": "ClausulaAI",
+    "pricing": "Precios",
+    "login": "Entrar",
+    "dashboard": "Mis análisis",
+    "history": "Historial",
+    "logout": "Cerrar sesión"
+  },
+  "landing": {
+    "hero": {
+      "title": "Analiza tu contrato de alquiler en segundos",
+      "subtitle": "Descubre cláusulas ilegales, advertencias y todo lo que debes negociar antes de firmar. Actualizado a la ley vigente.",
+      "cta": "Analizar mi contrato — desde 3,99€",
+      "ctaSecondary": "Ver demo",
+      "trustBadge": "Actualizado a {{date}}"
+    },
+    "stats": {
+      "contracts": "contratos activos en España",
+      "lau": "LAU actualizada a 2026",
+      "speed": "Análisis en 10 segundos",
+      "pdf": "Descarga tu informe PDF"
+    },
+    "hook": {
+      "illegal": "Las cláusulas ilegales son nulas aunque las hayas firmado",
+      "updated": "Actualizado a {{date}} — siempre con la normativa vigente",
+      "demo": "Ver demo"
+    },
+    "demo": {
+      "title": "Ve cómo funciona antes de pagar",
+      "subtitle": "Resultados reales de tres contratos tipo. Haz clic en cada cláusula para ver el detalle.",
+      "label": "Demostración",
+      "scenario1": { "label": "Contrato correcto", "sublabel": "Puedes firmarlo con tranquilidad" },
+      "scenario2": { "label": "Cláusulas abusivas", "sublabel": "Negocia antes de firmar" },
+      "scenario3": { "label": "Contrato ilegal", "sublabel": "Las cláusulas ilegales son nulas aunque las firmes" }
+    },
+    "howItWorks": {
+      "title": "Cómo funciona",
+      "step1Title": "Sube tu contrato",
+      "step1Desc": "Arrastra o selecciona el PDF de tu contrato de alquiler. Máximo 10 MB.",
+      "step2Title": "La IA lo analiza",
+      "step2Desc": "Claude AI lee cada cláusula y la evalúa contra la LAU vigente actualizada a 2026.",
+      "step3Title": "Recibe tu informe",
+      "step3Desc": "Resultado cláusula a cláusula con código de colores. Descarga el PDF del informe."
+    },
+    "features": {
+      "title": "¿Qué analizamos?",
+      "items": [
+        "Fianza y garantías adicionales",
+        "Duración mínima del contrato",
+        "Actualización de renta (índice INE)",
+        "Gastos de gestión inmobiliaria",
+        "Acceso del arrendador al inmueble",
+        "Cláusulas de resolución anticipada"
+      ]
+    },
+    "finalCta": {
+      "title": "Las cláusulas ilegales son nulas aunque las hayas firmado.",
+      "subtitle": "Comprueba el tuyo ahora y firma con seguridad.",
+      "cta": "Analizar mi contrato"
+    }
+  },
+  "pricing": {
+    "title": "Elige tu plan",
+    "subtitle": "Sin suscripción obligatoria. Paga solo lo que necesitas.",
+    "plans": {
+      "single": {
+        "name": "1 análisis",
+        "price": "3,99€",
+        "description": "Para revisar un contrato puntual",
+        "cta": "Comprar ahora"
+      },
+      "pack": {
+        "name": "Pack 3 análisis",
+        "price": "9,99€",
+        "description": "Válidos 90 días. Para varias opciones.",
+        "cta": "Comprar pack",
+        "badge": "Más popular"
+      },
+      "pro": {
+        "name": "Pro",
+        "price": "19€/mes",
+        "description": "Análisis ilimitados. Para agentes y gestores.",
+        "cta": "Suscribirse"
+      }
+    }
+  },
+  "login": {
+    "title": "Accede a tu cuenta",
+    "registerTitle": "Crear cuenta",
+    "emailLabel": "Correo electrónico",
+    "emailPlaceholder": "tu@email.com",
+    "passwordLabel": "Contraseña",
+    "passwordPlaceholder": "Mínimo 8 caracteres",
+    "submitLogin": "Iniciar sesión",
+    "submitRegister": "Crear cuenta",
+    "continueWithGoogle": "Continuar con Google",
+    "separator": "o",
+    "switchToRegister": "¿No tienes cuenta? Regístrate",
+    "switchToLogin": "¿Ya tienes cuenta? Inicia sesión",
+    "checkEmail": "Revisa tu correo para confirmar tu cuenta.",
+    "errorInvalidCredentials": "Correo o contraseña incorrectos.",
+    "errorEmailInUse": "Este correo ya tiene una cuenta."
+  },
+  "dashboard": {
+    "title": "Analizar contrato",
+    "subtitle": "Sube tu contrato en PDF y recibe el análisis en segundos.",
+    "creditsRemaining": "{{count}} análisis disponible",
+    "creditsRemaining_other": "{{count}} análisis disponibles",
+    "creditsExpiry": "Caducan el {{date}}",
+    "noCredits": "No tienes análisis disponibles.",
+    "getMore": "Obtener más",
+    "proPlan": "Plan Pro — análisis ilimitados",
+    "trustNote": "Análisis basado en la LAU vigente · Actualizado a marzo 2026"
+  },
+  "upload": {
+    "title": "Arrastra tu contrato aquí",
+    "subtitle": "o haz clic para seleccionar",
+    "hint": "PDF, máximo 10 MB",
+    "analyzing": "Analizando contrato…",
+    "uploading": "Subiendo archivo…",
+    "changeFile": "Cambiar archivo",
+    "analyze": "Analizar contrato",
+    "error": "Error al analizar. Por favor, inténtalo de nuevo."
+  },
+  "loader": {
+    "step1": "Leyendo tu contrato...",
+    "step2": "Identificando cláusulas...",
+    "step3": "Consultando la LAU 2026...",
+    "step4": "Detectando irregularidades...",
+    "step5": "Preparando tu informe...",
+    "analyzing": "Analizando",
+    "estimatedTime": "~15 segundos",
+    "note": "La IA está aplicando la normativa LAU vigente a tu contrato."
+  },
+  "analysis": {
+    "updatedAt": "Análisis según normativa de {{date}}",
+    "score": {
+      "buena": "Contrato favorable",
+      "aceptable": "Contrato aceptable",
+      "mala": "Contrato problemático",
+      "error": "No se pudo analizar"
+    },
+    "clauseStatus": {
+      "ok": "Correcto",
+      "advertencia": "Advertencia",
+      "ilegal": "Ilegal"
+    },
+    "recommendation": "Recomendación",
+    "downloadPdf": "Descargar informe PDF",
+    "backToHistory": "Volver al historial",
+    "shareButton": "Compartir resultado",
+    "shareText": "He analizado mi contrato de alquiler con ClausulaAI y tiene {{count}} cláusulas ilegales 🚨 Comprueba el tuyo en clausulaai.es",
+    "shareTextZero": "He analizado mi contrato de alquiler con ClausulaAI. Sin cláusulas ilegales ✅ Comprueba el tuyo en clausulaai.es",
+    "copied": "¡Copiado!"
+  },
+  "history": {
+    "title": "Mis análisis",
+    "empty": "Todavía no has analizado ningún contrato.",
+    "analyzeCta": "Analizar mi primer contrato",
+    "newAnalysis": "Nuevo análisis",
+    "clauses": "cláusulas"
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "message": "La página que buscas no existe.",
+    "cta": "Volver al inicio"
+  },
+  "errors": {
+    "generic": "Algo salió mal. Por favor, inténtalo de nuevo.",
+    "unauthorized": "Debes iniciar sesión para continuar.",
+    "noCredits": "No tienes créditos disponibles. Compra un plan para continuar.",
+    "fileTooLarge": "El archivo es demasiado grande. Máximo 10 MB.",
+    "pdfTooLarge": "El PDF supera el límite de 10 MB.",
+    "invalidFileType": "Solo se aceptan archivos PDF.",
+    "rateLimitExceeded": "Demasiados análisis en la última hora. Espera unos minutos.",
+    "noCreditsServer": "Sin créditos disponibles. Compra un plan para continuar."
+  },
+  "footer": {
+    "tagline": "Análisis de contratos de alquiler con IA",
+    "legal": "Aviso legal",
+    "privacy": "Privacidad",
+    "contact": "Contacto",
+    "copyright": "© {{year}} ClausulaAI. Todos los derechos reservados.",
+    "disclaimer": "Este análisis no sustituye el asesoramiento legal profesional."
+  }
+}

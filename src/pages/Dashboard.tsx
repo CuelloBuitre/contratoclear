@@ -1,11 +1,9 @@
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
-import Navbar from '@/components/layout/Navbar'
-import Footer from '@/components/layout/Footer'
 import UploadZone from '@/components/analysis/UploadZone'
 import AnalysisLoader from '@/components/analysis/AnalysisLoader'
 import { useProfile } from '@/queries/profile'
-import { useUploadStore } from '@/store/useAppStore'
+import { useUploadStore, useAuthStore } from '@/store/useAppStore'
 
 function hasActiveCredits(profile: { plan: string; credits_remaining: number; credits_expiry: string | null }): boolean {
   if (profile.plan === 'pro') return true
@@ -15,29 +13,36 @@ function hasActiveCredits(profile: { plan: string; credits_remaining: number; cr
 }
 
 function CreditsBadge({ plan, credits, expiry }: { plan: string; credits: number; expiry: string | null }) {
+  const { t } = useTranslation()
+
   if (plan === 'pro') {
     return (
-      <div className="flex items-center gap-2 rounded-xl border border-green-200 bg-green-50 px-4 py-2.5">
-        <span className="h-2 w-2 rounded-full bg-green-500" />
-        <span className="text-sm font-medium text-green-800">Plan Pro — análisis ilimitados</span>
+      <div className="flex items-center gap-2 rounded-md border border-[#c9a96e]/30 bg-[#c9a96e]/8 px-4 py-2.5"
+           style={{ backgroundColor: 'rgba(201,169,110,0.08)' }}>
+        <span className="h-2 w-2 rounded-full" style={{ backgroundColor: '#c9a96e' }} />
+        <span className="text-sm font-medium text-[#0f0f1a]">{t('dashboard.proPlan')}</span>
       </div>
     )
   }
 
   if (credits > 0) {
     return (
-      <div className="flex flex-wrap items-center gap-3 rounded-xl border border-gray-200 bg-white px-4 py-2.5">
+      <div className="flex flex-wrap items-center gap-3 rounded-md border border-[#c9a96e]/30 bg-white px-4 py-2.5"
+           style={{ boxShadow: '0 1px 3px rgba(15,15,26,0.06)' }}>
         <div className="flex items-center gap-2">
-          <span className="flex h-7 w-7 items-center justify-center rounded-full bg-indigo-100 text-sm font-bold text-indigo-700">
+          <span className="flex h-7 w-7 items-center justify-center rounded-full text-sm font-bold text-[#0f0f1a]"
+                style={{ background: 'linear-gradient(135deg, #c9a96e, #b8934a)' }}>
             {credits}
           </span>
-          <span className="text-sm font-medium text-gray-700">
-            {credits === 1 ? 'análisis disponible' : 'análisis disponibles'}
+          <span className="text-sm font-medium text-[#0f0f1a]">
+            {t('dashboard.creditsRemaining', { count: credits })}
           </span>
         </div>
         {expiry && (
-          <span className="rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-medium text-amber-700">
-            Caducan el {new Date(expiry).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}
+          <span className="rounded-full border border-[#e8e4dd] bg-[#fafaf8] px-2.5 py-0.5 text-xs font-medium text-[#6b6860]">
+            {t('dashboard.creditsExpiry', {
+              date: new Date(expiry).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' }),
+            })}
           </span>
         )}
       </div>
@@ -50,78 +55,80 @@ function CreditsBadge({ plan, credits, expiry }: { plan: string; credits: number
 export default function Dashboard() {
   const { t } = useTranslation()
   const { data: profile, isLoading } = useProfile()
+  const user = useAuthStore((s) => s.user)
   const uploadStatus = useUploadStore((s) => s.status)
   const creditsActive = profile ? hasActiveCredits(profile) : false
   const isAnalyzing = uploadStatus === 'uploading' || uploadStatus === 'analyzing'
 
+  const firstName = user?.email?.split('@')[0] ?? null
+
   return (
-    <div className="flex min-h-screen flex-col bg-gray-50">
-      <Navbar />
-
-      <main className="flex-1">
-        {/* Page header */}
-        <div className="border-b border-gray-200 bg-white">
-          <div className="mx-auto max-w-3xl px-4 py-6 sm:px-6">
-            <div className="flex flex-wrap items-center justify-between gap-4">
-              <div>
-                <h1 className="text-xl font-bold text-gray-900">{t('dashboard.title')}</h1>
-                <p className="mt-0.5 text-sm text-gray-500">
-                  Sube tu contrato en PDF y recibe el análisis en segundos.
-                </p>
-              </div>
-
-              {/* Credits */}
-              {!isLoading && profile && creditsActive && (
-                <CreditsBadge
-                  plan={profile.plan}
-                  credits={profile.credits_remaining}
-                  expiry={profile.credits_expiry}
-                />
-              )}
+    <div className="flex-1">
+      {/* Page header */}
+      <div className="border-b border-[#e8e4dd] bg-white">
+        <div className="mx-auto max-w-3xl px-4 py-6 sm:px-6">
+          <div className="flex flex-wrap items-center justify-between gap-4">
+            <div>
+              <h1 className="text-xl font-bold text-[#0f0f1a]">
+                {firstName ? `${t('dashboard.title')}, ${firstName}` : t('dashboard.title')}
+              </h1>
+              <p className="mt-0.5 text-sm text-[#6b6860]">
+                {t('dashboard.subtitle')}
+              </p>
             </div>
+
+            {/* Credits */}
+            {!isLoading && profile && creditsActive && (
+              <CreditsBadge
+                plan={profile.plan}
+                credits={profile.credits_remaining}
+                expiry={profile.credits_expiry}
+              />
+            )}
           </div>
         </div>
+      </div>
 
-        <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
-          {isLoading ? (
-            <div className="flex justify-center py-20">
-              <div className="h-7 w-7 animate-spin rounded-full border-2 border-[#1a1a2e] border-t-transparent" />
+      <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6">
+        {isLoading ? (
+          <div className="flex justify-center py-20">
+            <div className="h-7 w-7 animate-spin rounded-full border-2 border-[#c9a96e] border-t-transparent" />
+          </div>
+        ) : creditsActive ? (
+          <div className="overflow-hidden rounded-lg border border-[#e8e4dd] bg-white"
+               style={{ boxShadow: '0 1px 3px rgba(15,15,26,0.08)' }}>
+            {isAnalyzing ? <AnalysisLoader /> : <div className="p-6 sm:p-8"><UploadZone /></div>}
+          </div>
+        ) : (
+          /* No credits state */
+          <div className="rounded-lg border border-[#e8e4dd] bg-white p-8 text-center"
+               style={{ boxShadow: '0 1px 3px rgba(15,15,26,0.08)' }}>
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-amber-50">
+              <svg className="h-7 w-7 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
             </div>
-          ) : creditsActive ? (
-            <div className="rounded-2xl border border-gray-200 bg-white shadow-sm overflow-hidden">
-              {isAnalyzing ? <AnalysisLoader /> : <div className="p-6 sm:p-8"><UploadZone /></div>}
-            </div>
-          ) : (
-            /* No credits state */
-            <div className="rounded-2xl border border-gray-200 bg-white p-8 text-center shadow-sm">
-              <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-amber-50">
-                <svg className="h-7 w-7 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                </svg>
-              </div>
-              <h2 className="text-base font-semibold text-gray-900">{t('dashboard.noCredits')}</h2>
-              <p className="mt-1.5 text-sm text-gray-500">{t('errors.noCredits')}</p>
-              <Link
-                to="/pricing"
-                className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[#1a1a2e] px-6 py-3 text-sm font-semibold text-white transition-opacity hover:opacity-90"
-              >
-                {t('dashboard.getMore')}
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
-              </Link>
-            </div>
-          )}
+            <h2 className="text-base font-semibold text-[#0f0f1a]">{t('dashboard.noCredits')}</h2>
+            <p className="mt-1.5 text-sm text-[#6b6860]">{t('errors.noCredits')}</p>
+            <Link
+              to="/pricing"
+              className="mt-6 inline-flex items-center gap-2 rounded-md px-6 py-3 text-sm font-semibold transition-all hover:opacity-90 hover:-translate-y-px"
+              style={{ background: 'linear-gradient(135deg, #c9a96e, #b8934a)', color: '#0f0f1a' }}
+            >
+              {t('dashboard.getMore')}
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </Link>
+          </div>
+        )}
 
-          {/* Trust footnote */}
-          <p className="mt-6 text-center text-xs text-gray-400">
-            Análisis basado en la LAU vigente · Actualizado a marzo 2026
-          </p>
-        </div>
-      </main>
-
-      <Footer />
+        {/* Trust footnote */}
+        <p className="mt-6 text-center text-xs text-[#6b6860]/60">
+          {t('dashboard.trustNote')}
+        </p>
+      </div>
     </div>
   )
 }

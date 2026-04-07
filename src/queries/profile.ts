@@ -1,11 +1,14 @@
 import { useQuery } from '@tanstack/react-query'
 import { supabase } from '@/lib/supabase'
 import { profileKeys } from '@/queries/keys'
+import { useAuthStore } from '@/store/useAppStore'
 import type { Profile } from '@/types'
 
 export function useProfile() {
+  const user = useAuthStore((s) => s.user)
   return useQuery({
     queryKey: profileKeys.detail(),
+    enabled: !!user,
     queryFn: async () => {
       const { data: { user } } = await supabase.auth.getUser()
       if (!user) throw new Error('Not authenticated')

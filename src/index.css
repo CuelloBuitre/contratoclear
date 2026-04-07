@@ -2,11 +2,28 @@
 @import "tw-animate-css";
 
 @theme {
-  --color-brand: #1a1a2e;
-  --color-brand-light: #16213e;
-  --color-accent: #e94560;
-  --font-sans: 'Inter Variable', sans-serif;
-  --font-display: 'DM Serif Display', serif;
+  --color-brand: #0f0f1a;
+  --color-brand-soft: #1e1e35;
+  --color-accent: #c9a96e;
+  --color-accent-light: #f0e6d3;
+  --color-surface: #fafaf8;
+  --color-border: #e8e4dd;
+  --color-text-primary: #0f0f1a;
+  --color-text-muted: #6b6860;
+  --font-sans: 'Inter', sans-serif;
+  --font-display: 'Playfair Display', serif;
+}
+
+/* ── Base typography ─────────────────────────────────────────────────────────── */
+
+body {
+  font-family: 'Inter', sans-serif;
+  color: #0f0f1a;
+  background-color: #fafaf8;
+}
+
+h1, h2, h3 {
+  font-family: 'Playfair Display', serif;
 }
 
 /* ── Global polish ───────────────────────────────────────────────────────── */
@@ -86,31 +103,31 @@ a, button {
 /* Step rows — background-color + color animate the icon via currentColor */
 @keyframes hero-s1 {
   0%, 20%    { background-color: #f9fafb; color: #9ca3af; }
-  21%, 24.9% { background-color: #1a1a2e; color: white; }
+  21%, 24.9% { background-color: #0f0f1a; color: white; }
   25%, 94%   { background-color: #f0fdf4; color: #15803d; }
   95%, 100%  { background-color: #f9fafb; color: #9ca3af; }
 }
 @keyframes hero-s2 {
   0%, 24.9%  { background-color: #f9fafb; color: #9ca3af; }
-  25%, 28.9% { background-color: #1a1a2e; color: white; }
+  25%, 28.9% { background-color: #0f0f1a; color: white; }
   29%, 94%   { background-color: #f0fdf4; color: #15803d; }
   95%, 100%  { background-color: #f9fafb; color: #9ca3af; }
 }
 @keyframes hero-s3 {
   0%, 28.9%  { background-color: #f9fafb; color: #9ca3af; }
-  29%, 32.9% { background-color: #1a1a2e; color: white; }
+  29%, 32.9% { background-color: #0f0f1a; color: white; }
   33%, 94%   { background-color: #f0fdf4; color: #15803d; }
   95%, 100%  { background-color: #f9fafb; color: #9ca3af; }
 }
 @keyframes hero-s4 {
   0%, 32.9%  { background-color: #f9fafb; color: #9ca3af; }
-  33%, 36.9% { background-color: #1a1a2e; color: white; }
+  33%, 36.9% { background-color: #0f0f1a; color: white; }
   37%, 94%   { background-color: #f0fdf4; color: #15803d; }
   95%, 100%  { background-color: #f9fafb; color: #9ca3af; }
 }
 @keyframes hero-s5 {
   0%, 36.9%  { background-color: #f9fafb; color: #9ca3af; }
-  37%, 39.9% { background-color: #1a1a2e; color: white; }
+  37%, 39.9% { background-color: #0f0f1a; color: white; }
   40%, 94%   { background-color: #f0fdf4; color: #15803d; }
   95%, 100%  { background-color: #f9fafb; color: #9ca3af; }
 }
@@ -177,9 +194,9 @@ input[type="range"].rent-slider::-webkit-slider-thumb {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: white;
+  background: #c9a96e;
   cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 8px rgba(201, 169, 110, 0.5);
   transition: transform 0.15s ease;
 }
 
@@ -191,10 +208,10 @@ input[type="range"].rent-slider::-moz-range-thumb {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background: white;
+  background: #c9a96e;
   cursor: pointer;
   border: none;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 8px rgba(201, 169, 110, 0.5);
 }
 
 input[type="range"].rent-slider::-moz-range-track {
@@ -206,15 +223,58 @@ input[type="range"].rent-slider::-moz-range-track {
 /* ── Display typography ──────────────────────────────────────────────────── */
 
 .heading-display {
-  font-family: 'DM Serif Display', serif;
-  font-size: clamp(2rem, 5vw, 3.5rem);
-  line-height: 1.15;
-  letter-spacing: -0.02em;
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 5vw, 3.75rem);
+  line-height: 1.12;
+  letter-spacing: -0.01em;
 }
 
 .heading-section {
-  font-family: 'DM Serif Display', serif;
+  font-family: 'Playfair Display', serif;
   font-size: clamp(1.75rem, 3vw, 2.5rem);
   line-height: 1.2;
   letter-spacing: -0.01em;
+}
+
+/* ── Premium components ──────────────────────────────────────────────────── */
+
+.btn-primary {
+  background-color: #0f0f1a;
+  color: #ffffff;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.btn-primary:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+}
+
+.btn-gold {
+  background: linear-gradient(135deg, #c9a96e, #b8934a);
+  color: #0f0f1a;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.btn-gold:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.card-premium {
+  background: #ffffff;
+  border: 1px solid #e8e4dd;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(15, 15, 26, 0.08);
+}
+
+/* ── Noise texture overlay ───────────────────────────────────────────────── */
+.noise-overlay::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
 }

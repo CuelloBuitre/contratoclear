@@ -4,6 +4,8 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { useAuthStore } from '@/store/useAppStore'
 import CookieBanner from '@/components/CookieBanner'
 import ErrorBoundary from '@/components/ErrorBoundary'
+import PublicLayout from '@/components/layout/PublicLayout'
+import AppLayout from '@/components/layout/AppLayout'
 
 const Landing        = lazy(() => import('@/pages/Landing'))
 const Pricing        = lazy(() => import('@/pages/Pricing'))
@@ -19,6 +21,8 @@ const PaymentCancel   = lazy(() => import('@/pages/PaymentCancel'))
 const ForgotPassword  = lazy(() => import('@/pages/ForgotPassword'))
 const ResetPassword   = lazy(() => import('@/pages/ResetPassword'))
 const Profile         = lazy(() => import('@/pages/Profile'))
+
+// ── Auth guard ────────────────────────────────────────────────────────────────
 
 function RequireAuth({ children }: { children: React.ReactNode }) {
   const user = useAuthStore((s) => s.user)
@@ -53,29 +57,27 @@ function AppRoutes() {
         >
           <Suspense fallback={Fallback}>
             <Routes location={location}>
-              {/* Public */}
-              <Route path="/"          element={<Landing />} />
-              <Route path="/pricing"   element={<Pricing />} />
-              <Route path="/login"     element={<Login />} />
-              <Route path="/privacy"   element={<Privacy />} />
-              <Route path="/terms"     element={<Terms />} />
+              {/* Public — with Footer */}
+              <Route path="/"        element={<PublicLayout><Landing /></PublicLayout>} />
+              <Route path="/pricing" element={<PublicLayout><Pricing /></PublicLayout>} />
+              <Route path="/privacy" element={<PublicLayout><Privacy /></PublicLayout>} />
+              <Route path="/terms"   element={<PublicLayout><Terms /></PublicLayout>} />
+              <Route path="/payment/success" element={<PublicLayout><PaymentSuccess /></PublicLayout>} />
+              <Route path="/payment/cancel"  element={<PublicLayout><PaymentCancel /></PublicLayout>} />
 
-              {/* Auth flows (public — Supabase redirects here) */}
+              {/* Auth flows — full-screen, no Footer */}
+              <Route path="/login"           element={<Login />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/reset-password"  element={<ResetPassword />} />
 
-              {/* Payment callbacks (public — Stripe redirects here) */}
-              <Route path="/payment/success" element={<PaymentSuccess />} />
-              <Route path="/payment/cancel"  element={<PaymentCancel />} />
-
-              {/* Protected */}
-              <Route path="/dashboard"    element={<RequireAuth><Dashboard /></RequireAuth>} />
-              <Route path="/analysis/:id" element={<RequireAuth><Analysis /></RequireAuth>} />
-              <Route path="/history"      element={<RequireAuth><History /></RequireAuth>} />
-              <Route path="/profile"      element={<RequireAuth><Profile /></RequireAuth>} />
+              {/* Protected — with app background, no Footer */}
+              <Route path="/dashboard"    element={<RequireAuth><AppLayout><Dashboard /></AppLayout></RequireAuth>} />
+              <Route path="/analysis/:id" element={<RequireAuth><AppLayout><Analysis /></AppLayout></RequireAuth>} />
+              <Route path="/history"      element={<RequireAuth><AppLayout><History /></AppLayout></RequireAuth>} />
+              <Route path="/profile"      element={<RequireAuth><AppLayout><Profile /></AppLayout></RequireAuth>} />
 
               {/* 404 */}
-              <Route path="*" element={<NotFound />} />
+              <Route path="*" element={<PublicLayout><NotFound /></PublicLayout>} />
             </Routes>
           </Suspense>
         </motion.div>

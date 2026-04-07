@@ -4,8 +4,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Link } from 'react-router'
 import { useTranslation } from 'react-i18next'
-import Navbar from '@/components/layout/Navbar'
-import Footer from '@/components/layout/Footer'
 import { supabase } from '@/lib/supabase'
 import { useProfile } from '@/queries/profile'
 import { useAuthStore } from '@/store/useAppStore'
@@ -161,22 +159,16 @@ export default function Profile() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen flex-col bg-gray-50">
-        <Navbar />
-        <div className="flex flex-1 items-center justify-center">
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#1a1a2e] border-t-transparent" />
-        </div>
+      <div className="flex flex-1 items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#1a1a2e] border-t-transparent" />
       </div>
     )
   }
 
   if (error || !profile) {
     return (
-      <div className="flex min-h-screen flex-col bg-gray-50">
-        <Navbar />
-        <div className="flex flex-1 items-center justify-center px-4">
-          <p className="text-sm text-gray-500">{t('errors.generic')}</p>
-        </div>
+      <div className="flex flex-1 items-center justify-center px-4">
+        <p className="text-sm text-gray-500">{t('errors.generic')}</p>
       </div>
     )
   }
@@ -200,10 +192,7 @@ export default function Profile() {
   // ── Render ────────────────────────────────────────────────────────────────
 
   return (
-    <div className="flex min-h-screen flex-col bg-gray-50">
-      <Navbar />
-
-      <main className="flex-1">
+    <div className="flex-1">
         <div className="mx-auto max-w-2xl px-4 py-8 sm:px-6">
 
           {/* Page title */}
@@ -455,9 +444,6 @@ export default function Profile() {
           </div>
 
         </div>
-      </main>
-
-      <Footer />
     </div>
   )
 }

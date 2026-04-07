@@ -7,19 +7,21 @@ interface ScoreBadgeProps {
 }
 
 const colorMap: Record<Puntuacion, string> = {
-  buena: 'bg-green-100 text-green-800 border-green-200',
-  aceptable: 'bg-amber-100 text-amber-800 border-amber-200',
-  mala: 'bg-red-100 text-red-800 border-red-200',
-  error: 'bg-gray-100 text-gray-600 border-gray-200',
+  buena:    'bg-[#14532d] text-white',
+  aceptable:'bg-[#92400e] text-white',
+  mala:     'bg-[#7f1d1d] text-white',
+  error:    'bg-[#374151] text-white',
 }
 
 export default function ScoreBadge({ puntuacion, variant = 'default' }: ScoreBadgeProps) {
   const { t } = useTranslation()
 
-  const size = variant === 'compact' ? 'px-2.5 py-0.5 text-xs' : 'px-4 py-1.5 text-base'
+  const size = variant === 'compact' ? 'px-2.5 py-0.5 text-[11px]' : 'px-4 py-1.5 text-sm'
 
   return (
-    <span className={`inline-flex items-center rounded-full border font-semibold ${size} ${colorMap[puntuacion]}`}>
+    <span
+      className={`inline-flex items-center rounded font-semibold uppercase tracking-[0.05em] ${size} ${colorMap[puntuacion]}`}
+    >
       {t(`analysis.score.${puntuacion}`)}
     </span>
   )

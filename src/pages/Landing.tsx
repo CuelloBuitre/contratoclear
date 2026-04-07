@@ -2,9 +2,8 @@ import { useState, useRef, useEffect } from 'react'
 import { Link } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import { animate, motion, useInView, useReducedMotion } from 'framer-motion'
-import Navbar from '@/components/layout/Navbar'
-import Footer from '@/components/layout/Footer'
 import DemoSection from '@/components/landing/DemoSection'
+import UpcomingSection from '@/components/landing/UpcomingSection'
 
 const DEFAULT_RENT = 950
 const MIN_RENT = 400
@@ -129,19 +128,25 @@ export default function Landing() {
   const displayedFiveYears = useAnimatedNumber(fiveYears)
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <Navbar />
-
+    <>
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-[#1a1a2e] pb-16 pt-12 sm:pb-20 sm:pt-16 lg:pb-24 lg:pt-20">
+      <section className="relative overflow-hidden bg-[#0f0f1a] pb-16 pt-12 sm:pb-20 sm:pt-16 lg:pb-24 lg:pt-20">
         {/* Subtle grid pattern */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 opacity-[0.04]"
+          className="pointer-events-none absolute inset-0 opacity-[0.03]"
           style={{
             backgroundImage:
-              'linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px)',
+              'linear-gradient(rgba(255,255,255,.15) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.15) 1px, transparent 1px)',
             backgroundSize: '48px 48px',
+          }}
+        />
+        {/* Noise texture */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 opacity-[0.025]"
+          style={{
+            backgroundImage: "url(\"data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E\")",
           }}
         />
 
@@ -153,7 +158,7 @@ export default function Landing() {
             className="flex flex-col items-center gap-6 text-center"
           >
             {/* 1. Badge */}
-            <div className="inline-flex items-center gap-2 rounded-full border border-green-500/30 bg-green-500/15 px-4 py-1.5 text-sm font-medium text-green-400">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#c9a96e]/30 bg-[#c9a96e]/15 px-4 py-1.5 text-sm font-medium text-[#c9a96e]">
               {t('landing.hero.badge')}
             </div>
 
@@ -170,7 +175,10 @@ export default function Landing() {
             </p>
 
             {/* 4. Calculator — visual centerpiece */}
-            <div className="w-full max-w-2xl rounded-2xl border border-white/10 bg-white/5 p-6 sm:p-8">
+            <div
+              className="w-full max-w-2xl rounded-2xl border border-white/10 p-6 sm:p-8"
+              style={{ backgroundColor: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(10px)' }}
+            >
               {/* Slider label + value */}
               <p className="mb-2 text-sm font-medium text-white/50">
                 {t('landing.hero.sliderLabel')}
@@ -190,7 +198,7 @@ export default function Landing() {
                   onChange={(e) => setRent(Number(e.target.value))}
                   className="rent-slider w-full"
                   style={{
-                    background: `linear-gradient(to right, rgba(255,255,255,0.85) ${fillPct}%, rgba(255,255,255,0.15) ${fillPct}%)`,
+                    background: `linear-gradient(to right, #c9a96e ${fillPct}%, rgba(255,255,255,0.15) ${fillPct}%)`,
                   }}
                 />
                 <div className="mt-2 flex justify-between text-xs text-white/30">
@@ -209,7 +217,7 @@ export default function Landing() {
                   <p className="text-xs font-medium text-white/50">{t('landing.hero.fiveYears')}</p>
                   <p
                     className="mt-1 text-3xl font-extrabold tabular-nums text-white sm:text-4xl"
-                    style={{ fontFamily: "'DM Serif Display', serif" }}
+                    style={{ fontFamily: "'Playfair Display', serif" }}
                   >
                     {fmt(displayedFiveYears)}€
                   </p>
@@ -246,7 +254,8 @@ export default function Landing() {
             >
               <Link
                 to="/login"
-                className="flex items-center justify-center gap-2 rounded-xl bg-white px-8 py-4 text-base font-bold text-[#1a1a2e] shadow-lg transition-opacity hover:opacity-90"
+                className="flex items-center justify-center gap-2 rounded-lg px-8 py-4 text-base font-bold shadow-lg transition-all hover:opacity-90 hover:-translate-y-px"
+                style={{ background: 'linear-gradient(135deg, #c9a96e, #b8934a)', color: '#0f0f1a' }}
               >
                 {t('landing.hero.cta')}
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -283,7 +292,7 @@ export default function Landing() {
       </section>
 
       {/* ── Stats bar ────────────────────────────────────────────────────── */}
-      <section className="border-b border-gray-100 bg-white py-6">
+      <section className="border-b border-[#e8e4dd] bg-white py-6">
         <div className="mx-auto max-w-4xl px-4 sm:px-6">
           <div ref={statsRef} className="grid grid-cols-2 gap-4 sm:grid-cols-4">
             {[
@@ -299,8 +308,8 @@ export default function Landing() {
                 transition={{ delay: i * 0.1, duration: 0.4, ease: 'easeOut' }}
                 className="text-center"
               >
-                <p className="text-xl font-extrabold text-[#1a1a2e]">{item.value}</p>
-                <p className="mt-0.5 text-xs text-gray-500">{item.label}</p>
+                <p className="text-xl font-extrabold text-[#0f0f1a]">{item.value}</p>
+                <p className="mt-0.5 text-xs text-[#6b6860]">{item.label}</p>
               </motion.div>
             ))}
           </div>
@@ -316,10 +325,10 @@ export default function Landing() {
       <section className="bg-white pb-20 pt-12 sm:pb-24 sm:pt-12">
         <div className="mx-auto max-w-4xl px-4 sm:px-6">
           <div className="mb-12 text-center">
-            <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-indigo-600">
+            <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-[#c9a96e]">
               {t('landing.howItWorks.overline')}
             </p>
-            <h2 className="heading-section text-gray-900">
+            <h2 className="heading-section text-[#0f0f1a]">
               {t('landing.howItWorks.title')}
             </h2>
           </div>
@@ -330,15 +339,16 @@ export default function Landing() {
               { title: t('landing.howItWorks.step2Title'), desc: t('landing.howItWorks.step2Desc'), step: '2' },
               { title: t('landing.howItWorks.step3Title'), desc: t('landing.howItWorks.step3Desc'), step: '3' },
             ].map((item, i) => (
-              <div key={i} className="card-lift relative rounded-2xl border border-gray-200 bg-gray-50 p-6">
+              <div key={i} className="card-lift relative rounded-lg border border-[#e8e4dd] bg-[#fafaf8] p-6"
+                   style={{ boxShadow: '0 1px 3px rgba(15,15,26,0.06)' }}>
                 <div className="mb-4 flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#1a1a2e] text-white">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-[#0f0f1a] text-white">
                     {HOW_IT_WORKS_ICONS[i]}
                   </div>
-                  <span className="text-2xl font-extrabold text-gray-200">{item.step}</span>
+                  <span className="text-2xl font-extrabold text-[#e8e4dd]">{item.step}</span>
                 </div>
-                <h3 className="mb-2 text-sm font-semibold text-gray-900">{item.title}</h3>
-                <p className="text-sm leading-[1.7] text-gray-500">{item.desc}</p>
+                <h3 className="mb-2 text-sm font-semibold text-[#0f0f1a]">{item.title}</h3>
+                <p className="text-sm leading-[1.7] text-[#6b6860]">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -346,24 +356,25 @@ export default function Landing() {
       </section>
 
       {/* ── Features ─────────────────────────────────────────────────────── */}
-      <section className="bg-gray-50 py-20 sm:py-24">
+      <section className="bg-[#fafaf8] py-20 sm:py-24">
         <div className="mx-auto max-w-5xl px-4 sm:px-6">
           <div className="mb-12 text-center">
-            <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-indigo-600">
+            <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-[#c9a96e]">
               {t('landing.features.overline')}
             </p>
-            <h2 className="heading-section text-gray-900">
+            <h2 className="heading-section text-[#0f0f1a]">
               {t('landing.features.title')}
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {FEATURES.map((f, i) => (
-              <div key={i} className="card-lift rounded-2xl border border-gray-200 bg-white p-6">
-                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
+              <div key={i} className="card-lift rounded-lg border border-[#e8e4dd] bg-white p-6"
+                   style={{ boxShadow: '0 1px 3px rgba(15,15,26,0.06)' }}>
+                <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-[#c9a96e]/10 text-[#c9a96e]">
                   {f.icon}
                 </div>
-                <h3 className="text-sm font-semibold text-gray-900">{t(f.titleKey)}</h3>
+                <h3 className="text-sm font-semibold text-[#0f0f1a]">{t(f.titleKey)}</h3>
               </div>
             ))}
           </div>
@@ -371,7 +382,7 @@ export default function Landing() {
       </section>
 
       {/* ── Trust / Why ──────────────────────────────────────────────────── */}
-      <section className="bg-[#1a1a2e] py-20 sm:py-24">
+      <section className="bg-[#0f0f1a] py-20 sm:py-24">
         <div className="mx-auto max-w-5xl px-4 sm:px-6">
           <div className="mb-12 text-center">
             <h2 className="heading-section text-white">
@@ -401,32 +412,35 @@ export default function Landing() {
       <section className="bg-white py-20 sm:py-24">
         <div className="mx-auto max-w-4xl px-4 sm:px-6">
           <div className="mb-12 text-center">
-            <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-indigo-600">
+            <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-[#c9a96e]">
               {t('landing.pricing.overline')}
             </p>
-            <h2 className="heading-section text-gray-900">
+            <h2 className="heading-section text-[#0f0f1a]">
               {t('pricing.title')}
             </h2>
-            <p className="mt-3 text-base text-gray-500">{t('pricing.subtitle')}</p>
+            <p className="mt-3 text-base text-[#6b6860]">{t('pricing.subtitle')}</p>
           </div>
 
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-3">
             {/* Single */}
-            <div className="card-lift rounded-2xl border border-gray-200 p-6">
-              <p className="text-sm font-semibold text-gray-500">{t('pricing.plans.single.name')}</p>
-              <p className="mt-2 text-3xl font-extrabold text-gray-900">{t('pricing.plans.single.price')}</p>
-              <p className="mt-1 text-sm text-gray-400">{t('pricing.plans.single.description')}</p>
+            <div className="card-lift rounded-lg border border-[#e8e4dd] p-6"
+                 style={{ boxShadow: '0 1px 3px rgba(15,15,26,0.06)' }}>
+              <p className="text-sm font-semibold text-[#6b6860]">{t('pricing.plans.single.name')}</p>
+              <p className="mt-2 text-3xl font-extrabold text-[#0f0f1a]">{t('pricing.plans.single.price')}</p>
+              <p className="mt-1 text-sm text-[#6b6860]">{t('pricing.plans.single.description')}</p>
               <Link
                 to="/login"
-                className="mt-6 block w-full rounded-xl border border-gray-300 py-2.5 text-center text-sm font-semibold text-gray-700 transition-colors hover:border-gray-400 hover:bg-gray-50"
+                className="mt-6 block w-full rounded-md border border-[#e8e4dd] py-2.5 text-center text-sm font-semibold text-[#0f0f1a] transition-colors hover:border-[#0f0f1a] hover:bg-[#fafaf8]"
               >
                 {t('pricing.plans.single.cta')}
               </Link>
             </div>
 
-            {/* Pack */}
-            <div className="relative rounded-2xl border-2 border-[#1a1a2e] bg-[#1a1a2e] p-6 shadow-xl">
-              <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-indigo-500 px-3 py-0.5 text-xs font-bold text-white">
+            {/* Pack — highlighted */}
+            <div className="relative rounded-lg border-2 border-[#0f0f1a] bg-[#0f0f1a] p-6"
+                 style={{ boxShadow: '0 8px 32px rgba(15,15,26,0.3)' }}>
+              <span className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full px-4 py-1 text-xs font-bold shadow"
+                    style={{ background: 'linear-gradient(135deg, #c9a96e, #b8934a)', color: '#0f0f1a' }}>
                 {t('pricing.plans.pack.badge')}
               </span>
               <p className="text-sm font-semibold text-white/60">{t('pricing.plans.pack.name')}</p>
@@ -434,20 +448,22 @@ export default function Landing() {
               <p className="mt-1 text-sm text-white/50">{t('pricing.plans.pack.description')}</p>
               <Link
                 to="/login"
-                className="mt-6 block w-full rounded-xl bg-white py-2.5 text-center text-sm font-bold text-[#1a1a2e] transition-opacity hover:opacity-90"
+                className="mt-6 block w-full rounded-md py-2.5 text-center text-sm font-bold transition-opacity hover:opacity-90"
+                style={{ background: 'linear-gradient(135deg, #c9a96e, #b8934a)', color: '#0f0f1a' }}
               >
                 {t('pricing.plans.pack.cta')}
               </Link>
             </div>
 
             {/* Pro */}
-            <div className="card-lift rounded-2xl border border-gray-200 p-6">
-              <p className="text-sm font-semibold text-gray-500">{t('pricing.plans.pro.name')}</p>
-              <p className="mt-2 text-3xl font-extrabold text-gray-900">{t('pricing.plans.pro.price')}</p>
-              <p className="mt-1 text-sm text-gray-400">{t('pricing.plans.pro.description')}</p>
+            <div className="card-lift rounded-lg border border-[#e8e4dd] p-6"
+                 style={{ boxShadow: '0 1px 3px rgba(15,15,26,0.06)' }}>
+              <p className="text-sm font-semibold text-[#6b6860]">{t('pricing.plans.pro.name')}</p>
+              <p className="mt-2 text-3xl font-extrabold text-[#0f0f1a]">{t('pricing.plans.pro.price')}</p>
+              <p className="mt-1 text-sm text-[#6b6860]">{t('pricing.plans.pro.description')}</p>
               <Link
                 to="/login"
-                className="mt-6 block w-full rounded-xl border border-gray-300 py-2.5 text-center text-sm font-semibold text-gray-700 transition-colors hover:border-gray-400 hover:bg-gray-50"
+                className="mt-6 block w-full rounded-md border border-[#e8e4dd] py-2.5 text-center text-sm font-semibold text-[#0f0f1a] transition-colors hover:border-[#0f0f1a] hover:bg-[#fafaf8]"
               >
                 {t('pricing.plans.pro.cta')}
               </Link>
@@ -456,10 +472,13 @@ export default function Landing() {
         </div>
       </section>
 
+      {/* ── Upcoming ─────────────────────────────────────────────────────── */}
+      <UpcomingSection />
+
       {/* ── Final CTA ────────────────────────────────────────────────────── */}
-      <section className="bg-[#1a1a2e] py-16 sm:py-20">
+      <section className="bg-[#0f0f1a] py-16 sm:py-20">
         <div className="mx-auto max-w-2xl px-4 text-center sm:px-6">
-          <h2 className="text-2xl font-extrabold text-white sm:text-3xl">
+          <h2 className="heading-section text-white">
             {t('landing.finalCta.title')}
           </h2>
           <p className="mt-3 text-base leading-[1.7] text-white/60">
@@ -467,11 +486,12 @@ export default function Landing() {
           </p>
           <motion.div
             whileTap={shouldReduceMotion ? {} : { scale: 0.97 }}
-            className="mt-8 inline-block rounded-xl"
+            className="mt-8 inline-block rounded-lg"
           >
             <Link
               to="/login"
-              className="inline-flex items-center gap-2 rounded-xl bg-white px-8 py-3.5 text-base font-bold text-[#1a1a2e] shadow-lg transition-opacity hover:opacity-90"
+              className="inline-flex items-center gap-2 rounded-lg px-8 py-3.5 text-base font-bold shadow-lg transition-all hover:opacity-90 hover:-translate-y-px"
+              style={{ background: 'linear-gradient(135deg, #c9a96e, #b8934a)', color: '#0f0f1a' }}
             >
               {t('landing.finalCta.cta')}
               <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -482,7 +502,6 @@ export default function Landing() {
         </div>
       </section>
 
-      <Footer />
-    </div>
+    </>
   )
 }

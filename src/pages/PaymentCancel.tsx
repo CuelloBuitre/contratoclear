@@ -1,16 +1,11 @@
 import { Link } from 'react-router'
 import { useTranslation } from 'react-i18next'
-import Navbar from '@/components/layout/Navbar'
-import Footer from '@/components/layout/Footer'
 
 export default function PaymentCancel() {
   const { t } = useTranslation()
 
   return (
-    <div className="flex min-h-screen flex-col bg-gray-50">
-      <Navbar />
-
-      <main className="flex flex-1 flex-col items-center justify-center px-4 py-24 text-center">
+    <div className="flex flex-1 flex-col items-center justify-center px-4 py-24 text-center">
         {/* Icon */}
         <div className="mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-gray-100">
           <svg className="h-10 w-10 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -36,9 +31,6 @@ export default function PaymentCancel() {
         >
           {t('payment.cancel.cta')}
         </Link>
-      </main>
-
-      <Footer />
     </div>
   )
 }

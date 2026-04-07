@@ -85,11 +85,11 @@ function PlanCard({
       className={[
         'relative flex flex-col rounded-lg p-7 transition-shadow',
         highlighted
-          ? 'border-2 border-[#0f0f1a] bg-[#0f0f1a]'
+          ? 'border-2 border-[#c9a96e] bg-white'
           : 'border border-[#e8e4dd] bg-white hover:shadow-md',
       ].join(' ')}
       style={highlighted
-        ? { boxShadow: '0 8px 32px rgba(15,15,26,0.3)' }
+        ? { boxShadow: '0 8px 40px rgba(201,169,110,0.25)' }
         : { boxShadow: '0 1px 3px rgba(15,15,26,0.06)' }}
     >
       {/* Badge */}
@@ -104,19 +104,19 @@ function PlanCard({
 
       {/* Header */}
       <div className="mb-6">
-        <p className={`text-sm font-semibold ${highlighted ? 'text-white/60' : 'text-[#6b6860]'}`}>
+        <p className="text-sm font-semibold text-[#6b6860]">
           {name}
         </p>
         <div className="mt-2 flex items-end gap-1">
-          <span className={`text-4xl font-extrabold ${highlighted ? 'text-white' : 'text-[#0f0f1a]'}`}
+          <span className="text-4xl font-extrabold text-[#0f0f1a]"
                 style={{ fontFamily: "'Playfair Display', serif" }}>
             {price}
           </span>
-          <span className={`mb-1 text-sm ${highlighted ? 'text-white/50' : 'text-[#6b6860]'}`}>
+          <span className="mb-1 text-sm text-[#6b6860]">
             {priceSub}
           </span>
         </div>
-        <p className={`mt-1.5 text-sm ${highlighted ? 'text-white/50' : 'text-[#6b6860]'}`}>
+        <p className="mt-1.5 text-sm text-[#6b6860]">
           {description}
         </p>
       </div>
@@ -125,26 +125,24 @@ function PlanCard({
       <ul className="mb-8 flex-1 space-y-2.5">
         {features.map((f, i) => (
           <li key={i} className="flex items-start gap-2.5">
-            <span className={`mt-0.5 shrink-0 ${highlighted ? 'text-[#c9a96e]' : 'text-[#c9a96e]'}`}>
+            <span className="mt-0.5 shrink-0 text-[#c9a96e]">
               <IconCheck />
             </span>
-            <span className={`text-sm ${highlighted ? 'text-white/80' : 'text-[#6b6860]'}`}>{f}</span>
+            <span className="text-sm text-[#6b6860]">{f}</span>
           </li>
         ))}
       </ul>
 
       {/* Error */}
       {hasError && (
-        <p className={`mb-3 rounded-md px-3 py-2 text-xs ${highlighted ? 'bg-white/10 text-red-300' : 'bg-red-50 text-red-600'}`}>
+        <p className="mb-3 rounded-md px-3 py-2 text-xs bg-red-50 text-red-600">
           Error al iniciar el pago. Inténtalo de nuevo.
         </p>
       )}
 
       {/* CTA */}
       {isCurrentPlan ? (
-        <div className={`flex items-center justify-center gap-2 rounded-md border px-4 py-3 text-sm font-semibold ${
-          highlighted ? 'border-white/20 text-white/50' : 'border-[#e8e4dd] text-[#6b6860]'
-        }`}>
+        <div className="flex items-center justify-center gap-2 rounded-md border border-[#e8e4dd] px-4 py-3 text-sm font-semibold text-[#6b6860]">
           <IconCheck className="h-3.5 w-3.5" />
           {t('pricing.currentPlan')}
         </div>
@@ -157,6 +155,7 @@ function PlanCard({
           style={highlighted
             ? { background: 'linear-gradient(135deg, #c9a96e, #b8934a)', color: '#0f0f1a' }
             : { backgroundColor: '#0f0f1a', color: '#ffffff' }}
+
         >
           {isLoading && (
             <span className={`h-4 w-4 animate-spin rounded-full border-2 ${

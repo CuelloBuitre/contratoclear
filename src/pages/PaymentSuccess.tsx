@@ -2,8 +2,6 @@ import { useEffect } from 'react'
 import { Link } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import { useQueryClient } from '@tanstack/react-query'
-import Navbar from '@/components/layout/Navbar'
-import Footer from '@/components/layout/Footer'
 import { profileKeys } from '@/queries/keys'
 
 export default function PaymentSuccess() {
@@ -16,10 +14,7 @@ export default function PaymentSuccess() {
   }, [queryClient])
 
   return (
-    <div className="flex min-h-screen flex-col bg-gray-50">
-      <Navbar />
-
-      <main className="flex flex-1 flex-col items-center justify-center px-4 py-24 text-center">
+    <div className="flex flex-1 flex-col items-center justify-center px-4 py-24 text-center">
         {/* Success ring */}
         <div className="relative mb-6">
           <div className="absolute inset-0 animate-ping rounded-full bg-green-200 opacity-30" />
@@ -43,9 +38,6 @@ export default function PaymentSuccess() {
           </svg>
           {t('payment.success.cta')}
         </Link>
-      </main>
-
-      <Footer />
     </div>
   )
 }

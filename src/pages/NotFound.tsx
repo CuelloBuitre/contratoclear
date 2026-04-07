@@ -1,16 +1,11 @@
 import { Link } from 'react-router'
 import { useTranslation } from 'react-i18next'
-import Navbar from '@/components/layout/Navbar'
-import Footer from '@/components/layout/Footer'
 
 export default function NotFound() {
   const { t } = useTranslation()
 
   return (
-    <div className="flex min-h-screen flex-col bg-gray-50">
-      <Navbar />
-
-      <main className="flex flex-1 flex-col items-center justify-center px-4 py-24 text-center">
+    <div className="flex flex-1 flex-col items-center justify-center px-4 py-24 text-center">
         {/* 404 number */}
         <p className="text-8xl font-extrabold text-[#1a1a2e]/10 sm:text-9xl">404</p>
 
@@ -36,9 +31,6 @@ export default function NotFound() {
           </svg>
           {t('notFound.cta')}
         </Link>
-      </main>
-
-      <Footer />
     </div>
   )
 }

@@ -1,6 +1,3 @@
-import Navbar from '@/components/layout/Navbar'
-import Footer from '@/components/layout/Footer'
-
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="mb-10">
@@ -12,11 +9,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 
 export default function Terms() {
   return (
-    <div className="flex min-h-screen flex-col bg-gray-50">
-      <Navbar />
-
-      <main className="flex-1">
-        <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
+    <div className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
           {/* Header */}
           <div className="mb-10 border-b border-gray-200 pb-8">
             <p className="mb-1 text-xs font-semibold uppercase tracking-widest text-indigo-600">Legal</p>
@@ -161,9 +154,5 @@ export default function Terms() {
 
           </div>
         </div>
-      </main>
-
-      <Footer />
-    </div>
   )
 }

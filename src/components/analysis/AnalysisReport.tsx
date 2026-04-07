@@ -117,9 +117,9 @@ export default function AnalysisReport({ result }: AnalysisReportProps) {
       </motion.div>
 
       {/* Recommendation */}
-      <div className="rounded-lg border border-indigo-100 bg-indigo-50 px-4 py-4">
-        <p className="mb-1 text-sm font-semibold text-indigo-900">{t('analysis.recommendation')}</p>
-        <p className="text-sm text-indigo-800">{result.recomendacion}</p>
+      <div className="rounded-lg border border-[#e8e4dd] border-l-4 border-l-[#c9a96e] bg-[#fafaf8] px-4 py-4">
+        <p className="mb-1 text-sm font-semibold text-[#0f0f1a]">{t('analysis.recommendation')}</p>
+        <p className="text-sm leading-[1.7] text-[#6b6860]">{result.recomendacion}</p>
       </div>
     </div>
   )

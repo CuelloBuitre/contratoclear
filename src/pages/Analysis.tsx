@@ -2,8 +2,6 @@ import { useState } from 'react'
 import { useParams, Link } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import { motion } from 'framer-motion'
-import Navbar from '@/components/layout/Navbar'
-import Footer from '@/components/layout/Footer'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import AnalysisReport from '@/components/analysis/AnalysisReport'
 import ContractChat from '@/components/analysis/ContractChat'
@@ -14,10 +12,10 @@ import type { Puntuacion } from '@/types'
 // ── Score header gradient ─────────────────────────────────────────────────────
 
 const scoreGradient: Record<Puntuacion, string> = {
-  buena: 'from-green-50 to-white border-green-100',
-  aceptable: 'from-amber-50 to-white border-amber-100',
-  mala: 'from-red-50 to-white border-red-100',
-  error: 'from-gray-50 to-white border-gray-100',
+  buena:    'from-[#f0fdf4] to-white border-[#bbf7d0]',
+  aceptable:'from-[#fffbeb] to-white border-[#fde68a]',
+  mala:     'from-[#fef2f2] to-white border-[#fecaca]',
+  error:    'from-[#fafaf8] to-white border-[#e8e4dd]',
 }
 
 // ── Page ──────────────────────────────────────────────────────────────────────
@@ -31,32 +29,26 @@ export default function Analysis() {
 
   if (isLoading) {
     return (
-      <div className="flex min-h-screen flex-col bg-gray-50">
-        <Navbar />
-        <div className="flex flex-1 items-center justify-center">
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#1a1a2e] border-t-transparent" />
-        </div>
+      <div className="flex flex-1 items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-2 border-[#1a1a2e] border-t-transparent" />
       </div>
     )
   }
 
   if (error || !analysis) {
     return (
-      <div className="flex min-h-screen flex-col bg-gray-50">
-        <Navbar />
-        <div className="flex flex-1 flex-col items-center justify-center px-4 text-center">
+      <div className="flex flex-1 flex-col items-center justify-center px-4 text-center">
           <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-red-50">
             <svg className="h-7 w-7 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                 d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <p className="text-base font-medium text-gray-700">{t('errors.generic')}</p>
-          <Link to="/history" className="mt-4 text-sm font-medium text-indigo-600 hover:underline">
+          <p className="text-base font-medium text-[#0f0f1a]">{t('errors.generic')}</p>
+          <Link to="/history" className="mt-4 text-sm font-medium hover:underline" style={{ color: '#c9a96e' }}>
             ← {t('analysis.backToHistory')}
           </Link>
         </div>
-      </div>
     )
   }
 
@@ -95,16 +87,14 @@ export default function Analysis() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-gray-50">
-      <Navbar />
-
+    <>
       {/* Score header band */}
       <div className={`border-b bg-gradient-to-b ${gradient}`}>
         <div className="mx-auto max-w-2xl px-4 py-6 sm:px-6">
           {/* Back link */}
           <Link
             to="/history"
-            className="mb-4 inline-flex items-center gap-1.5 text-xs font-medium text-gray-400 transition-colors hover:text-gray-600"
+            className="mb-4 inline-flex items-center gap-1.5 text-xs font-medium text-[#6b6860] transition-colors hover:text-[#0f0f1a]"
           >
             <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -123,13 +113,13 @@ export default function Analysis() {
                 >
                   <ScoreBadge puntuacion={analysis.result_json.puntuacion} />
                 </motion.div>
-                <span className="text-xs text-gray-400">
+                <span className="text-xs text-[#6b6860]">
                   {new Date(analysis.created_at).toLocaleDateString('es-ES', {
                     day: 'numeric', month: 'long', year: 'numeric',
                   })}
                 </span>
               </div>
-              <h1 className="mt-2 max-w-md truncate text-lg font-bold text-gray-900">
+              <h1 className="mt-2 max-w-md truncate text-lg font-bold text-[#0f0f1a]">
                 {analysis.filename}
               </h1>
             </div>
@@ -140,7 +130,7 @@ export default function Analysis() {
               <button
                 type="button"
                 onClick={handleShare}
-                className="inline-flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-3.5 py-2 text-xs font-medium text-gray-700 shadow-sm transition-colors hover:border-gray-300 hover:bg-gray-50"
+                className="inline-flex items-center gap-1.5 rounded-md border border-[#e8e4dd] bg-white px-3.5 py-2 text-xs font-medium text-[#6b6860] shadow-sm transition-colors hover:border-[#0f0f1a] hover:text-[#0f0f1a]"
               >
                 {copied ? (
                   <>
@@ -160,21 +150,22 @@ export default function Analysis() {
                 )}
               </button>
 
-              {/* PDF download */}
+              {/* PDF download — gold outlined */}
               <button
                 type="button"
                 onClick={handleDownload}
                 disabled={isGenerating}
-                className="inline-flex items-center gap-1.5 rounded-lg border border-gray-200 bg-white px-3.5 py-2 text-xs font-medium text-gray-700 shadow-sm transition-colors hover:border-gray-300 hover:bg-gray-50 disabled:opacity-50"
+                className="inline-flex items-center gap-1.5 rounded-md border px-3.5 py-2 text-xs font-medium shadow-sm transition-all hover:opacity-80 disabled:opacity-50"
+                style={{ borderColor: '#c9a96e', color: '#c9a96e', backgroundColor: 'transparent' }}
               >
                 {isGenerating ? (
                   <>
-                    <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-gray-300 border-t-gray-600" />
+                    <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-[#c9a96e]/30 border-t-[#c9a96e]" />
                     <span>Generando…</span>
                   </>
                 ) : (
                   <>
-                    <svg className="h-3.5 w-3.5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                         d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                     </svg>
@@ -191,7 +182,8 @@ export default function Analysis() {
       <main className="flex-1">
         <div className="mx-auto max-w-2xl px-4 py-8 sm:px-6">
           <ErrorBoundary message={t('errors.boundaryAnalysis')}>
-            <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
+            <div className="rounded-lg border border-[#e8e4dd] bg-white p-5 sm:p-6"
+                 style={{ boxShadow: '0 1px 3px rgba(15,15,26,0.08)' }}>
               <AnalysisReport result={analysis.result_json} />
             </div>
 
@@ -203,8 +195,6 @@ export default function Analysis() {
           </ErrorBoundary>
         </div>
       </main>
-
-      <Footer />
-    </div>
+    </>
   )
 }

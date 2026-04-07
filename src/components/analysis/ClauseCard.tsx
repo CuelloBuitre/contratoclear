@@ -9,16 +9,19 @@ interface ClauseCardProps {
 
 const statusStyles = {
   ok: {
-    leftBorder: 'border-l-[#16a34a]',
-    badge: 'bg-[#16a34a] text-white',
+    leftBorder: 'border-l-[#14532d]',
+    badge: 'bg-[#14532d] text-white',
+    action: 'text-[#14532d]',
   },
   advertencia: {
-    leftBorder: 'border-l-[#d97706]',
-    badge: 'bg-[#d97706] text-white',
+    leftBorder: 'border-l-[#92400e]',
+    badge: 'bg-[#92400e] text-white',
+    action: 'text-[#92400e]',
   },
   ilegal: {
-    leftBorder: 'border-l-[#dc2626]',
-    badge: 'bg-[#dc2626] text-white',
+    leftBorder: 'border-l-[#7f1d1d]',
+    badge: 'bg-[#7f1d1d] text-white',
+    action: 'text-[#7f1d1d]',
   },
 }
 
@@ -28,23 +31,24 @@ export default function ClauseCard({ clause }: ClauseCardProps) {
   const s = statusStyles[clause.estado]
 
   return (
-    <div className={`overflow-hidden rounded-xl border border-gray-200 border-l-4 ${s.leftBorder} bg-white`}>
+    <div className={`overflow-hidden rounded-lg border border-[#e8e4dd] border-l-4 ${s.leftBorder} bg-white`}
+         style={{ boxShadow: '0 1px 3px rgba(15,15,26,0.06)' }}>
       <motion.button
         type="button"
         onClick={() => setIsOpen((v) => !v)}
         aria-expanded={isOpen}
-        whileTap={{ scale: 0.98 }}
-        className="flex min-h-[44px] w-full items-center justify-between gap-3 px-4 py-3 text-left transition-colors hover:bg-gray-50"
+        whileTap={{ scale: 0.99 }}
+        className="flex min-h-[44px] w-full items-center justify-between gap-3 px-4 py-3 text-left transition-colors hover:bg-[#fafaf8]"
       >
-        <span className="truncate text-sm font-medium text-gray-800">{clause.titulo}</span>
+        <span className="truncate text-sm font-medium text-[#0f0f1a]">{clause.titulo}</span>
         <div className="flex shrink-0 items-center gap-2">
-          <span className={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${s.badge}`}>
+          <span className={`rounded px-2.5 py-0.5 text-[11px] font-semibold uppercase tracking-[0.05em] ${s.badge}`}>
             {t(`analysis.clauseStatus.${clause.estado}`)}
           </span>
           <motion.svg
             animate={{ rotate: isOpen ? 180 : 0 }}
             transition={{ duration: 0.2, ease: 'easeOut' }}
-            className="h-4 w-4 text-gray-400"
+            className="h-4 w-4 text-[#6b6860]"
             fill="none"
             viewBox="0 0 24 24"
             stroke="currentColor"
@@ -64,11 +68,11 @@ export default function ClauseCard({ clause }: ClauseCardProps) {
             transition={{ duration: 0.2, ease: 'easeOut' }}
             className="overflow-hidden"
           >
-            <div className="space-y-2 border-t border-gray-100 bg-gray-50 px-4 py-3">
-              <p className="text-sm leading-[1.7] text-gray-700">{clause.descripcion}</p>
+            <div className="space-y-2 border-t border-[#e8e4dd] bg-[#fafaf8] px-4 py-3">
+              <p className="text-sm leading-[1.7] text-[#6b6860]">{clause.descripcion}</p>
               {clause.accion && (
-                <p className="text-sm font-medium text-gray-900">
-                  <span className="text-indigo-600">→</span> {clause.accion}
+                <p className={`text-sm font-medium ${s.action}`}>
+                  → {clause.accion}
                 </p>
               )}
             </div>

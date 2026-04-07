@@ -3,6 +3,8 @@
     "logo": "ClausulaAI",
     "pricing": "Precios",
     "login": "Entrar",
+    "signIn": "Iniciar sesión",
+    "cta": "Analizar contrato",
     "dashboard": "Mis análisis",
     "history": "Historial",
     "profile": "Mi perfil",
@@ -80,6 +82,30 @@
     },
     "pricing": {
       "overline": "Precios"
+    },
+    "upcoming": {
+      "overline": "Próximamente",
+      "title": "¿Qué analizaremos próximamente?",
+      "subtitle": "Estamos trabajando en nuevas categorías. Sé el primero en saberlo.",
+      "badge": "Próximamente",
+      "notifyButton": "Notifícame",
+      "emailPlaceholder": "tu@email.com",
+      "submitButton": "Avisarme",
+      "success": "¡Te avisaremos cuando esté disponible!",
+      "categories": {
+        "work": {
+          "title": "Contratos de trabajo",
+          "description": "Analiza tu contrato laboral: jornada, salario, cláusulas abusivas según el Estatuto de los Trabajadores"
+        },
+        "purchase": {
+          "title": "Contratos de compraventa",
+          "description": "Revisa tu contrato de compraventa de vivienda antes de firmar ante notario"
+        },
+        "payslip": {
+          "title": "Nóminas",
+          "description": "Detecta errores en tu nómina: cotizaciones, deducciones y conceptos incorrectos"
+        }
+      }
     },
     "finalCta": {
       "title": "Las cláusulas ilegales son nulas aunque las hayas firmado.",
@@ -204,7 +230,14 @@
       "special": "Un carácter especial (!@#$%^&*)"
     },
     "backToLogin": "Volver al inicio de sesión",
-    "forgotPassword": "¿Olvidaste tu contraseña?"
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "brandPanel": {
+      "quote": "Las cláusulas ilegales son nulas aunque las hayas firmado.",
+      "attribution": "Ley de Arrendamientos Urbanos — España",
+      "trust1": "Normativa LAU actualizada a 2026",
+      "trust2": "Tus datos están seguros",
+      "trust3": "Análisis en menos de 30 segundos"
+    }
   },
   "forgotPassword": {
     "title": "Recuperar contraseña",

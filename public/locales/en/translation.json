@@ -3,6 +3,8 @@
     "logo": "ClausulaAI",
     "pricing": "Pricing",
     "login": "Sign in",
+    "signIn": "Sign in",
+    "cta": "Analyze contract",
     "dashboard": "My analyses",
     "history": "History",
     "profile": "My profile",
@@ -80,6 +82,30 @@
         "Landlord access to property",
         "Early termination clauses"
       ]
+    },
+    "upcoming": {
+      "overline": "Coming soon",
+      "title": "What will we analyze next?",
+      "subtitle": "We're working on new categories. Be the first to know.",
+      "badge": "Coming soon",
+      "notifyButton": "Notify me",
+      "emailPlaceholder": "you@email.com",
+      "submitButton": "Notify me",
+      "success": "We'll let you know when it's available!",
+      "categories": {
+        "work": {
+          "title": "Employment contracts",
+          "description": "Analyze your employment contract: working hours, salary, abusive clauses under the Workers' Statute"
+        },
+        "purchase": {
+          "title": "Property purchase contracts",
+          "description": "Review your property purchase contract before signing before a notary"
+        },
+        "payslip": {
+          "title": "Payslips",
+          "description": "Detect errors in your payslip: social security contributions, deductions and incorrect items"
+        }
+      }
     },
     "finalCta": {
       "title": "Illegal clauses are void even if you signed them.",
@@ -204,7 +230,14 @@
       "special": "One special character (!@#$%^&*)"
     },
     "backToLogin": "Back to sign in",
-    "forgotPassword": "Forgot your password?"
+    "forgotPassword": "Forgot your password?",
+    "brandPanel": {
+      "quote": "Illegal clauses are void even if you signed them.",
+      "attribution": "Spanish Rental Act (LAU) — Spain",
+      "trust1": "LAU regulations updated to 2026",
+      "trust2": "Your data is secure",
+      "trust3": "Analysis in under 30 seconds"
+    }
   },
   "forgotPassword": {
     "title": "Reset password",

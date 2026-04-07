@@ -1,7 +1,5 @@
 import { Link } from 'react-router'
 import { useTranslation } from 'react-i18next'
-import Navbar from '@/components/layout/Navbar'
-import Footer from '@/components/layout/Footer'
 import ScoreBadge from '@/components/analysis/ScoreBadge'
 import { useAnalyses } from '@/queries/analyses'
 
@@ -10,10 +8,7 @@ export default function History() {
   const { data: analyses, isLoading } = useAnalyses()
 
   return (
-    <div className="flex min-h-screen flex-col bg-gray-50">
-      <Navbar />
-
-      <main className="flex-1">
+    <div className="flex-1">
         <div className="mx-auto max-w-2xl px-4 py-10">
           <div className="mb-6 flex items-center justify-between">
             <h1 className="text-2xl font-bold text-gray-900">{t('history.title')}</h1>
@@ -82,9 +77,6 @@ export default function History() {
             </div>
           )}
         </div>
-      </main>
-
-      <Footer />
     </div>
   )
 }

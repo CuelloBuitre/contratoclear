@@ -1,8 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router'
 import { useTranslation } from 'react-i18next'
-import Navbar from '@/components/layout/Navbar'
-import Footer from '@/components/layout/Footer'
 import { useAuthStore } from '@/store/useAppStore'
 import { useProfile } from '@/queries/profile'
 import { useCheckout, type PriceType } from '@/hooks/useCheckout'
@@ -20,7 +18,7 @@ function IconCheck({ className = 'h-4 w-4' }: { className?: string }) {
 function IconChevron({ open }: { open: boolean }) {
   return (
     <svg
-      className={`h-5 w-5 text-gray-400 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
+      className={`h-5 w-5 text-[#6b6860] transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
       fill="none" viewBox="0 0 24 24" stroke="currentColor"
     >
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -33,17 +31,17 @@ function IconChevron({ open }: { open: boolean }) {
 function FaqItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false)
   return (
-    <div className="border-b border-gray-100 last:border-0">
+    <div className="border-b border-[#e8e4dd] last:border-0">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
         className="flex w-full items-center justify-between gap-4 py-4 text-left"
       >
-        <span className="text-sm font-medium text-gray-900">{q}</span>
+        <span className="text-sm font-medium text-[#0f0f1a]">{q}</span>
         <IconChevron open={open} />
       </button>
       {open && (
-        <p className="pb-4 text-sm leading-relaxed text-gray-500">{a}</p>
+        <p className="pb-4 text-sm leading-relaxed text-[#6b6860]">{a}</p>
       )}
     </div>
   )
@@ -53,7 +51,6 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 
 interface PlanCardProps {
   highlighted?: boolean
-  amber?: boolean
   badge?: string
   name: string
   price: string
@@ -69,7 +66,6 @@ interface PlanCardProps {
 
 function PlanCard({
   highlighted,
-  amber,
   badge,
   name,
   price,
@@ -87,35 +83,40 @@ function PlanCard({
   return (
     <div
       className={[
-        'relative flex flex-col rounded-2xl p-7 transition-shadow',
+        'relative flex flex-col rounded-lg p-7 transition-shadow',
         highlighted
-          ? 'border border-[#1a1a2e] bg-[#1a1a2e] shadow-2xl'
-          : amber
-            ? 'border-2 border-amber-600 bg-white shadow-xl'
-            : 'border border-gray-200 bg-white shadow-sm hover:shadow-md',
+          ? 'border-2 border-[#0f0f1a] bg-[#0f0f1a]'
+          : 'border border-[#e8e4dd] bg-white hover:shadow-md',
       ].join(' ')}
+      style={highlighted
+        ? { boxShadow: '0 8px 32px rgba(15,15,26,0.3)' }
+        : { boxShadow: '0 1px 3px rgba(15,15,26,0.06)' }}
     >
-      {/* Popular badge */}
+      {/* Badge */}
       {badge && (
-        <span className={`absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full px-4 py-1 text-xs font-bold text-white shadow ${amber ? 'bg-amber-600' : 'bg-indigo-500'}`}>
+        <span
+          className="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full px-4 py-1 text-xs font-bold shadow"
+          style={{ background: 'linear-gradient(135deg, #c9a96e, #b8934a)', color: '#0f0f1a' }}
+        >
           {badge}
         </span>
       )}
 
       {/* Header */}
       <div className="mb-6">
-        <p className={`text-sm font-semibold ${highlighted ? 'text-white/60' : 'text-gray-500'}`}>
+        <p className={`text-sm font-semibold ${highlighted ? 'text-white/60' : 'text-[#6b6860]'}`}>
           {name}
         </p>
         <div className="mt-2 flex items-end gap-1">
-          <span className={`text-4xl font-extrabold ${highlighted ? 'text-white' : 'text-gray-900'}`}>
+          <span className={`text-4xl font-extrabold ${highlighted ? 'text-white' : 'text-[#0f0f1a]'}`}
+                style={{ fontFamily: "'Playfair Display', serif" }}>
             {price}
           </span>
-          <span className={`mb-1 text-sm ${highlighted ? 'text-white/50' : 'text-gray-400'}`}>
+          <span className={`mb-1 text-sm ${highlighted ? 'text-white/50' : 'text-[#6b6860]'}`}>
             {priceSub}
           </span>
         </div>
-        <p className={`mt-1.5 text-sm ${highlighted ? 'text-white/50' : 'text-gray-400'}`}>
+        <p className={`mt-1.5 text-sm ${highlighted ? 'text-white/50' : 'text-[#6b6860]'}`}>
           {description}
         </p>
       </div>
@@ -124,25 +125,25 @@ function PlanCard({
       <ul className="mb-8 flex-1 space-y-2.5">
         {features.map((f, i) => (
           <li key={i} className="flex items-start gap-2.5">
-            <span className={`mt-0.5 shrink-0 ${highlighted ? 'text-indigo-300' : 'text-indigo-600'}`}>
+            <span className={`mt-0.5 shrink-0 ${highlighted ? 'text-[#c9a96e]' : 'text-[#c9a96e]'}`}>
               <IconCheck />
             </span>
-            <span className={`text-sm ${highlighted ? 'text-white/80' : 'text-gray-600'}`}>{f}</span>
+            <span className={`text-sm ${highlighted ? 'text-white/80' : 'text-[#6b6860]'}`}>{f}</span>
           </li>
         ))}
       </ul>
 
       {/* Error */}
       {hasError && (
-        <p className={`mb-3 rounded-lg px-3 py-2 text-xs ${highlighted ? 'bg-white/10 text-red-300' : 'bg-red-50 text-red-600'}`}>
+        <p className={`mb-3 rounded-md px-3 py-2 text-xs ${highlighted ? 'bg-white/10 text-red-300' : 'bg-red-50 text-red-600'}`}>
           Error al iniciar el pago. Inténtalo de nuevo.
         </p>
       )}
 
       {/* CTA */}
       {isCurrentPlan ? (
-        <div className={`flex items-center justify-center gap-2 rounded-xl border px-4 py-3 text-sm font-semibold ${
-          highlighted ? 'border-white/20 text-white/50' : 'border-gray-200 text-gray-400'
+        <div className={`flex items-center justify-center gap-2 rounded-md border px-4 py-3 text-sm font-semibold ${
+          highlighted ? 'border-white/20 text-white/50' : 'border-[#e8e4dd] text-[#6b6860]'
         }`}>
           <IconCheck className="h-3.5 w-3.5" />
           {t('pricing.currentPlan')}
@@ -152,16 +153,14 @@ function PlanCard({
           type="button"
           onClick={onCta}
           disabled={isLoading}
-          className={[
-            'flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3 text-sm font-bold transition-opacity disabled:opacity-60',
-            highlighted
-              ? 'bg-white text-[#1a1a2e] hover:opacity-90'
-              : 'bg-[#1a1a2e] text-white hover:opacity-90',
-          ].join(' ')}
+          className="flex w-full items-center justify-center gap-2 rounded-md px-4 py-3 text-sm font-bold transition-all disabled:opacity-60 hover:opacity-90 hover:-translate-y-px"
+          style={highlighted
+            ? { background: 'linear-gradient(135deg, #c9a96e, #b8934a)', color: '#0f0f1a' }
+            : { backgroundColor: '#0f0f1a', color: '#ffffff' }}
         >
           {isLoading && (
             <span className={`h-4 w-4 animate-spin rounded-full border-2 ${
-              highlighted ? 'border-[#1a1a2e]/30 border-t-[#1a1a2e]' : 'border-white/30 border-t-white'
+              highlighted ? 'border-[#0f0f1a]/30 border-t-[#0f0f1a]' : 'border-white/30 border-t-white'
             }`} />
           )}
           {isLoading ? t('pricing.processing') : cta}
@@ -211,8 +210,7 @@ export default function Pricing() {
     {
       type: 'pack' as PriceType,
       priceId: packPriceId,
-      highlighted: false,
-      amber: true,
+      highlighted: true,
       badge: t('pricing.plans.pack.badge'),
       name: t('pricing.plans.pack.name'),
       price: t('pricing.plans.pack.price'),
@@ -237,22 +235,21 @@ export default function Pricing() {
   const faqItems = t('pricing.faq.items', { returnObjects: true }) as Array<{ q: string; a: string }>
 
   return (
-    <div className="flex min-h-screen flex-col bg-gray-50">
-      <Navbar />
-
+    <>
       {/* ── Hero ──────────────────────────────────────────────────────────── */}
-      <section className="bg-[#1a1a2e] px-4 pb-20 pt-14 sm:px-6">
+      <section className="bg-[#0f0f1a] px-4 pb-20 pt-14 sm:px-6">
         <div className="mx-auto max-w-3xl text-center">
-          <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-indigo-400">
-            Precios
+          <p className="mb-2 text-sm font-semibold uppercase tracking-widest text-[#c9a96e]">
+            {t('landing.pricing.overline')}
           </p>
-          <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+          <h1 className="heading-display text-white">
             {t('pricing.title')}
           </h1>
           <p className="mt-3 text-base text-white/60">{t('pricing.subtitle')}</p>
 
-          {/* Static calculator stats */}
-          <div className="mx-auto mt-8 max-w-2xl rounded-2xl border border-white/10 bg-white/5 px-6 py-5">
+          {/* Stats banner */}
+          <div className="mx-auto mt-8 max-w-2xl rounded-lg border border-white/10 px-6 py-5"
+               style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-center sm:gap-8 text-center">
               <div>
                 <p className="text-xs font-medium uppercase tracking-wider text-white/40">{t('calculator.pricingAverage')}</p>
@@ -263,7 +260,7 @@ export default function Pricing() {
               </div>
               <div className="hidden sm:block h-8 w-px bg-white/10" />
               <div>
-                <p className="text-sm font-semibold text-indigo-300">{t('calculator.pricingCost')}</p>
+                <p className="text-sm font-semibold" style={{ color: '#c9a96e' }}>{t('calculator.pricingCost')}</p>
               </div>
             </div>
           </div>
@@ -278,7 +275,6 @@ export default function Pricing() {
               <PlanCard
                 key={plan.type}
                 highlighted={plan.highlighted}
-                amber={'amber' in plan ? plan.amber : undefined}
                 badge={'badge' in plan ? plan.badge : undefined}
                 name={plan.name}
                 price={plan.price}
@@ -299,30 +295,30 @@ export default function Pricing() {
       {/* ── Trust bar ────────────────────────────────────────────────────── */}
       <section className="py-10 px-4 sm:px-6">
         <div className="mx-auto max-w-3xl">
-          <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-gray-400">
+          <div className="flex flex-wrap items-center justify-center gap-6 text-sm text-[#6b6860]">
             <span className="flex items-center gap-2">
-              <svg className="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="h-4 w-4 text-[#c9a96e]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                   d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
               Pago seguro con Stripe
             </span>
             <span className="flex items-center gap-2">
-              <svg className="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="h-4 w-4 text-[#c9a96e]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                   d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
               </svg>
               Normativa LAU actualizada a 2026
             </span>
             <span className="flex items-center gap-2">
-              <svg className="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="h-4 w-4 text-[#c9a96e]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                   d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
               </svg>
               Tarjeta, Apple Pay, Google Pay
             </span>
             <span className="flex items-center gap-2">
-              <svg className="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <svg className="h-4 w-4 text-[#c9a96e]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
                   d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
               </svg>
@@ -335,26 +331,29 @@ export default function Pricing() {
       {/* ── FAQ ──────────────────────────────────────────────────────────── */}
       <section className="bg-white px-4 py-14 sm:px-6">
         <div className="mx-auto max-w-2xl">
-          <h2 className="mb-8 text-center text-2xl font-bold text-gray-900">
+          <h2 className="heading-section mb-8 text-center text-[#0f0f1a]">
             {t('pricing.faq.title')}
           </h2>
-          <div className="rounded-2xl border border-gray-100 bg-gray-50 px-6">
+          <div className="rounded-lg border border-[#e8e4dd] bg-[#fafaf8] px-6"
+               style={{ boxShadow: '0 1px 3px rgba(15,15,26,0.06)' }}>
             {faqItems.map((item, i) => (
               <FaqItem key={i} q={item.q} a={item.a} />
             ))}
           </div>
 
           {/* Disclaimer */}
-          <p className="mt-8 text-center text-xs text-gray-400">
+          <p className="mt-8 text-center text-xs text-[#6b6860]/60">
             {t('footer.disclaimer')}
           </p>
 
-          {/* Login nudge for unauthenticated users */}
+          {/* Login nudge */}
           {!user && (
-            <div className="mt-6 rounded-xl border border-indigo-100 bg-indigo-50 px-5 py-4 text-center">
-              <p className="text-sm text-indigo-700">
+            <div className="mt-6 rounded-lg border border-[#c9a96e]/30 bg-[#c9a96e]/8 px-5 py-4 text-center"
+                 style={{ backgroundColor: 'rgba(201,169,110,0.06)' }}>
+              <p className="text-sm text-[#0f0f1a]">
                 Para comprar necesitas una cuenta.{' '}
-                <Link to="/login" className="font-semibold underline hover:no-underline">
+                <Link to="/login" className="font-semibold underline hover:no-underline"
+                      style={{ color: '#c9a96e' }}>
                   {t('pricing.loginRequired')}
                 </Link>
               </p>
@@ -362,8 +361,6 @@ export default function Pricing() {
           )}
         </div>
       </section>
-
-      <Footer />
-    </div>
+    </>
   )
 }

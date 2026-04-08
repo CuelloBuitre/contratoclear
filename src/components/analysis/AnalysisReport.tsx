@@ -65,9 +65,9 @@ export default function AnalysisReport({ result }: AnalysisReportProps) {
     )
   }
 
-  const okCount = result.clausulas.filter((c) => c.estado === 'ok').length
-  const warningCount = result.clausulas.filter((c) => c.estado === 'advertencia').length
-  const illegalCount = result.clausulas.filter((c) => c.estado === 'ilegal').length
+  const okCount = result.clausulas?.filter((c) => c.estado === 'ok').length ?? 0
+  const warningCount = result.clausulas?.filter((c) => c.estado === 'advertencia').length ?? 0
+  const illegalCount = result.clausulas?.filter((c) => c.estado === 'ilegal').length ?? 0
 
   return (
     <div className="space-y-6">

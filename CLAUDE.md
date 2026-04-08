@@ -641,6 +641,21 @@ npx supabase functions serve  # Serve Edge Functions locally
 
 ---
 
+## Pending Manual Steps (Supabase Dashboard)
+
+### Migrations — run in Supabase Dashboard → SQL Editor
+When Contract Monitor feature is built, apply:
+- `supabase/migrations/004_contracts.sql` — active contracts table for monitor
+- `supabase/migrations/005_organization.sql` — organization/branding settings table
+
+### Storage bucket
+Create the `logos` bucket: Supabase Dashboard → Storage → New bucket → Name: `logos` → Public: true
+
+### Connection pooling
+Enable PgBouncer: Supabase Dashboard → Settings → Database → Connection pooling → Enable
+
+---
+
 ## Tailwind v4 Setup Notes
 
 Tailwind v4 has NO `tailwind.config.ts`. Configuration is in CSS:
@@ -689,8 +704,19 @@ export default defineConfig({
 - [x] Privacy + Terms pages
 - [x] Cookie consent banner
 - [x] Page transitions (framer-motion)
-- [ ] Sentry configured (package installed, integration pending)
-- [ ] Deploy to Vercel
+- [x] PublicLayout + AppLayout unified header/footer system
+- [x] Premium design system (Playfair Display + Inter + gold accent #c9a96e)
+- [x] Transparent navbar on hero, solid on scroll
+- [x] Subtle background patterns on app pages
+- [x] Login split layout (dark left panel + form right panel)
+- [x] Legal letter generator (generate-letter Edge Function + Letters.tsx page)
+- [x] Retry logic on Claude API calls (callClaudeWithRetry in analyze-contract + generate-letter)
+- [x] Rent update calculator (RentUpdateCalculator component + /calculadora route)
+- [x] Legal Chat — Edge Function legal-chat + /consulta page + useLegalChat hook (5 free questions, Pro unlimited)
+- [ ] Connection pooling enabled in Supabase dashboard (manual step — Dashboard → Settings → Database → Connection pooling / PgBouncer)
+- [ ] Stripe live mode configured
+- [ ] clausulaai.es domain connected to Vercel
+- [ ] Cloudflare DNS propagated
 
 ---
 
@@ -706,3 +732,77 @@ export default defineConfig({
 - When adding new Zustand stores, add them to `useAppStore.ts`, do not create new store files
 - When creating TanStack Query hooks, always define `staleTime` explicitly
 - Mobile-first always: build for 375px width, then add `md:` and `lg:` breakpoints
+
+---
+
+## Product Roadmap
+
+### Phase 1 — Months 1-3 (Current focus)
+**Target:** 200 paying users + 5 B2B gestorías + 1.500€/month MRR
+
+**Features to build:**
+
+1. **Legal letter generator (cartas legales)** — HIGH PRIORITY
+   - Carta de reclamación de impago (Art. 27 LAU)
+   - Carta de actualización de renta con índice INE
+   - Carta de preaviso de no renovación (4 months notice)
+   - Carta de devolución de fianza (30 days)
+   - New page: `/cartas` | New Edge Function: `generate-letter`
+   - Available for Pro plan and above
+   - PDF download with ClausulaAI branding
+
+2. **Rent update calculator (calculadora actualización renta)**
+   - Free tool on landing page for SEO traffic
+   - Input: current rent + contract date
+   - Output: maximum legal increase % based on INE index
+   - Auto-generates the carta de actualización
+   - New section on `Landing.tsx` + new route `/calculadora`
+
+3. **Stripe live mode**
+   - Switch from test to live keys
+   - Verify Stripe account (Mario needs to complete business verification)
+
+4. **SEO Blog**
+   - `/blog` route
+   - 5 initial articles about LAU, illegal clauses, zonas tensionadas
+
+### Phase 2 — Months 4-8
+**Target:** 30 B2B gestorías + 8.000€/month MRR
+
+**Features to build:**
+1. Active contract monitor — gestorías upload all active contracts, ClausulaAI monitors and alerts
+2. Multi-user workspaces with roles (admin/agent)
+3. White-label PDF with gestoría logo
+4. Contract generator (generador de contratos LAU)
+5. General legal chat (not contract-specific)
+6. Public API for Rentger/Homming integration
+
+### Phase 3 — Months 9-14
+**Target:** 100+ gestorías + 25.000€/month MRR
+
+**Features to build:**
+1. BOE automatic monitor (pg_cron + RSS)
+2. Zona tensionada detector by address
+3. Contratos de trabajo analysis (second document category)
+4. Annual alerts (email when contract turns 1 year old)
+5. Analytics dashboard for gestorías
+
+### Phase 4 — Months 15-24
+**Target:** Acquisition or investment round + 5-10M€ valuation
+
+**Features to build:**
+1. Official integration with Rentger/Homming
+2. Digital signature integration (Signaturit)
+3. Native iOS/Android app (Expo)
+4. International expansion (Portugal first)
+5. Proprietary scoring model from 50k+ analyzed contracts
+
+### Target Acquirers
+- **Primary:** Rentger (backed by Idealista), Homming
+- **Secondary:** Fotocasa, Idealista (portal integration)
+- **Tertiary:** Legal tech firms, proptech investment funds
+
+### Pricing Strategy
+- **B2C:** 3.99€ (single), 9.99€ (pack 3), 19€/month (Pro)
+- **B2B Phase 1:** 29€/month (Starter gestoría), 59€/month (Pro gestoría)
+- **B2B Phase 2:** 99€/month (Despacho), custom enterprise pricing

@@ -5,7 +5,7 @@ import {
   View,
   StyleSheet,
 } from '@react-pdf/renderer'
-import type { Analysis } from '@/types'
+import type { Analysis, PDFBranding } from '@/types'
 
 // ── Styles ────────────────────────────────────────────────────────────────────
 
@@ -160,7 +160,13 @@ const SCORE_LABELS: Record<string, string> = {
 
 // ── Component ─────────────────────────────────────────────────────────────────
 
-export default function AnalysisPDFReport({ analysis }: { analysis: Analysis }) {
+export default function AnalysisPDFReport({
+  analysis,
+  branding,
+}: {
+  analysis: Analysis
+  branding?: PDFBranding
+}) {
   const { result_json: result } = analysis
   const scoreColor = SCORE_COLORS[result.puntuacion] ?? { bg: '#f3f4f6', text: '#374151' }
 
@@ -168,13 +174,17 @@ export default function AnalysisPDFReport({ analysis }: { analysis: Analysis }) 
   const warnCount = result.clausulas.filter((c) => c.estado === 'advertencia').length
   const illegalCount = result.clausulas.filter((c) => c.estado === 'ilegal').length
 
+  const brandName = branding?.organizationName ?? 'ClausulaAI'
+  const brandColor = branding?.primaryColor ?? '#1a1a2e'
+  const footerDomain = branding ? (branding.contactEmail ?? brandName) : 'clausulaai.es'
+
   return (
-    <Document title={`Análisis — ${analysis.filename}`} author="ClausulaAI">
+    <Document title={`Análisis — ${analysis.filename}`} author={brandName}>
       <Page size="A4" style={s.page}>
 
         {/* Header */}
         <View style={s.header}>
-          <Text style={s.logo}>ClausulaAI</Text>
+          <Text style={[s.logo, { color: brandColor }]}>{brandName}</Text>
           <View>
             <Text style={s.headerMeta}>
               {new Date(analysis.created_at).toLocaleDateString('es-ES', {
@@ -249,7 +259,7 @@ export default function AnalysisPDFReport({ analysis }: { analysis: Analysis }) 
         <View style={s.footer} fixed>
           <Text style={s.footerText}>
             Análisis basado en LAU 29/1994 · Ley de Vivienda 12/2023 · RDL 9/2024 · Actualizado a {result.last_updated}
-            {'\n'}Este análisis no sustituye el asesoramiento legal profesional. clausulaai.es
+            {'\n'}Este análisis no sustituye el asesoramiento legal profesional. {footerDomain}
           </Text>
         </View>
 

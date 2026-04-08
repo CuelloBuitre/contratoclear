@@ -1,5 +1,4 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
-import Anthropic from 'https://esm.sh/@anthropic-ai/sdk@0.39.0'
 
 // ── Legal context (embedded — update this when laws change) ──────────────────
 const LEY_CONTEXT = `---
@@ -66,6 +65,35 @@ version: 1.3
 - Causas legítimas del arrendador: impago, subarriendo no autorizado, daños graves
 - La pérdida automática de fianza sin proceso judicial es discutible legalmente
 - El desahucio requiere siempre proceso judicial`
+
+// ── Retry helper ─────────────────────────────────────────────────────────────
+async function callClaudeWithRetry(body: object, maxRetries = 3): Promise<Response> {
+  let lastError: Error = new Error('Max retries exceeded')
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': Deno.env.get('ANTHROPIC_API_KEY') ?? '',
+          'anthropic-version': '2023-06-01',
+        },
+        body: JSON.stringify(body),
+      })
+      if (response.status === 429 && attempt < maxRetries) {
+        await new Promise(resolve => setTimeout(resolve, 5000 * attempt))
+        continue
+      }
+      return response
+    } catch (error) {
+      lastError = error instanceof Error ? error : new Error(String(error))
+      if (attempt < maxRetries) {
+        await new Promise(resolve => setTimeout(resolve, 5000 * attempt))
+      }
+    }
+  }
+  throw lastError
+}
 
 // ── Constants ────────────────────────────────────────────────────────────────
 const MAX_PDF_BYTES = 10 * 1024 * 1024  // 10 MB
@@ -215,12 +243,8 @@ Si el PDF no contiene texto extraíble (parece ser una imagen escaneada), devuel
   "recomendacion": "El documento parece ser una imagen escaneada y no contiene texto extraíble. Por favor, usa un PDF con texto seleccionable o solicita al arrendador una versión digital del contrato."
 }`
 
-    // ── 7. Call Claude API ────────────────────────────────────────────────────
-    const anthropic = new Anthropic({
-      apiKey: Deno.env.get('ANTHROPIC_API_KEY') ?? '',
-    })
-
-    const message = await anthropic.messages.create({
+    // ── 7. Call Claude API with retry ─────────────────────────────────────────
+    const claudeResponse = await callClaudeWithRetry({
       model: 'claude-sonnet-4-6',
       max_tokens: 4096,
       system: SYSTEM_PROMPT,
@@ -245,7 +269,16 @@ Si el PDF no contiene texto extraíble (parece ser una imagen escaneada), devuel
       ],
     })
 
-    const rawContent = message.content[0]
+    const claudeData = await claudeResponse.json() as {
+      content: Array<{ type: string; text: string }>
+      error?: { message: string }
+    }
+
+    if (claudeData.error) {
+      throw new Error(claudeData.error.message)
+    }
+
+    const rawContent = claudeData.content[0]
     if (rawContent.type !== 'text') {
       throw new Error('Unexpected Claude response type')
     }

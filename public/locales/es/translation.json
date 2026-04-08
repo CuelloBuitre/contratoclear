@@ -7,6 +7,9 @@
     "cta": "Analizar contrato",
     "dashboard": "Mis análisis",
     "history": "Historial",
+    "letters": "Cartas legales",
+    "legalChat": "Consulta LAU",
+    "monitor": "Monitor",
     "profile": "Mi perfil",
     "logout": "Cerrar sesión"
   },
@@ -67,7 +70,9 @@
         "Actualización de renta (índice INE)",
         "Gastos de gestión inmobiliaria",
         "Acceso del arrendador al inmueble",
-        "Cláusulas de resolución anticipada"
+        "Cláusulas de resolución anticipada",
+        "Cartas legales: reclamaciones, actualizaciones y preavisos",
+        "Consulta legal 24/7 — Resuelve cualquier duda sobre la LAU al instante, con el artículo exacto citado"
       ]
     },
     "why": {
@@ -436,6 +441,211 @@
     "dangerSection": "Zona de peligro",
     "signOutAllDesc": "Cierra la sesión en todos los dispositivos donde estés conectado.",
     "signOutAllButton": "Cerrar todas las sesiones"
+  },
+  "letters": {
+    "overline": "Plan Pro",
+    "title": "Generador de cartas legales",
+    "subtitle": "Cartas formales basadas en la LAU vigente, listas en segundos",
+    "generateButton": "Generar carta",
+    "generating": "Generando carta…",
+    "copyButton": "Copiar texto",
+    "copied": "¡Copiado!",
+    "downloadPdf": "Descargar PDF",
+    "newLetter": "Nueva carta",
+    "close": "Cerrar",
+    "proRequired": "Esta función requiere el plan Pro",
+    "proRequiredSub": "Genera cartas legales ilimitadas por 19€/mes",
+    "proRequiredCta": "Ver plan Pro",
+    "types": {
+      "impago": {
+        "title": "Reclamación de impago",
+        "description": "Carta formal de reclamación cuando el inquilino no paga la renta",
+        "badge": "Art. 27 LAU"
+      },
+      "actualizacion_renta": {
+        "title": "Actualización de renta",
+        "description": "Notifica al inquilino la actualización anual según el índice INE 2026",
+        "badge": "Art. 18 LAU"
+      },
+      "preaviso_no_renovacion": {
+        "title": "Preaviso de no renovación",
+        "description": "Comunica la no renovación del contrato con los plazos legales correctos",
+        "badge": "Art. 9 LAU"
+      },
+      "devolucion_fianza": {
+        "title": "Reclamación de fianza",
+        "description": "Exige la devolución de la fianza cuando el arrendador no la devuelve en plazo",
+        "badge": "Art. 36 LAU"
+      }
+    },
+    "fields": {
+      "ciudad": "Ciudad",
+      "nombre_arrendador": "Nombre del arrendador",
+      "nombre_inquilino": "Nombre del inquilino",
+      "direccion": "Dirección del inmueble",
+      "meses": "Meses impagados",
+      "importe": "Importe (€)",
+      "renta_actual": "Renta actual (€/mes)",
+      "renta_nueva": "Nueva renta (€/mes)",
+      "indice": "Índice INE (%)",
+      "fecha_efectiva": "Fecha efectiva",
+      "remitente": "El preaviso lo envía",
+      "remitente_arrendador": "El arrendador",
+      "remitente_inquilino": "El inquilino",
+      "nombre_remitente": "Nombre del remitente",
+      "nombre_destinatario": "Nombre del destinatario",
+      "fecha_vencimiento": "Fecha de vencimiento del contrato",
+      "fecha_entrega": "Fecha de entrega de llaves"
+    },
+    "loading": {
+      "step1": "Redactando la carta...",
+      "step2": "Aplicando normativa LAU vigente...",
+      "step3": "Añadiendo fundamento jurídico...",
+      "step4": "Revisando artículos aplicables...",
+      "step5": "Preparando el documento final...",
+      "hint": "Esto tarda unos 8 segundos",
+      "countdown": "~{{seconds}}s restantes",
+      "almostDone": "Casi listo..."
+    },
+    "preview": {
+      "edited": "Texto modificado",
+      "restore": "Restaurar original"
+    },
+    "actions": {
+      "copy": "Copiar texto",
+      "download": "Descargar PDF",
+      "new": "Nueva carta",
+      "confirmNew": "¿Descartar los cambios y generar una carta nueva?"
+    },
+    "errors": {
+      "pro_required": "Esta función requiere el plan Pro (19€/mes).",
+      "generic": "No se pudo generar la carta. Inténtalo de nuevo."
+    }
+  },
+  "rentCalculator": {
+    "overline": "Calculadora gratuita",
+    "title": "¿Cuánto puede subir tu alquiler este año?",
+    "subtitle": "Calcula el máximo legal según el índice INE vigente 2026. Gratis.",
+    "landingTitle": "¿Cuánto puede subir tu alquiler este año?",
+    "landingSubtitle": "Calcula el incremento máximo legal según el índice INE 2026. Gratis.",
+    "disclaimer": "Este cálculo es orientativo. Consulta con un profesional para decisiones legales.",
+    "fields": {
+      "rentaActual": "Renta actual (€/mes)",
+      "fechaFirma": "Mes y año de firma del contrato",
+      "afterLaw": "Contrato posterior al 26/05/2023 — se aplica índice INE",
+      "beforeLaw": "Contrato anterior al 26/05/2023 — consulta tu contrato"
+    },
+    "results": {
+      "rentaActual": "Renta actual",
+      "indice": "Índice INE aplicable",
+      "incremento": "Incremento máximo legal",
+      "rentaNueva": "Nueva renta máxima",
+      "legal": "Dentro de la legalidad — índice INE {{pct}}% vigente 2026",
+      "beforeLawNote": "Contrato firmado antes del 26/05/2023",
+      "checkContract": "Para contratos anteriores a la Ley 12/2023, consulta el índice pactado en tu contrato."
+    },
+    "cta": "¿Tu contrato tiene más cláusulas problemáticas? Analízalo — 3,99€",
+    "ctaLetter": "Generar carta de actualización de renta (Plan Pro)"
+  },
+  "legalChat": {
+    "overline": "Consulta gratuita",
+    "title": "Consulta legal LAU",
+    "subtitle": "Resuelve tus dudas sobre la Ley de Arrendamientos Urbanos",
+    "disclaimer": "Las respuestas son orientativas y no sustituyen asesoramiento legal profesional. Consulta un abogado para tu caso concreto.",
+    "aiLabel": "ClausulaAI Legal",
+    "emptyTitle": "¿Qué quieres saber sobre la LAU?",
+    "emptySubtitle": "Haz clic en una pregunta o escribe la tuya",
+    "placeholder": "Escribe tu pregunta sobre la LAU...",
+    "send": "Enviar",
+    "error": "Error al conectar. Inténtalo de nuevo.",
+    "unlimited": "Consultas ilimitadas",
+    "questionsLeft": "{{count}} consultas gratuitas restantes",
+    "questionsLeft_one": "{{count}} consulta gratuita restante",
+    "limitTitle": "Has alcanzado el límite de consultas gratuitas",
+    "limitSub": "Actualiza a Pro para consultas ilimitadas sobre la LAU.",
+    "limitCta": "Ver plan Pro — 19€/mes",
+    "suggested": {
+      "q1": "¿Cuánto tiempo tiene el arrendador para devolver la fianza?",
+      "q2": "¿Puede el arrendador entrar al piso sin avisar?",
+      "q3": "¿Qué pasa si quiero irme antes de que acabe el contrato?",
+      "q4": "¿Cuánto puede subir el alquiler este año?",
+      "q5": "¿Qué es una zona tensionada y cómo me afecta?",
+      "q6": "¿Puedo tener mascotas si el contrato no lo dice?",
+      "q7": "¿Quién paga los gastos de gestión inmobiliaria?",
+      "q8": "¿Qué debo hacer si mi arrendador no me devuelve la fianza?"
+    }
+  },
+  "monitor": {
+    "title": "Monitor de contratos",
+    "subtitle": "Supervisa el estado de todos tus contratos de alquiler activos",
+    "addContract": "Añadir contrato",
+    "proGate": {
+      "title": "Función exclusiva del plan Pro",
+      "subtitle": "El monitor de contratos está disponible para usuarios del plan Pro. Supervisa vencimientos y fianzas en un solo lugar.",
+      "cta": "Ver plan Pro"
+    },
+    "stats": {
+      "active": "Activos",
+      "expiringSoon": "Vencen pronto",
+      "depositsDue": "Fianzas pendientes"
+    },
+    "alert": {
+      "active": "Activo",
+      "expiringSoon": "Vence en {{days}} días",
+      "expired": "Vencido",
+      "depositDue": "Fianza pendiente"
+    },
+    "card": {
+      "rent": "Renta mensual",
+      "deposit": "Fianza",
+      "start": "Inicio",
+      "end": "Fin",
+      "depositReturned": "Fianza devuelta",
+      "edit": "Editar",
+      "delete": "Eliminar",
+      "confirmDelete": "¿Seguro?",
+      "deleteConfirm": "Sí, eliminar",
+      "deleteCancel": "Cancelar"
+    },
+    "empty": {
+      "title": "No tienes contratos registrados",
+      "subtitle": "Añade tus contratos activos para supervisar vencimientos y fianzas.",
+      "cta": "Añadir primer contrato"
+    },
+    "modal": {
+      "titleAdd": "Añadir contrato",
+      "titleEdit": "Editar contrato",
+      "close": "Cerrar",
+      "tenantName": "Nombre del inquilino",
+      "tenantNamePlaceholder": "Juan García",
+      "address": "Dirección del inmueble",
+      "addressPlaceholder": "Calle Mayor 10, 3ºB, Madrid",
+      "rentAmount": "Renta mensual",
+      "depositAmount": "Fianza",
+      "startDate": "Fecha de inicio",
+      "endDate": "Fecha de fin",
+      "depositReturned": "Fianza devuelta al inquilino",
+      "notes": "Notas",
+      "notesPlaceholder": "Observaciones sobre el contrato...",
+      "required": "Este campo es obligatorio",
+      "cancel": "Cancelar",
+      "save": "Guardar contrato",
+      "saveEdit": "Guardar cambios"
+    }
+  },
+  "organization": {
+    "sectionTitle": "Marca de gestoría",
+    "sectionSubtitle": "Personaliza los informes PDF con el nombre y colores de tu organización.",
+    "saveSuccess": "Configuración guardada correctamente",
+    "nameLabel": "Nombre de la gestoría",
+    "namePlaceholder": "Inmobiliaria García",
+    "nameRequired": "El nombre es obligatorio",
+    "emailLabel": "Email de contacto (aparece en el pie del PDF)",
+    "emailPlaceholder": "info@tugestoría.es",
+    "emailInvalid": "Introduce un email válido",
+    "colorLabel": "Color principal",
+    "colorHint": "Se usa en el encabezado del PDF. Formato hexadecimal, por ejemplo #1a1a2e.",
+    "save": "Guardar configuración"
   },
   "footer": {
     "tagline": "Análisis de contratos de alquiler con IA",

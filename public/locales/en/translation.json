@@ -7,6 +7,9 @@
     "cta": "Analyze contract",
     "dashboard": "My analyses",
     "history": "History",
+    "letters": "Legal letters",
+    "legalChat": "LAU Consultation",
+    "monitor": "Monitor",
     "profile": "My profile",
     "logout": "Sign out"
   },
@@ -80,7 +83,9 @@
         "Rent updates (INE index)",
         "Real estate management fees",
         "Landlord access to property",
-        "Early termination clauses"
+        "Early termination clauses",
+        "Legal letters: claims, updates and notices",
+        "24/7 legal consultation — Get instant answers about the LAU with exact article citations"
       ]
     },
     "upcoming": {
@@ -436,6 +441,211 @@
     "dangerSection": "Danger zone",
     "signOutAllDesc": "Sign out from all devices where you are currently logged in.",
     "signOutAllButton": "Sign out all sessions"
+  },
+  "letters": {
+    "overline": "Pro Plan",
+    "title": "Legal letter generator",
+    "subtitle": "Formal letters based on current LAU, ready in seconds",
+    "generateButton": "Generate letter",
+    "generating": "Generating letter…",
+    "copyButton": "Copy text",
+    "copied": "Copied!",
+    "downloadPdf": "Download PDF",
+    "newLetter": "New letter",
+    "close": "Close",
+    "proRequired": "This feature requires the Pro plan",
+    "proRequiredSub": "Generate unlimited legal letters for €19/month",
+    "proRequiredCta": "See Pro plan",
+    "types": {
+      "impago": {
+        "title": "Unpaid rent claim",
+        "description": "Formal claim letter when the tenant has not paid rent",
+        "badge": "Art. 27 LAU"
+      },
+      "actualizacion_renta": {
+        "title": "Rent update",
+        "description": "Notify the tenant of the annual rent update based on the 2026 INE index",
+        "badge": "Art. 18 LAU"
+      },
+      "preaviso_no_renovacion": {
+        "title": "Non-renewal notice",
+        "description": "Communicate non-renewal of the contract with the correct legal notice periods",
+        "badge": "Art. 9 LAU"
+      },
+      "devolucion_fianza": {
+        "title": "Deposit return claim",
+        "description": "Demand the return of the deposit when the landlord fails to return it on time",
+        "badge": "Art. 36 LAU"
+      }
+    },
+    "fields": {
+      "ciudad": "City",
+      "nombre_arrendador": "Landlord name",
+      "nombre_inquilino": "Tenant name",
+      "direccion": "Property address",
+      "meses": "Unpaid months",
+      "importe": "Amount (€)",
+      "renta_actual": "Current rent (€/month)",
+      "renta_nueva": "New rent (€/month)",
+      "indice": "INE index (%)",
+      "fecha_efectiva": "Effective date",
+      "remitente": "The notice is sent by",
+      "remitente_arrendador": "The landlord",
+      "remitente_inquilino": "The tenant",
+      "nombre_remitente": "Sender name",
+      "nombre_destinatario": "Recipient name",
+      "fecha_vencimiento": "Contract end date",
+      "fecha_entrega": "Key handover date"
+    },
+    "loading": {
+      "step1": "Drafting the letter...",
+      "step2": "Applying current LAU regulations...",
+      "step3": "Adding legal basis...",
+      "step4": "Reviewing applicable articles...",
+      "step5": "Preparing the final document...",
+      "hint": "This takes about 8 seconds",
+      "countdown": "~{{seconds}}s remaining",
+      "almostDone": "Almost done..."
+    },
+    "preview": {
+      "edited": "Text modified",
+      "restore": "Restore original"
+    },
+    "actions": {
+      "copy": "Copy text",
+      "download": "Download PDF",
+      "new": "New letter",
+      "confirmNew": "Discard changes and generate a new letter?"
+    },
+    "errors": {
+      "pro_required": "This feature requires the Pro plan (€19/month).",
+      "generic": "Could not generate the letter. Please try again."
+    }
+  },
+  "rentCalculator": {
+    "overline": "Free calculator",
+    "title": "How much can your rent increase this year?",
+    "subtitle": "Calculate the legal maximum based on the current INE index 2026. Free.",
+    "landingTitle": "How much can your rent increase this year?",
+    "landingSubtitle": "Calculate the legal maximum increase based on the 2026 INE index. Free.",
+    "disclaimer": "This calculation is indicative. Consult a professional for legal decisions.",
+    "fields": {
+      "rentaActual": "Current rent (€/month)",
+      "fechaFirma": "Contract signing month and year",
+      "afterLaw": "Contract signed after 26/05/2023 — INE index applies",
+      "beforeLaw": "Contract signed before 26/05/2023 — check your contract"
+    },
+    "results": {
+      "rentaActual": "Current rent",
+      "indice": "Applicable INE index",
+      "incremento": "Maximum legal increase",
+      "rentaNueva": "Maximum new rent",
+      "legal": "Within legal limits — INE index {{pct}}% in force 2026",
+      "beforeLawNote": "Contract signed before 26/05/2023",
+      "checkContract": "For contracts before Housing Act 12/2023, check the index agreed in your contract."
+    },
+    "cta": "Does your contract have more problematic clauses? Analyze it — €3.99",
+    "ctaLetter": "Generate rent update letter (Pro Plan)"
+  },
+  "legalChat": {
+    "overline": "Free consultation",
+    "title": "LAU Legal Consultation",
+    "subtitle": "Get answers to your questions about Spanish rental law",
+    "disclaimer": "Answers are informational only and do not replace professional legal advice. Consult a lawyer for your specific case.",
+    "aiLabel": "ClausulaAI Legal",
+    "emptyTitle": "What do you want to know about the LAU?",
+    "emptySubtitle": "Click a question or type your own",
+    "placeholder": "Type your question about the LAU...",
+    "send": "Send",
+    "error": "Connection error. Please try again.",
+    "unlimited": "Unlimited consultations",
+    "questionsLeft": "{{count}} free questions remaining",
+    "questionsLeft_one": "{{count}} free question remaining",
+    "limitTitle": "You've reached the free consultation limit",
+    "limitSub": "Upgrade to Pro for unlimited LAU consultations.",
+    "limitCta": "See Pro plan — €19/month",
+    "suggested": {
+      "q1": "How long does the landlord have to return the deposit?",
+      "q2": "Can the landlord enter the flat without notice?",
+      "q3": "What happens if I want to leave before the contract ends?",
+      "q4": "How much can rent increase this year?",
+      "q5": "What is a tensioned zone and how does it affect me?",
+      "q6": "Can I have pets if the contract doesn't say anything?",
+      "q7": "Who pays the real estate management fees?",
+      "q8": "What should I do if my landlord doesn't return my deposit?"
+    }
+  },
+  "monitor": {
+    "title": "Contract Monitor",
+    "subtitle": "Track the status of all your active rental contracts",
+    "addContract": "Add contract",
+    "proGate": {
+      "title": "Pro plan exclusive feature",
+      "subtitle": "The contract monitor is available for Pro plan users. Track expiries and deposits in one place.",
+      "cta": "View Pro plan"
+    },
+    "stats": {
+      "active": "Active",
+      "expiringSoon": "Expiring soon",
+      "depositsDue": "Deposits due"
+    },
+    "alert": {
+      "active": "Active",
+      "expiringSoon": "Expires in {{days}} days",
+      "expired": "Expired",
+      "depositDue": "Deposit due"
+    },
+    "card": {
+      "rent": "Monthly rent",
+      "deposit": "Deposit",
+      "start": "Start",
+      "end": "End",
+      "depositReturned": "Deposit returned",
+      "edit": "Edit",
+      "delete": "Delete",
+      "confirmDelete": "Are you sure?",
+      "deleteConfirm": "Yes, delete",
+      "deleteCancel": "Cancel"
+    },
+    "empty": {
+      "title": "No contracts registered",
+      "subtitle": "Add your active contracts to track expiries and deposits.",
+      "cta": "Add first contract"
+    },
+    "modal": {
+      "titleAdd": "Add contract",
+      "titleEdit": "Edit contract",
+      "close": "Close",
+      "tenantName": "Tenant name",
+      "tenantNamePlaceholder": "John Smith",
+      "address": "Property address",
+      "addressPlaceholder": "123 Main St, Apt 3B, Madrid",
+      "rentAmount": "Monthly rent",
+      "depositAmount": "Deposit",
+      "startDate": "Start date",
+      "endDate": "End date",
+      "depositReturned": "Deposit returned to tenant",
+      "notes": "Notes",
+      "notesPlaceholder": "Contract observations...",
+      "required": "This field is required",
+      "cancel": "Cancel",
+      "save": "Save contract",
+      "saveEdit": "Save changes"
+    }
+  },
+  "organization": {
+    "sectionTitle": "Agency branding",
+    "sectionSubtitle": "Customize PDF reports with your organization's name and colors.",
+    "saveSuccess": "Settings saved successfully",
+    "nameLabel": "Agency name",
+    "namePlaceholder": "Smith Real Estate",
+    "nameRequired": "Name is required",
+    "emailLabel": "Contact email (shown in PDF footer)",
+    "emailPlaceholder": "info@youragency.com",
+    "emailInvalid": "Enter a valid email",
+    "colorLabel": "Primary color",
+    "colorHint": "Used in PDF header. Hex format, e.g. #1a1a2e.",
+    "save": "Save settings"
   },
   "footer": {
     "tagline": "AI-powered rental contract analysis",

@@ -7,7 +7,9 @@ import AnalysisReport from '@/components/analysis/AnalysisReport'
 import ContractChat from '@/components/analysis/ContractChat'
 import ScoreBadge from '@/components/analysis/ScoreBadge'
 import { useAnalysis } from '@/queries/analyses'
-import type { Puntuacion } from '@/types'
+import { useProfile } from '@/queries/profile'
+import { useOrganization } from '@/queries/organization'
+import type { Puntuacion, PDFBranding } from '@/types'
 
 // ── Score header gradient ─────────────────────────────────────────────────────
 
@@ -24,6 +26,8 @@ export default function Analysis() {
   const { id } = useParams<{ id: string }>()
   const { t } = useTranslation()
   const { data: analysis, isLoading, error } = useAnalysis(id!)
+  const { data: profile } = useProfile()
+  const { data: organization } = useOrganization()
   const [copied, setCopied] = useState(false)
   const [isGenerating, setIsGenerating] = useState(false)
 
@@ -54,6 +58,16 @@ export default function Analysis() {
 
   const pdfFilename = `informe-${analysis.filename.replace(/\.pdf$/i, '')}.pdf`
 
+  const branding: PDFBranding | undefined =
+    organization && profile?.plan === 'pro'
+      ? {
+          organizationName: organization.name,
+          logoUrl: organization.logo_url ?? undefined,
+          primaryColor: organization.primary_color,
+          contactEmail: organization.contact_email ?? undefined,
+        }
+      : undefined
+
   async function handleDownload() {
     setIsGenerating(true)
     try {
@@ -61,7 +75,7 @@ export default function Analysis() {
         import('@react-pdf/renderer'),
         import('@/components/analysis/AnalysisPDFReport'),
       ])
-      const blob = await pdf(<AnalysisPDFReport analysis={analysis!} />).toBlob()
+      const blob = await pdf(<AnalysisPDFReport analysis={analysis!} branding={branding} />).toBlob()
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
       a.href = url

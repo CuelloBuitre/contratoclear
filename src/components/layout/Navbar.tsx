@@ -83,6 +83,9 @@ export default function Navbar({ variant }: { variant?: 'public' | 'app' }) {
 
   const isHistoryActive = pathname === '/history' || pathname.startsWith('/analysis/')
   const isDashboardActive = pathname === '/dashboard'
+  const isLettersActive = pathname === '/cartas'
+  const isLegalChatActive = pathname === '/consulta'
+  const isMonitorActive = pathname === '/monitor'
 
   // Scroll listener — only active on Landing
   useEffect(() => {
@@ -151,6 +154,34 @@ export default function Navbar({ variant }: { variant?: 'public' | 'app' }) {
               >
                 {t('nav.history')}
               </Link>
+              {profile?.plan === 'pro' && (
+                <Link
+                  to="/monitor"
+                  className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+                    isMonitorActive ? navLinkActive : navLinkColor
+                  }`}
+                >
+                  {t('nav.monitor')}
+                </Link>
+              )}
+              {profile?.plan === 'pro' && (
+                <Link
+                  to="/cartas"
+                  className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+                    isLettersActive ? navLinkActive : navLinkColor
+                  }`}
+                >
+                  {t('nav.letters')}
+                </Link>
+              )}
+              <Link
+                to="/consulta"
+                className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
+                  isLegalChatActive ? navLinkActive : navLinkColor
+                }`}
+              >
+                {t('nav.legalChat')}
+              </Link>
 
               {profile && (
                 <div className="ml-1">
@@ -187,6 +218,31 @@ export default function Navbar({ variant }: { variant?: 'public' | 'app' }) {
                       className="block px-3 py-2 text-sm font-medium text-[#0f0f1a] transition-colors hover:bg-[#fafaf8]"
                     >
                       {t('nav.history')}
+                    </Link>
+                    {profile?.plan === 'pro' && (
+                      <Link
+                        to="/monitor"
+                        onClick={() => setIsDropdownOpen(false)}
+                        className="block px-3 py-2 text-sm font-medium text-[#0f0f1a] transition-colors hover:bg-[#fafaf8]"
+                      >
+                        {t('nav.monitor')}
+                      </Link>
+                    )}
+                    {profile?.plan === 'pro' && (
+                      <Link
+                        to="/cartas"
+                        onClick={() => setIsDropdownOpen(false)}
+                        className="block px-3 py-2 text-sm font-medium text-[#0f0f1a] transition-colors hover:bg-[#fafaf8]"
+                      >
+                        {t('nav.letters')}
+                      </Link>
+                    )}
+                    <Link
+                      to="/consulta"
+                      onClick={() => setIsDropdownOpen(false)}
+                      className="block px-3 py-2 text-sm font-medium text-[#0f0f1a] transition-colors hover:bg-[#fafaf8]"
+                    >
+                      {t('nav.legalChat')}
                     </Link>
                     <Link
                       to="/profile"
@@ -292,6 +348,34 @@ export default function Navbar({ variant }: { variant?: 'public' | 'app' }) {
                 }`}
               >
                 {t('nav.history')}
+              </Link>
+              {profile?.plan === 'pro' && (
+                <Link
+                  to="/monitor"
+                  className={`block rounded-md px-3 py-2.5 text-sm font-medium transition-colors ${
+                    isMonitorActive ? 'bg-[#0f0f1a]/[0.06] text-[#0f0f1a]' : 'text-[#0f0f1a] hover:bg-[#fafaf8]'
+                  }`}
+                >
+                  {t('nav.monitor')}
+                </Link>
+              )}
+              {profile?.plan === 'pro' && (
+                <Link
+                  to="/cartas"
+                  className={`block rounded-md px-3 py-2.5 text-sm font-medium transition-colors ${
+                    isLettersActive ? 'bg-[#0f0f1a]/[0.06] text-[#0f0f1a]' : 'text-[#0f0f1a] hover:bg-[#fafaf8]'
+                  }`}
+                >
+                  {t('nav.letters')}
+                </Link>
+              )}
+              <Link
+                to="/consulta"
+                className={`block rounded-md px-3 py-2.5 text-sm font-medium transition-colors ${
+                  isLegalChatActive ? 'bg-[#0f0f1a]/[0.06] text-[#0f0f1a]' : 'text-[#0f0f1a] hover:bg-[#fafaf8]'
+                }`}
+              >
+                {t('nav.legalChat')}
               </Link>
               <Link
                 to="/profile"

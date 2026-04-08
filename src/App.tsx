@@ -21,6 +21,10 @@ const PaymentCancel   = lazy(() => import('@/pages/PaymentCancel'))
 const ForgotPassword  = lazy(() => import('@/pages/ForgotPassword'))
 const ResetPassword   = lazy(() => import('@/pages/ResetPassword'))
 const Profile         = lazy(() => import('@/pages/Profile'))
+const Letters         = lazy(() => import('@/pages/Letters'))
+const Calculadora     = lazy(() => import('@/pages/Calculadora'))
+const LegalChat       = lazy(() => import('@/pages/LegalChat'))
+const ContractMonitor = lazy(() => import('@/pages/ContractMonitor'))
 
 // ── Auth guard ────────────────────────────────────────────────────────────────
 
@@ -64,6 +68,7 @@ function AppRoutes() {
               <Route path="/terms"   element={<PublicLayout><Terms /></PublicLayout>} />
               <Route path="/payment/success" element={<PublicLayout><PaymentSuccess /></PublicLayout>} />
               <Route path="/payment/cancel"  element={<PublicLayout><PaymentCancel /></PublicLayout>} />
+              <Route path="/calculadora"     element={<PublicLayout><Calculadora /></PublicLayout>} />
 
               {/* Auth flows — full-screen, no Footer */}
               <Route path="/login"           element={<Login />} />
@@ -75,6 +80,9 @@ function AppRoutes() {
               <Route path="/analysis/:id" element={<RequireAuth><AppLayout><Analysis /></AppLayout></RequireAuth>} />
               <Route path="/history"      element={<RequireAuth><AppLayout><History /></AppLayout></RequireAuth>} />
               <Route path="/profile"      element={<RequireAuth><AppLayout><Profile /></AppLayout></RequireAuth>} />
+              <Route path="/cartas"      element={<RequireAuth><AppLayout><Letters /></AppLayout></RequireAuth>} />
+              <Route path="/consulta"    element={<RequireAuth><AppLayout><LegalChat /></AppLayout></RequireAuth>} />
+              <Route path="/monitor"     element={<RequireAuth><AppLayout><ContractMonitor /></AppLayout></RequireAuth>} />
 
               {/* 404 */}
               <Route path="*" element={<PublicLayout><NotFound /></PublicLayout>} />

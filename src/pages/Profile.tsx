@@ -6,6 +6,7 @@ import { Link } from 'react-router'
 import { useTranslation } from 'react-i18next'
 import { supabase } from '@/lib/supabase'
 import { useProfile } from '@/queries/profile'
+import { useOrganization, useUpsertOrganization } from '@/queries/organization'
 import { useAuthStore } from '@/store/useAppStore'
 import type { Plan } from '@/types'
 
@@ -17,6 +18,14 @@ const changePasswordSchema = z.object({
 })
 
 type ChangePasswordData = z.infer<typeof changePasswordSchema>
+
+const organizationSchema = z.object({
+  name: z.string().min(1),
+  primary_color: z.string().regex(/^#[0-9a-fA-F]{6}$/),
+  contact_email: z.string().email().optional().or(z.literal('')),
+})
+
+type OrganizationFormData = z.infer<typeof organizationSchema>
 
 // ── Password strength helpers ─────────────────────────────────────────────────
 
@@ -77,6 +86,118 @@ function CheckIcon({ met }: { met: boolean }) {
     <svg className="h-3.5 w-3.5 shrink-0 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <circle cx="12" cy="12" r="9" strokeWidth={2} />
     </svg>
+  )
+}
+
+// ── Page ──────────────────────────────────────────────────────────────────────
+
+// ── Organization branding section ─────────────────────────────────────────────
+
+function OrganizationSection() {
+  const { t } = useTranslation()
+  const { data: organization } = useOrganization()
+  const upsert = useUpsertOrganization()
+  const [orgSuccess, setOrgSuccess] = useState(false)
+
+  const {
+    register: registerOrg,
+    handleSubmit: handleOrgSubmit,
+    formState: { errors: orgErrors, isSubmitting: orgSubmitting },
+  } = useForm<OrganizationFormData>({
+    resolver: zodResolver(organizationSchema),
+    values: {
+      name: organization?.name ?? '',
+      primary_color: organization?.primary_color ?? '#1a1a2e',
+      contact_email: organization?.contact_email ?? '',
+    },
+  })
+
+  async function onOrgSubmit(data: OrganizationFormData) {
+    await upsert.mutateAsync({
+      name: data.name,
+      primary_color: data.primary_color,
+      contact_email: data.contact_email || null,
+      logo_url: organization?.logo_url ?? null,
+    })
+    setOrgSuccess(true)
+    setTimeout(() => setOrgSuccess(false), 3000)
+  }
+
+  return (
+    <div className="mb-4 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
+      <div className="mb-1 flex items-center gap-2">
+        <h2 className="text-base font-semibold text-gray-900">{t('organization.sectionTitle')}</h2>
+        <span className="inline-flex items-center rounded border border-[#c9a96e]/40 bg-[#c9a96e]/10 px-2 py-0.5 text-xs font-semibold text-[#0f0f1a]">
+          Pro
+        </span>
+      </div>
+      <p className="mb-4 text-sm text-gray-500">{t('organization.sectionSubtitle')}</p>
+
+      {orgSuccess && (
+        <div className="mb-4 flex items-center gap-2.5 rounded-xl border border-green-200 bg-green-50 px-4 py-3">
+          <svg className="h-4 w-4 shrink-0 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          </svg>
+          <p className="text-sm text-green-700">{t('organization.saveSuccess')}</p>
+        </div>
+      )}
+
+      <form onSubmit={handleOrgSubmit(onOrgSubmit)} noValidate className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700">{t('organization.nameLabel')}</label>
+          <input
+            {...registerOrg('name')}
+            placeholder={t('organization.namePlaceholder')}
+            className="mt-1.5 block w-full rounded-xl border border-gray-200 bg-gray-50 px-3.5 py-2.5 text-sm placeholder-gray-400 focus:border-[#1a1a2e] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1a1a2e]/10"
+          />
+          {orgErrors.name && (
+            <p className="mt-1 text-xs text-red-600">{t('organization.nameRequired')}</p>
+          )}
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700">{t('organization.emailLabel')}</label>
+          <input
+            {...registerOrg('contact_email')}
+            type="email"
+            placeholder={t('organization.emailPlaceholder')}
+            className="mt-1.5 block w-full rounded-xl border border-gray-200 bg-gray-50 px-3.5 py-2.5 text-sm placeholder-gray-400 focus:border-[#1a1a2e] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1a1a2e]/10"
+          />
+          {orgErrors.contact_email && (
+            <p className="mt-1 text-xs text-red-600">{t('organization.emailInvalid')}</p>
+          )}
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700">{t('organization.colorLabel')}</label>
+          <div className="mt-1.5 flex items-center gap-3">
+            <input
+              {...registerOrg('primary_color')}
+              type="color"
+              className="h-10 w-10 cursor-pointer rounded-lg border border-gray-200 p-1"
+            />
+            <input
+              {...registerOrg('primary_color')}
+              type="text"
+              placeholder="#1a1a2e"
+              className="block w-full rounded-xl border border-gray-200 bg-gray-50 px-3.5 py-2.5 text-sm font-mono placeholder-gray-400 focus:border-[#1a1a2e] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1a1a2e]/10"
+            />
+          </div>
+          <p className="mt-1 text-xs text-gray-400">{t('organization.colorHint')}</p>
+        </div>
+
+        <button
+          type="submit"
+          disabled={orgSubmitting}
+          className="flex items-center justify-center gap-2 rounded-xl bg-[#1a1a2e] px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+        >
+          {orgSubmitting && (
+            <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+          )}
+          {t('organization.save')}
+        </button>
+      </form>
+    </div>
   )
 }
 
@@ -425,6 +546,9 @@ export default function Profile() {
               </form>
             )}
           </div>
+
+          {/* ── Organization branding (Pro only) ─────────────────────────── */}
+          {profile.plan === 'pro' && <OrganizationSection />}
 
           {/* ── Danger zone ───────────────────────────────────────────────── */}
           <div className="rounded-2xl border border-red-200 bg-white p-5 shadow-sm sm:p-6">

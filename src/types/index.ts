@@ -35,3 +35,34 @@ export interface Analysis {
   law_version: string
   created_at: string
 }
+
+export interface Contract {
+  id: string
+  user_id: string
+  tenant_name: string
+  property_address: string
+  rent_amount: number
+  contract_start: string   // ISO date string
+  contract_end: string | null
+  deposit_amount: number
+  deposit_returned: boolean
+  notes: string | null
+  created_at: string
+  updated_at: string
+}
+
+export interface Organization {
+  id: string
+  name: string
+  logo_url: string | null
+  primary_color: string
+  contact_email: string | null
+  updated_at: string
+}
+
+export interface PDFBranding {
+  organizationName: string
+  logoUrl?: string
+  primaryColor: string
+  contactEmail?: string
+}

@@ -106,10 +106,10 @@ export default function RentCalculator() {
 
           {/* 5-year — THE WOW NUMBER */}
           <div className="rounded-2xl border border-white/25 bg-white/10 px-6 py-10 text-center">
-            <p className="text-sm font-semibold text-white/60">{t('calculator.fiveYears')}</p>
+            <p className="text-xs text-white/50" style={{ fontFamily: "'Inter', sans-serif" }}>{t('calculator.fiveYears')}</p>
             <p
-              className="mt-4 text-6xl font-extrabold tabular-nums text-white sm:text-7xl"
-              style={{ fontFamily: "'DM Serif Display', serif" }}
+              className="mt-4 text-6xl tabular-nums text-white sm:text-7xl"
+              style={{ fontFamily: "'Playfair Display', serif", fontWeight: 500 }}
             >
               {fmt(displayedFiveYears)}€
             </p>

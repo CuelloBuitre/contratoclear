@@ -1,6 +1,7 @@
 export type Plan = 'none' | 'single' | 'pack' | 'pro'
 export type ClauseStatus = 'ok' | 'advertencia' | 'ilegal'
 export type Puntuacion = 'buena' | 'aceptable' | 'mala' | 'error'
+export type UserType = 'inquilino' | 'propietario' | 'profesional'
 
 export interface Clause {
   titulo: string
@@ -23,6 +24,8 @@ export interface Profile {
   credits_remaining: number
   credits_expiry: string | null
   stripe_customer_id: string | null
+  user_type: UserType
+  onboarding_completed: boolean
   created_at: string
 }
 

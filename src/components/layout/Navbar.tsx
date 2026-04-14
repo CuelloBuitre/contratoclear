@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useAuthStore } from '@/store/useAppStore'
 import { useAuth } from '@/hooks/useAuth'
 import { useProfile } from '@/queries/profile'
+import type { UserType } from '@/types'
 
 // ── Logo ──────────────────────────────────────────────────────────────────────
 
@@ -81,11 +82,16 @@ export default function Navbar({ variant }: { variant?: 'public' | 'app' }) {
   const isLanding = pathname === '/'
   const isTransparent = isLanding && !scrolled && !showAuthNav
 
-  const isHistoryActive = pathname === '/history' || pathname.startsWith('/analysis/')
   const isDashboardActive = pathname === '/dashboard'
   const isLettersActive = pathname === '/cartas'
   const isLegalChatActive = pathname === '/consulta'
   const isMonitorActive = pathname === '/monitor'
+
+  const userType: UserType = profile?.user_type ?? 'inquilino'
+
+  // Determine which nav links to show based on user type
+  const showMonitor = userType === 'propietario' || userType === 'profesional'
+  const showLetters = userType === 'propietario' || userType === 'profesional'
 
   // Scroll listener — only active on Landing
   useEffect(() => {
@@ -146,15 +152,7 @@ export default function Navbar({ variant }: { variant?: 'public' | 'app' }) {
               >
                 {t('nav.dashboard')}
               </Link>
-              <Link
-                to="/history"
-                className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
-                  isHistoryActive ? navLinkActive : navLinkColor
-                }`}
-              >
-                {t('nav.history')}
-              </Link>
-              {profile?.plan === 'pro' && (
+              {showMonitor && (
                 <Link
                   to="/monitor"
                   className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
@@ -164,7 +162,7 @@ export default function Navbar({ variant }: { variant?: 'public' | 'app' }) {
                   {t('nav.monitor')}
                 </Link>
               )}
-              {profile?.plan === 'pro' && (
+              {showLetters && (
                 <Link
                   to="/cartas"
                   className={`rounded-md px-3 py-2 text-sm font-medium transition-colors ${
@@ -212,14 +210,7 @@ export default function Navbar({ variant }: { variant?: 'public' | 'app' }) {
                     >
                       {t('nav.dashboard')}
                     </Link>
-                    <Link
-                      to="/history"
-                      onClick={() => setIsDropdownOpen(false)}
-                      className="block px-3 py-2 text-sm font-medium text-[#0f0f1a] transition-colors hover:bg-[#fafaf8]"
-                    >
-                      {t('nav.history')}
-                    </Link>
-                    {profile?.plan === 'pro' && (
+                    {showMonitor && (
                       <Link
                         to="/monitor"
                         onClick={() => setIsDropdownOpen(false)}
@@ -228,7 +219,7 @@ export default function Navbar({ variant }: { variant?: 'public' | 'app' }) {
                         {t('nav.monitor')}
                       </Link>
                     )}
-                    {profile?.plan === 'pro' && (
+                    {showLetters && (
                       <Link
                         to="/cartas"
                         onClick={() => setIsDropdownOpen(false)}
@@ -341,15 +332,7 @@ export default function Navbar({ variant }: { variant?: 'public' | 'app' }) {
               >
                 {t('nav.dashboard')}
               </Link>
-              <Link
-                to="/history"
-                className={`block rounded-md px-3 py-2.5 text-sm font-medium transition-colors ${
-                  isHistoryActive ? 'bg-[#0f0f1a]/[0.06] text-[#0f0f1a]' : 'text-[#0f0f1a] hover:bg-[#fafaf8]'
-                }`}
-              >
-                {t('nav.history')}
-              </Link>
-              {profile?.plan === 'pro' && (
+              {showMonitor && (
                 <Link
                   to="/monitor"
                   className={`block rounded-md px-3 py-2.5 text-sm font-medium transition-colors ${
@@ -359,7 +342,7 @@ export default function Navbar({ variant }: { variant?: 'public' | 'app' }) {
                   {t('nav.monitor')}
                 </Link>
               )}
-              {profile?.plan === 'pro' && (
+              {showLetters && (
                 <Link
                   to="/cartas"
                   className={`block rounded-md px-3 py-2.5 text-sm font-medium transition-colors ${

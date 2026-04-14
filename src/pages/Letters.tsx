@@ -121,6 +121,11 @@ function Field({ label, error, children }: FieldProps) {
 const inputClass =
   'w-full rounded-lg border border-[#e8e4dd] bg-white px-3 py-2.5 text-sm text-[#0f0f1a] placeholder-[#b0a898] outline-none transition-colors focus:border-[#c9a96e] focus:ring-2 focus:ring-[#c9a96e]/20'
 
+// Helper to get today's date in YYYY-MM-DD format
+function getTodayDate(): string {
+  return new Date().toISOString().split('T')[0]
+}
+
 // ── Form schemas ──────────────────────────────────────────────────────────────
 
 const impagoSchema = z.object({
@@ -339,7 +344,7 @@ function ActualizacionRentaForm({ onSubmit, isLoading }: {
             placeholder="2.2" />
         </Field>
         <Field label={t('letters.fields.fecha_efectiva')} error={errors.fecha_efectiva?.message}>
-          <input {...register('fecha_efectiva')} type="date" className={inputClass} />
+          <input {...register('fecha_efectiva')} type="date" min={getTodayDate()} className={inputClass} />
         </Field>
       </div>
       <SubmitButton isLoading={isLoading} />
@@ -388,7 +393,7 @@ function PreavisoForm({ onSubmit, isLoading }: {
           placeholder="Calle, número, piso, ciudad" />
       </Field>
       <Field label={t('letters.fields.fecha_vencimiento')} error={errors.fecha_vencimiento?.message}>
-        <input {...register('fecha_vencimiento')} type="date" className={inputClass} />
+        <input {...register('fecha_vencimiento')} type="date" min={getTodayDate()} className={inputClass} />
       </Field>
       <SubmitButton isLoading={isLoading} />
     </form>
@@ -427,7 +432,7 @@ function DevolucionFianzaForm({ onSubmit, isLoading }: {
             placeholder="Ej. 800" />
         </Field>
         <Field label={t('letters.fields.fecha_entrega')} error={errors.fecha_entrega?.message}>
-          <input {...register('fecha_entrega')} type="date" className={inputClass} />
+          <input {...register('fecha_entrega')} type="date" min={getTodayDate()} className={inputClass} />
         </Field>
       </div>
       <SubmitButton isLoading={isLoading} />

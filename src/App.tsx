@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-route
 import { Suspense, lazy, useEffect } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { useAuthStore } from '@/store/useAppStore'
+import { useProfile } from '@/queries/profile'
 import CookieBanner from '@/components/CookieBanner'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import PublicLayout from '@/components/layout/PublicLayout'
@@ -10,6 +11,7 @@ import AppLayout from '@/components/layout/AppLayout'
 const Landing        = lazy(() => import('@/pages/Landing'))
 const Pricing        = lazy(() => import('@/pages/Pricing'))
 const Login          = lazy(() => import('@/pages/Login'))
+const Onboarding     = lazy(() => import('@/pages/Onboarding'))
 const Dashboard      = lazy(() => import('@/pages/Dashboard'))
 const Analysis       = lazy(() => import('@/pages/Analysis'))
 const History        = lazy(() => import('@/pages/History'))
@@ -35,6 +37,20 @@ function RequireAuth({ children }: { children: React.ReactNode }) {
   if (isLoading) return null
 
   if (!user) return <Navigate to="/login" replace />
+  return <>{children}</>
+}
+
+function RequireOnboarding({ children }: { children: React.ReactNode }) {
+  const user = useAuthStore((s) => s.user)
+  const isLoading = useAuthStore((s) => s.isLoading)
+  const { data: profile, isLoading: profileLoading } = useProfile()
+
+  if (isLoading || profileLoading) return null
+
+  if (!user) return <Navigate to="/login" replace />
+
+  if (!profile?.onboarding_completed) return <Navigate to="/onboarding" replace />
+
   return <>{children}</>
 }
 
@@ -74,15 +90,16 @@ function AppRoutes() {
               <Route path="/login"           element={<Login />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/reset-password"  element={<ResetPassword />} />
+              <Route path="/onboarding"      element={<RequireAuth><Onboarding /></RequireAuth>} />
 
               {/* Protected — with app background, no Footer */}
-              <Route path="/dashboard"    element={<RequireAuth><AppLayout><Dashboard /></AppLayout></RequireAuth>} />
-              <Route path="/analysis/:id" element={<RequireAuth><AppLayout><Analysis /></AppLayout></RequireAuth>} />
-              <Route path="/history"      element={<RequireAuth><AppLayout><History /></AppLayout></RequireAuth>} />
-              <Route path="/profile"      element={<RequireAuth><AppLayout><Profile /></AppLayout></RequireAuth>} />
-              <Route path="/cartas"      element={<RequireAuth><AppLayout><Letters /></AppLayout></RequireAuth>} />
-              <Route path="/consulta"    element={<RequireAuth><AppLayout><LegalChat /></AppLayout></RequireAuth>} />
-              <Route path="/monitor"     element={<RequireAuth><AppLayout><ContractMonitor /></AppLayout></RequireAuth>} />
+              <Route path="/dashboard"    element={<RequireOnboarding><AppLayout><Dashboard /></AppLayout></RequireOnboarding>} />
+              <Route path="/analysis/:id" element={<RequireOnboarding><AppLayout><Analysis /></AppLayout></RequireOnboarding>} />
+              <Route path="/history"      element={<RequireOnboarding><AppLayout><History /></AppLayout></RequireOnboarding>} />
+              <Route path="/profile"      element={<RequireOnboarding><AppLayout><Profile /></AppLayout></RequireOnboarding>} />
+              <Route path="/cartas"      element={<RequireOnboarding><AppLayout><Letters /></AppLayout></RequireOnboarding>} />
+              <Route path="/consulta"    element={<RequireOnboarding><AppLayout><LegalChat /></AppLayout></RequireOnboarding>} />
+              <Route path="/monitor"     element={<RequireOnboarding><AppLayout><ContractMonitor /></AppLayout></RequireOnboarding>} />
 
               {/* 404 */}
               <Route path="*" element={<PublicLayout><NotFound /></PublicLayout>} />

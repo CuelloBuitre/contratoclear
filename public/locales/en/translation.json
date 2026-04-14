@@ -270,6 +270,41 @@
     "errorGeneric": "Could not update the password. Please try again.",
     "backToForgot": "Request a new link"
   },
+  "onboarding": {
+    "headline": "How will you use ClausulaAI?",
+    "subtitle": "We'll customize your experience based on your needs",
+    "continue": "Continue",
+    "skip": "Skip for now"
+  },
+  "userType": {
+    "inquilino": {
+      "title": "I'm a tenant",
+      "description": "I'm about to sign a rental contract and want to make sure it's legal",
+      "highlights": [
+        "Contract analysis",
+        "Legal chat",
+        "Rent calculator"
+      ]
+    },
+    "propietario": {
+      "title": "I'm a landlord",
+      "description": "I rent out my property and want legal protection",
+      "highlights": [
+        "Contract generator",
+        "Legal letters",
+        "Rent updates"
+      ]
+    },
+    "profesional": {
+      "title": "I'm a professional",
+      "description": "I manage rental contracts for multiple clients",
+      "highlights": [
+        "Contract monitor",
+        "Multi-user",
+        "White-label PDF"
+      ]
+    }
+  },
   "dashboard": {
     "title": "Analyze contract",
     "subtitle": "Upload your PDF contract and get the analysis in seconds.",
@@ -279,7 +314,27 @@
     "noCredits": "You have no analyses available.",
     "getMore": "Get more",
     "proPlan": "Pro plan — unlimited analyses",
-    "trustNote": "Analysis based on current LAU · Updated March 2026"
+    "trustNote": "Analysis based on current LAU · Updated March 2026",
+    "quickLinks": "Quick access",
+    "inquilino": {
+      "welcome": "Protect your rights",
+      "subtitle": "Analyze your contract to detect illegal clauses",
+      "calculadora": "Rent calculator",
+      "tip": "Illegal clauses are void even if you've signed them"
+    },
+    "propietario": {
+      "welcome": "Manage your rentals",
+      "subtitle": "With legal tools to protect your investment",
+      "cartas": "Generate legal letters",
+      "calculadora": "Update calculator",
+      "tip": "Update your tenants' rent correctly using the 2026 INE index"
+    },
+    "profesional": {
+      "welcome": "Your legal copilot",
+      "subtitle": "For professional real estate portfolio management",
+      "cartas": "Generate legal letters",
+      "tip": "Set up white-label PDF to deliver reports with your branding"
+    }
   },
   "upload": {
     "title": "Drag your contract here",

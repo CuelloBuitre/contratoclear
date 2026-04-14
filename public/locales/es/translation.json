@@ -270,6 +270,41 @@
     "errorGeneric": "No se pudo actualizar la contraseña. Inténtalo de nuevo.",
     "backToForgot": "Solicitar nuevo enlace"
   },
+  "onboarding": {
+    "headline": "¿Cómo vas a usar ClausulaAI?",
+    "subtitle": "Personalizaremos tu experiencia según tus necesidades",
+    "continue": "Continuar",
+    "skip": "Omitir por ahora"
+  },
+  "userType": {
+    "inquilino": {
+      "title": "Soy inquilino",
+      "description": "Voy a firmar un contrato de alquiler y quiero asegurarme de que es legal",
+      "highlights": [
+        "Análisis de contratos",
+        "Chat legal",
+        "Calculadora de renta"
+      ]
+    },
+    "propietario": {
+      "title": "Soy propietario",
+      "description": "Alquilo mi vivienda y quiero protegerme legalmente",
+      "highlights": [
+        "Generador de contratos",
+        "Cartas legales",
+        "Actualización de renta"
+      ]
+    },
+    "profesional": {
+      "title": "Soy profesional",
+      "description": "Gestiono contratos de alquiler para varios clientes",
+      "highlights": [
+        "Monitor de contratos",
+        "Multi-usuario",
+        "White-label PDF"
+      ]
+    }
+  },
   "dashboard": {
     "title": "Analizar contrato",
     "subtitle": "Sube tu contrato en PDF y recibe el análisis en segundos.",
@@ -279,7 +314,27 @@
     "noCredits": "No tienes análisis disponibles.",
     "getMore": "Obtener más",
     "proPlan": "Plan Pro — análisis ilimitados",
-    "trustNote": "Análisis basado en la LAU vigente · Actualizado a marzo 2026"
+    "trustNote": "Análisis basado en la LAU vigente · Actualizado a marzo 2026",
+    "quickLinks": "Accesos rápidos",
+    "inquilino": {
+      "welcome": "Protege tus derechos",
+      "subtitle": "Analiza tu contrato para detectar cláusulas ilegales",
+      "calculadora": "Calculadora de renta",
+      "tip": "Las cláusulas ilegales son nulas aunque las hayas firmado"
+    },
+    "propietario": {
+      "welcome": "Gestiona tus alquileres",
+      "subtitle": "Con herramientas legales para proteger tu inversión",
+      "cartas": "Generar cartas legales",
+      "calculadora": "Calculadora de actualización",
+      "tip": "Actualiza la renta de tus inquilinos correctamente con el índice INE 2026"
+    },
+    "profesional": {
+      "welcome": "Tu copiloto legal",
+      "subtitle": "Para gestión profesional de carteras inmobiliarias",
+      "cartas": "Generar cartas legales",
+      "tip": "Configura el white-label PDF para entregar informes con tu marca"
+    }
   },
   "upload": {
     "title": "Arrastra tu contrato aquí",

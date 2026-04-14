@@ -323,6 +323,33 @@ create policy "edge function can insert analyses"
 4. On success: invalidate `analysisKeys.list()` → navigate to `/analysis/:id`
 5. `Analysis` page fetches result from DB via TanStack Query
 
+### User Type Differentiation & Onboarding
+After signup, users see the `/onboarding` page ONCE to select their user type:
+
+**Three user types:**
+- `inquilino` (tenant): Focused on contract analysis + rent calculator + legal chat
+- `propietario` (landlord): Focused on contract generator + letters + rent updates + monitor
+- `profesional` (professional): Focused on contract monitor + bulk management + white-label PDFs
+
+**Flow:**
+1. User registers → profile created with defaults (`user_type: 'inquilino'`, `onboarding_completed: false`)
+2. After login, `RequireOnboarding` guard checks `profile.onboarding_completed`
+3. If false → redirects to `/onboarding` (full-screen page with 3 selectable cards)
+4. User selects type → updates profile (`user_type`, `onboarding_completed: true`)
+5. Redirects to `/dashboard` which shows type-specific content
+
+**Differentiated Dashboard:**
+- `inquilino`: Upload zone + quick links (Calculadora, Legal Chat, History)
+- `propietario`: Upload zone + quick links (Cartas, Calculadora, Monitor, Legal Chat)
+- `profesional`: Upload zone + quick links (Monitor, Cartas, Legal Chat) + stats row
+
+**Navbar differentiation:**
+- All users can access all routes
+- Navbar shows/hides links based on `user_type`:
+  - `inquilino`: Dashboard, History, Legal Chat (no Monitor/Letters)
+  - `propietario`: Dashboard, Monitor, Letters, Legal Chat
+  - `profesional`: Dashboard, Monitor, Letters, Legal Chat
+
 ---
 
 ## TypeScript Types
@@ -348,6 +375,8 @@ export interface AnalysisResult {
   recomendacion: string
 }
 
+export type UserType = 'inquilino' | 'propietario' | 'profesional'
+
 export interface Profile {
   id: string
   email: string
@@ -355,6 +384,8 @@ export interface Profile {
   credits_remaining: number
   credits_expiry: string | null
   stripe_customer_id: string | null
+  user_type: UserType
+  onboarding_completed: boolean
   created_at: string
 }
 
@@ -713,6 +744,7 @@ export default defineConfig({
 - [x] Retry logic on Claude API calls (callClaudeWithRetry in analyze-contract + generate-letter)
 - [x] Rent update calculator (RentUpdateCalculator component + /calculadora route)
 - [x] Legal Chat — Edge Function legal-chat + /consulta page + useLegalChat hook (5 free questions, Pro unlimited)
+- [x] User type differentiation (inquilino/propietario/profesional + onboarding flow)
 - [ ] Connection pooling enabled in Supabase dashboard (manual step — Dashboard → Settings → Database → Connection pooling / PgBouncer)
 - [ ] Stripe live mode configured
 - [ ] clausulaai.es domain connected to Vercel

@@ -1,9 +1,11 @@
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router'
+import { FileText, BarChart3, MessageSquare, TrendingUp } from 'lucide-react'
 import UploadZone from '@/components/analysis/UploadZone'
 import AnalysisLoader from '@/components/analysis/AnalysisLoader'
 import { useProfile } from '@/queries/profile'
 import { useUploadStore, useAuthStore } from '@/store/useAppStore'
+import type { UserType } from '@/types'
 
 function hasActiveCredits(profile: { plan: string; credits_remaining: number; credits_expiry: string | null }): boolean {
   if (profile.plan === 'pro') return true
@@ -52,6 +54,45 @@ function CreditsBadge({ plan, credits, expiry }: { plan: string; credits: number
   return null
 }
 
+interface QuickLinkCard {
+  icon: React.ReactNode
+  label: string
+  href: string
+  description: string
+}
+
+function QuickLinks({ links }: { links: QuickLinkCard[] }) {
+  return (
+    <div className="grid gap-4 grid-cols-1 sm:grid-cols-2">
+      {links.map((link) => (
+        <Link
+          key={link.href}
+          to={link.href}
+          className="flex items-start gap-3 rounded-lg border border-[#e8e4dd] bg-white p-4 transition-all hover:shadow-md hover:border-[#c9a96e]/40"
+          style={{ boxShadow: '0 1px 2px rgba(15,15,26,0.06)' }}
+        >
+          <div className="flex-shrink-0 text-[#c9a96e]">{link.icon}</div>
+          <div className="flex-1 min-w-0">
+            <h3 className="text-sm font-semibold text-[#0f0f1a]">{link.label}</h3>
+            <p className="mt-0.5 text-xs text-[#6b6860]">{link.description}</p>
+          </div>
+        </Link>
+      ))}
+    </div>
+  )
+}
+
+function TipSection({ tip }: { tip: string }) {
+  return (
+    <div className="rounded-lg border border-blue-200 bg-blue-50 p-4">
+      <p className="text-sm text-blue-900">
+        <span className="font-semibold">¿Sabías que? </span>
+        {tip}
+      </p>
+    </div>
+  )
+}
+
 export default function Dashboard() {
   const { t } = useTranslation()
   const { data: profile, isLoading } = useProfile()
@@ -61,6 +102,38 @@ export default function Dashboard() {
   const isAnalyzing = uploadStatus === 'uploading' || uploadStatus === 'analyzing'
 
   const firstName = user?.email?.split('@')[0] ?? null
+  const userType: UserType = profile?.user_type ?? 'inquilino'
+
+  // Determine content based on user type
+  const getWelcomeMessage = () => {
+    return t(`dashboard.${userType}.welcome`)
+  }
+
+  const getQuickLinks = (): QuickLinkCard[] => {
+    const baseLinks: Record<UserType, QuickLinkCard[]> = {
+      inquilino: [
+        { icon: <TrendingUp className="h-5 w-5" />, label: t('dashboard.inquilino.calculadora'), href: '/calculadora', description: 'Calcula el aumento legal de tu renta' },
+        { icon: <MessageSquare className="h-5 w-5" />, label: t('nav.legalChat'), href: '/consulta', description: 'Resuelve tus dudas sobre LAU' },
+        { icon: <FileText className="h-5 w-5" />, label: t('nav.history'), href: '/history', description: 'Ver tus análisis anteriores' },
+      ],
+      propietario: [
+        { icon: <FileText className="h-5 w-5" />, label: t('dashboard.propietario.cartas'), href: '/cartas', description: 'Genera cartas legales' },
+        { icon: <TrendingUp className="h-5 w-5" />, label: t('dashboard.propietario.calculadora'), href: '/calculadora', description: 'Calcula actualización de renta' },
+        { icon: <MessageSquare className="h-5 w-5" />, label: t('nav.legalChat'), href: '/consulta', description: 'Consulta legal sobre LAU' },
+        { icon: <BarChart3 className="h-5 w-5" />, label: t('nav.monitor'), href: '/monitor', description: 'Gestiona tus contratos' },
+      ],
+      profesional: [
+        { icon: <BarChart3 className="h-5 w-5" />, label: t('nav.monitor'), href: '/monitor', description: 'Monitor de contratos activos' },
+        { icon: <FileText className="h-5 w-5" />, label: t('dashboard.profesional.cartas'), href: '/cartas', description: 'Genera cartas legales' },
+        { icon: <MessageSquare className="h-5 w-5" />, label: t('nav.legalChat'), href: '/consulta', description: 'Consulta legal LAU' },
+      ],
+    }
+    return baseLinks[userType]
+  }
+
+  const getTip = () => {
+    return t(`dashboard.${userType}.tip`)
+  }
 
   return (
     <div className="flex-1">
@@ -70,10 +143,10 @@ export default function Dashboard() {
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
               <h1 className="text-xl font-bold text-[#0f0f1a]">
-                {firstName ? `${t('dashboard.title')}, ${firstName}` : t('dashboard.title')}
+                {firstName ? `${getWelcomeMessage()}, ${firstName}` : getWelcomeMessage()}
               </h1>
               <p className="mt-0.5 text-sm text-[#6b6860]">
-                {t('dashboard.subtitle')}
+                {t(`dashboard.${userType}.subtitle`)}
               </p>
             </div>
 
@@ -95,10 +168,22 @@ export default function Dashboard() {
             <div className="h-7 w-7 animate-spin rounded-full border-2 border-[#c9a96e] border-t-transparent" />
           </div>
         ) : creditsActive ? (
-          <div className="overflow-hidden rounded-lg border border-[#e8e4dd] bg-white"
-               style={{ boxShadow: '0 1px 3px rgba(15,15,26,0.08)' }}>
-            {isAnalyzing ? <AnalysisLoader /> : <div className="p-6 sm:p-8"><UploadZone /></div>}
-          </div>
+          <>
+            {/* Upload zone */}
+            <div className="overflow-hidden rounded-lg border border-[#e8e4dd] bg-white mb-8"
+                 style={{ boxShadow: '0 1px 3px rgba(15,15,26,0.08)' }}>
+              {isAnalyzing ? <AnalysisLoader /> : <div className="p-6 sm:p-8"><UploadZone /></div>}
+            </div>
+
+            {/* Quick links */}
+            <div className="mb-8">
+              <h2 className="mb-4 text-base font-semibold text-[#0f0f1a]">{t('dashboard.quickLinks')}</h2>
+              <QuickLinks links={getQuickLinks()} />
+            </div>
+
+            {/* Tip */}
+            <TipSection tip={getTip()} />
+          </>
         ) : (
           /* No credits state */
           <div className="rounded-lg border border-[#e8e4dd] bg-white p-8 text-center"

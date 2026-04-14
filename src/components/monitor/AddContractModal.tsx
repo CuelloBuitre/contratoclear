@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useForm } from 'react-hook-form'
+import { useForm, useWatch } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useTranslation } from 'react-i18next'
@@ -43,12 +43,19 @@ export default function AddContractModal({
     register,
     handleSubmit,
     reset,
+    setValue,
+    control,
     formState: { errors },
   } = useForm<ContractFormData>({
     resolver: zodResolver(contractSchema),
     defaultValues: {
       deposit_returned: false,
     },
+  })
+
+  const startDate = useWatch({
+    control,
+    name: 'contract_start',
   })
 
   useEffect(() => {
@@ -68,7 +75,28 @@ export default function AddContractModal({
     }
   }, [open, initialValues, reset])
 
+  // Auto-suggest end_date as start_date + 5 years
+  useEffect(() => {
+    if (startDate && !initialValues?.contract_end) {
+      const start = new Date(startDate)
+      const end = new Date(start.getFullYear() + 5, start.getMonth(), start.getDate())
+      const endFormatted = end.toISOString().split('T')[0]
+      setValue('contract_end', endFormatted)
+    }
+  }, [startDate, setValue, initialValues?.contract_end])
+
   if (!open) return null
+
+  // Get today's date in YYYY-MM-DD format
+  const today = new Date().toISOString().split('T')[0]
+
+  // Calculate min date for end_date (start_date + 1 day)
+  const getMinEndDate = () => {
+    if (!startDate) return today
+    const start = new Date(startDate)
+    const next = new Date(start.getTime() + 24 * 60 * 60 * 1000)
+    return next.toISOString().split('T')[0]
+  }
 
   async function handleFormSubmit(data: ContractFormData) {
     await onSubmit(data)
@@ -187,7 +215,8 @@ export default function AddContractModal({
               <input
                 {...register('contract_start')}
                 type="date"
-                className="mt-1 block w-full rounded-xl border border-[#e8e4dd] bg-[#fafaf8] px-3.5 py-2.5 text-sm focus:border-[#1a1a2e] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1a1a2e]/10"
+                min={today}
+                className="mt-1 block w-full rounded-[6px] border border-[#e8e4dd] bg-[#fafaf8] px-3.5 py-2.5 text-sm focus:border-[#c9a96e] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#c9a96e]/30"
               />
               {errors.contract_start && (
                 <p className="mt-1 text-xs text-red-600">{t('monitor.modal.required')}</p>
@@ -200,7 +229,8 @@ export default function AddContractModal({
               <input
                 {...register('contract_end')}
                 type="date"
-                className="mt-1 block w-full rounded-xl border border-[#e8e4dd] bg-[#fafaf8] px-3.5 py-2.5 text-sm focus:border-[#1a1a2e] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#1a1a2e]/10"
+                min={getMinEndDate()}
+                className="mt-1 block w-full rounded-[6px] border border-[#e8e4dd] bg-[#fafaf8] px-3.5 py-2.5 text-sm focus:border-[#c9a96e] focus:bg-white focus:outline-none focus:ring-2 focus:ring-[#c9a96e]/30"
               />
             </div>
           </div>

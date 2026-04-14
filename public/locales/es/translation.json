@@ -493,6 +493,13 @@
     "errorCurrentPassword": "La contraseña actual es incorrecta.",
     "errorPasswordMismatch": "Las contraseñas no coinciden.",
     "errorPasswordGeneric": "No se pudo actualizar la contraseña. Inténtalo de nuevo.",
+    "userTypeSection": "Tipo de cuenta",
+    "userTypeDesc": "Tu experiencia en la app se adapta a tu rol.",
+    "changeUserType": "Cambiar",
+    "changeUserTypeTitle": "Cambiar tipo de cuenta",
+    "changeUserTypeSubtitle": "Selecciona tu rol para personalizar la experiencia.",
+    "changeUserTypeSuccess": "Tipo de cuenta actualizado",
+    "changeUserTypeError": "Error al actualizar. Inténtalo de nuevo.",
     "dangerSection": "Zona de peligro",
     "signOutAllDesc": "Cierra la sesión en todos los dispositivos donde estés conectado.",
     "signOutAllButton": "Cerrar todas las sesiones"
@@ -572,6 +579,7 @@
       "new": "Nueva carta",
       "confirmNew": "¿Descartar los cambios y generar una carta nueva?"
     },
+    "copySuccess": "Carta copiada al portapapeles",
     "errors": {
       "pro_required": "Esta función requiere el plan Pro (19€/mes).",
       "generic": "No se pudo generar la carta. Inténtalo de nuevo."
@@ -707,7 +715,33 @@
     "legal": "Aviso legal",
     "privacy": "Privacidad",
     "contact": "Contacto",
+    "blog": "Blog",
     "copyright": "© {{year}} ClausulaAI. Todos los derechos reservados.",
     "disclaimer": "Este análisis no sustituye el asesoramiento legal profesional."
+  },
+  "blog": {
+    "overline": "Blog",
+    "title": "Blog legal",
+    "subtitle": "Artículos sobre la LAU, contratos de alquiler y derechos del inquilino en España",
+    "soon": "Próximamente",
+    "cta": "Mientras tanto, analiza tu contrato ahora — desde 3,99€",
+    "ctaButton": "Analizar mi contrato",
+    "articles": {
+      "clausulas": {
+        "category": "LAU",
+        "title": "Las 5 cláusulas ilegales más comunes en contratos de alquiler España 2026",
+        "excerpt": "Descubre cuáles son las cláusulas que, aunque aparezcan en tu contrato firmado, son nulas de pleno derecho según la Ley de Arrendamientos Urbanos y la Ley de Vivienda 12/2023."
+      },
+      "renta": {
+        "category": "Renta",
+        "title": "Cómo actualizar la renta de tu alquiler legalmente en 2026",
+        "excerpt": "Desde enero de 2025, el IPC ya no es un índice válido para actualizar la renta. Te explicamos cómo aplicar el nuevo índice INE y cuánto puedes subir o bajar."
+      },
+      "zonas": {
+        "category": "Ley Vivienda",
+        "title": "Zonas tensionadas en España: qué son y cómo afectan a tu contrato",
+        "excerpt": "La Ley de Vivienda 12/2023 introdujo las zonas de mercado residencial tensionado. Si tu vivienda está en una, la renta nueva no puede superar la del contrato anterior."
+      }
+    }
   }
 }

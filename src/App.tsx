@@ -4,6 +4,7 @@ import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import { useAuthStore } from '@/store/useAppStore'
 import { useProfile } from '@/queries/profile'
 import CookieBanner from '@/components/CookieBanner'
+import ToastContainer from '@/components/ui/Toast'
 import ErrorBoundary from '@/components/ErrorBoundary'
 import PublicLayout from '@/components/layout/PublicLayout'
 import AppLayout from '@/components/layout/AppLayout'
@@ -27,6 +28,7 @@ const Letters         = lazy(() => import('@/pages/Letters'))
 const Calculadora     = lazy(() => import('@/pages/Calculadora'))
 const LegalChat       = lazy(() => import('@/pages/LegalChat'))
 const ContractMonitor = lazy(() => import('@/pages/ContractMonitor'))
+const Blog            = lazy(() => import('@/pages/Blog'))
 
 // ── Auth guard ────────────────────────────────────────────────────────────────
 
@@ -85,6 +87,7 @@ function AppRoutes() {
               <Route path="/payment/success" element={<PublicLayout><PaymentSuccess /></PublicLayout>} />
               <Route path="/payment/cancel"  element={<PublicLayout><PaymentCancel /></PublicLayout>} />
               <Route path="/calculadora"     element={<PublicLayout><Calculadora /></PublicLayout>} />
+              <Route path="/blog"            element={<PublicLayout><Blog /></PublicLayout>} />
 
               {/* Auth flows — full-screen, no Footer */}
               <Route path="/login"           element={<Login />} />
@@ -110,6 +113,8 @@ function AppRoutes() {
 
       {/* Global cookie consent banner */}
       <CookieBanner />
+      {/* Global toast notifications */}
+      <ToastContainer />
     </>
   )
 }

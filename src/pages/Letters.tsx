@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useProfile } from '@/queries/profile'
 import { useGenerateLetter, LetterType } from '@/hooks/useGenerateLetter'
+import { useToast } from '@/hooks/useToast'
 
 // ── Text cleaner ──────────────────────────────────────────────────────────────
 
@@ -522,12 +523,12 @@ interface ModalProps {
 
 function LetterModal({ config, onClose }: ModalProps) {
   const { t } = useTranslation()
+  const { toast } = useToast()
   const { mutate, isPending, data, error, reset } = useGenerateLetter()
 
   const [editedText, setEditedText] = useState<string | null>(null)
   const [isModified, setIsModified] = useState(false)
   const [pdfLoading, setPdfLoading] = useState(false)
-  const [copied, setCopied] = useState(false)
 
   const letterType = config.type
 
@@ -538,6 +539,17 @@ function LetterModal({ config, onClose }: ModalProps) {
       setIsModified(false)
     }
   }, [data])
+
+  // Show toast on generation error
+  useEffect(() => {
+    if (error && error.message !== 'session_expired') {
+      toast.error(
+        error.message === 'pro_required'
+          ? t('letters.errors.pro_required')
+          : t('letters.errors.generic')
+      )
+    }
+  }, [error])
 
   function handleSubmit(formData: Record<string, string>) {
     mutate({ letter_type: letterType, contract_data: formData })
@@ -564,8 +576,7 @@ function LetterModal({ config, onClose }: ModalProps) {
 
   async function handleCopy() {
     await navigator.clipboard.writeText(editedText ?? '')
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
+    toast.success(t('letters.copySuccess'))
   }
 
   async function handleDownload() {
@@ -681,13 +692,6 @@ function LetterModal({ config, onClose }: ModalProps) {
               </div>
             ) : (
               <div className="overflow-y-auto px-6 py-5">
-                {error && error.message !== 'session_expired' && (
-                  <div className="mb-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
-                    {error.message === 'pro_required'
-                      ? t('letters.errors.pro_required')
-                      : t('letters.errors.generic')}
-                  </div>
-                )}
                 {letterType === 'impago' && (
                   <ImpagoForm onSubmit={handleSubmit} isLoading={isPending} />
                 )}
@@ -713,7 +717,7 @@ function LetterModal({ config, onClose }: ModalProps) {
                   className="flex flex-1 items-center justify-center gap-1.5 rounded-lg border border-[#e8e4dd] bg-white px-3 py-2 text-sm font-medium text-[#0f0f1a] transition-colors hover:bg-[#fafaf8] sm:flex-none"
                 >
                   <CopyIcon className="h-4 w-4" />
-                  {copied ? t('letters.copied') : t('letters.actions.copy')}
+                  {t('letters.actions.copy')}
                 </button>
                 <button
                   onClick={handleDownload}

@@ -493,6 +493,13 @@
     "errorCurrentPassword": "The current password is incorrect.",
     "errorPasswordMismatch": "Passwords do not match.",
     "errorPasswordGeneric": "Could not update the password. Please try again.",
+    "userTypeSection": "Account type",
+    "userTypeDesc": "Your in-app experience adapts to your role.",
+    "changeUserType": "Change",
+    "changeUserTypeTitle": "Change account type",
+    "changeUserTypeSubtitle": "Select your role to personalize your experience.",
+    "changeUserTypeSuccess": "Account type updated",
+    "changeUserTypeError": "Error updating. Please try again.",
     "dangerSection": "Danger zone",
     "signOutAllDesc": "Sign out from all devices where you are currently logged in.",
     "signOutAllButton": "Sign out all sessions"
@@ -572,6 +579,7 @@
       "new": "New letter",
       "confirmNew": "Discard changes and generate a new letter?"
     },
+    "copySuccess": "Letter copied to clipboard",
     "errors": {
       "pro_required": "This feature requires the Pro plan (€19/month).",
       "generic": "Could not generate the letter. Please try again."
@@ -707,7 +715,33 @@
     "legal": "Legal notice",
     "privacy": "Privacy",
     "contact": "Contact",
+    "blog": "Blog",
     "copyright": "© {{year}} ClausulaAI. All rights reserved.",
     "disclaimer": "This analysis does not replace professional legal advice."
+  },
+  "blog": {
+    "overline": "Blog",
+    "title": "Legal blog",
+    "subtitle": "Articles about the LAU, rental contracts and tenant rights in Spain",
+    "soon": "Coming soon",
+    "cta": "Meanwhile, analyze your contract now — from €3.99",
+    "ctaButton": "Analyze my contract",
+    "articles": {
+      "clausulas": {
+        "category": "LAU",
+        "title": "The 5 most common illegal clauses in rental contracts in Spain 2026",
+        "excerpt": "Discover which clauses, even if signed in your contract, are null and void under the Urban Lease Law and the Housing Law 12/2023."
+      },
+      "renta": {
+        "category": "Rent",
+        "title": "How to legally update your rental rent in 2026",
+        "excerpt": "Since January 2025, the CPI is no longer a valid index for rent updates. We explain how to apply the new INE index and how much you can raise or lower it."
+      },
+      "zonas": {
+        "category": "Housing Law",
+        "title": "Stressed housing zones in Spain: what they are and how they affect your contract",
+        "excerpt": "The Housing Law 12/2023 introduced stressed residential market zones. If your property is in one, the new rent cannot exceed the previous contract's rent."
+      }
+    }
   }
 }

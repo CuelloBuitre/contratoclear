@@ -1,9 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useNavigate } from 'react-router'
+import i18next from 'i18next'
 import { supabase } from '@/lib/supabase'
 import { analysisKeys, profileKeys } from '@/queries/keys'
 import { analysisResultSchema } from '@/schemas'
-import { useUploadStore, handleSessionExpired } from '@/store/useAppStore'
+import { useUploadStore, handleSessionExpired, useToastStore } from '@/store/useAppStore'
 import type { Analysis } from '@/types'
 
 const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024 // 10 MB
@@ -81,6 +82,14 @@ export function useAnalyzeContract() {
     onError: (error: Error) => {
       if (error.message === 'session_expired') return
       setError(error.message)
+      const msgKey: Record<string, string> = {
+        invalid_file_type:  'errors.invalidFileType',
+        file_too_large:     'errors.fileTooLarge',
+        no_credits:         'errors.noCreditsServer',
+        rate_limit_exceeded: 'errors.rateLimitExceeded',
+      }
+      const key = msgKey[error.message] ?? 'errors.generic'
+      useToastStore.getState().addToast('error', i18next.t(key))
     },
   })
 }

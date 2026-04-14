@@ -4,11 +4,15 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Link } from 'react-router'
 import { useTranslation } from 'react-i18next'
+import { useQueryClient } from '@tanstack/react-query'
+import { Home, Key, Building2 } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { useProfile } from '@/queries/profile'
+import { profileKeys } from '@/queries/keys'
 import { useOrganization, useUpsertOrganization } from '@/queries/organization'
 import { useAuthStore } from '@/store/useAppStore'
-import type { Plan } from '@/types'
+import { useToast } from '@/hooks/useToast'
+import type { Plan, UserType } from '@/types'
 
 // ── Schema ────────────────────────────────────────────────────────────────────
 
@@ -95,9 +99,9 @@ function CheckIcon({ met }: { met: boolean }) {
 
 function OrganizationSection() {
   const { t } = useTranslation()
+  const { toast } = useToast()
   const { data: organization } = useOrganization()
   const upsert = useUpsertOrganization()
-  const [orgSuccess, setOrgSuccess] = useState(false)
 
   const {
     register: registerOrg,
@@ -113,14 +117,17 @@ function OrganizationSection() {
   })
 
   async function onOrgSubmit(data: OrganizationFormData) {
-    await upsert.mutateAsync({
-      name: data.name,
-      primary_color: data.primary_color,
-      contact_email: data.contact_email || null,
-      logo_url: organization?.logo_url ?? null,
-    })
-    setOrgSuccess(true)
-    setTimeout(() => setOrgSuccess(false), 3000)
+    try {
+      await upsert.mutateAsync({
+        name: data.name,
+        primary_color: data.primary_color,
+        contact_email: data.contact_email || null,
+        logo_url: organization?.logo_url ?? null,
+      })
+      toast.success(t('organization.saveSuccess'))
+    } catch {
+      toast.error(t('errors.generic'))
+    }
   }
 
   return (
@@ -132,15 +139,6 @@ function OrganizationSection() {
         </span>
       </div>
       <p className="mb-4 text-sm text-gray-500">{t('organization.sectionSubtitle')}</p>
-
-      {orgSuccess && (
-        <div className="mb-4 flex items-center gap-2.5 rounded-xl border border-green-200 bg-green-50 px-4 py-3">
-          <svg className="h-4 w-4 shrink-0 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-          </svg>
-          <p className="text-sm text-green-700">{t('organization.saveSuccess')}</p>
-        </div>
-      )}
 
       <form onSubmit={handleOrgSubmit(onOrgSubmit)} noValidate className="space-y-4">
         <div>
@@ -203,8 +201,136 @@ function OrganizationSection() {
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 
+// ── User type section + modal ─────────────────────────────────────────────────
+
+const USER_TYPE_OPTS: { id: UserType; Icon: React.ComponentType<{ className?: string; style?: React.CSSProperties }>; color: string; bgColor: string }[] = [
+  { id: 'inquilino',   Icon: Home,      color: '#4CAF50', bgColor: 'rgba(76,175,80,0.08)'  },
+  { id: 'propietario', Icon: Key,       color: '#2196F3', bgColor: 'rgba(33,150,243,0.08)' },
+  { id: 'profesional', Icon: Building2, color: '#c9a96e', bgColor: 'rgba(201,169,110,0.08)' },
+]
+
+function UserTypeSection() {
+  const { t } = useTranslation()
+  const { toast } = useToast()
+  const queryClient = useQueryClient()
+  const user = useAuthStore((s) => s.user)
+  const { data: profile } = useProfile()
+  const [showModal, setShowModal] = useState(false)
+  const [saving, setSaving] = useState(false)
+
+  const currentType: UserType = profile?.user_type ?? 'inquilino'
+  const currentOpt = USER_TYPE_OPTS.find((o) => o.id === currentType)!
+
+  async function handleSelect(type: UserType) {
+    if (!user || type === currentType) { setShowModal(false); return }
+    setSaving(true)
+    try {
+      const { error } = await supabase.from('profiles').update({ user_type: type }).eq('id', user.id)
+      if (error) throw error
+      queryClient.invalidateQueries({ queryKey: profileKeys.detail() })
+      setShowModal(false)
+      toast.success(t('profile.changeUserTypeSuccess'))
+    } catch {
+      toast.error(t('profile.changeUserTypeError'))
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  return (
+    <>
+      <div className="mb-4 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h2 className="text-base font-semibold text-gray-900">{t('profile.userTypeSection')}</h2>
+            <p className="mt-0.5 text-sm text-gray-500">{t('profile.userTypeDesc')}</p>
+          </div>
+          <button
+            onClick={() => setShowModal(true)}
+            className="shrink-0 rounded-lg border border-gray-200 px-3 py-1.5 text-sm font-medium text-gray-600 transition-colors hover:border-gray-300 hover:bg-gray-50"
+          >
+            {t('profile.changeUserType')}
+          </button>
+        </div>
+        <div className="mt-4 flex items-center gap-3">
+          <div
+            className="flex h-9 w-9 items-center justify-center rounded-lg"
+            style={{ backgroundColor: currentOpt.bgColor }}
+          >
+            <currentOpt.Icon className="h-5 w-5" style={{ color: currentOpt.color }} />
+          </div>
+          <span className="text-sm font-semibold text-gray-900">
+            {t(`userType.${currentType}.title`)}
+          </span>
+        </div>
+      </div>
+
+      {showModal && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{ backgroundColor: 'rgba(15,15,26,0.6)', backdropFilter: 'blur(4px)' }}
+          onClick={(e) => { if (e.target === e.currentTarget) setShowModal(false) }}
+        >
+          <div className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-xl">
+            <h2 className="mb-1 text-lg font-semibold text-gray-900">{t('profile.changeUserTypeTitle')}</h2>
+            <p className="mb-5 text-sm text-gray-500">{t('profile.changeUserTypeSubtitle')}</p>
+            <div className="grid gap-3 sm:grid-cols-3">
+              {USER_TYPE_OPTS.map((opt) => {
+                const isSelected = opt.id === currentType
+                return (
+                  <button
+                    key={opt.id}
+                    onClick={() => handleSelect(opt.id)}
+                    disabled={saving}
+                    className={`relative rounded-xl border-2 p-4 text-left transition-all disabled:opacity-50 ${
+                      isSelected ? 'border-[#1a1a2e]' : 'border-gray-200 hover:border-gray-300'
+                    }`}
+                    style={isSelected ? { borderColor: opt.color } : {}}
+                  >
+                    {isSelected && (
+                      <div
+                        className="absolute right-2 top-2 flex h-4 w-4 items-center justify-center rounded-full"
+                        style={{ backgroundColor: opt.color }}
+                      >
+                        <svg className="h-2.5 w-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                    )}
+                    <div
+                      className="mb-3 flex h-8 w-8 items-center justify-center rounded-lg"
+                      style={{ backgroundColor: opt.bgColor }}
+                    >
+                      <opt.Icon className="h-4 w-4" style={{ color: opt.color }} />
+                    </div>
+                    <p className="text-sm font-semibold text-gray-900">
+                      {t(`userType.${opt.id}.title`)}
+                    </p>
+                    <p className="mt-0.5 text-xs text-gray-500">
+                      {t(`userType.${opt.id}.description`)}
+                    </p>
+                  </button>
+                )
+              })}
+            </div>
+            <button
+              onClick={() => setShowModal(false)}
+              className="mt-4 w-full rounded-xl border border-gray-200 py-2 text-sm font-medium text-gray-500 transition-colors hover:bg-gray-50"
+            >
+              {t('monitor.modal.cancel')}
+            </button>
+          </div>
+        </div>
+      )}
+    </>
+  )
+}
+
+// ── Page ──────────────────────────────────────────────────────────────────────
+
 export default function Profile() {
   const { t } = useTranslation()
+  const { toast } = useToast()
   const user = useAuthStore((s) => s.user)
   const { data: profile, isLoading, error } = useProfile()
 
@@ -215,7 +341,6 @@ export default function Profile() {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [confirmError, setConfirmError] = useState<string | null>(null)
   const [passwordError, setPasswordError] = useState<string | null>(null)
-  const [passwordSuccess, setPasswordSuccess] = useState(false)
   const [signingOutAll, setSigningOutAll] = useState(false)
 
   const requirements = getRequirements(t)
@@ -265,7 +390,7 @@ export default function Profile() {
       return
     }
 
-    setPasswordSuccess(true)
+    toast.success(t('profile.changePasswordSuccess'))
     reset()
     setConfirmPassword('')
   }
@@ -389,19 +514,14 @@ export default function Profile() {
             )}
           </div>
 
+          {/* ── User type ─────────────────────────────────────────────────── */}
+          <UserTypeSection />
+
           {/* ── Security section ──────────────────────────────────────────── */}
           <div className="mb-4 rounded-2xl border border-gray-200 bg-white p-5 shadow-sm sm:p-6">
             <h2 className="mb-4 text-base font-semibold text-gray-900">{t('profile.securitySection')}</h2>
 
-            {passwordSuccess ? (
-              <div className="flex items-center gap-2.5 rounded-xl border border-green-200 bg-green-50 px-4 py-3">
-                <svg className="h-4 w-4 shrink-0 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                <p className="text-sm text-green-700">{t('profile.changePasswordSuccess')}</p>
-              </div>
-            ) : (
-              <form onSubmit={handleSubmit(onChangePassword)} noValidate className="space-y-4">
+            <form onSubmit={handleSubmit(onChangePassword)} noValidate className="space-y-4">
 
                 {/* Current password */}
                 <div>
@@ -544,7 +664,6 @@ export default function Profile() {
                   {t('profile.changePasswordSubmit')}
                 </button>
               </form>
-            )}
           </div>
 
           {/* ── Organization branding (Pro only) ─────────────────────────── */}

@@ -16,7 +16,8 @@ export default function Footer() {
 
           {/* Links */}
           <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
-            <Link to="/terms" className="transition-colors hover:text-white">{t('footer.legal')}</Link>
+            <Link to="/blog"    className="transition-colors hover:text-white">{t('footer.blog')}</Link>
+            <Link to="/terms"   className="transition-colors hover:text-white">{t('footer.legal')}</Link>
             <Link to="/privacy" className="transition-colors hover:text-white">{t('footer.privacy')}</Link>
             <a href="mailto:hola@clausulaai.es" className="transition-colors hover:text-white">{t('footer.contact')}</a>
           </div>

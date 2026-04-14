@@ -77,6 +77,35 @@ export const useUploadStore = create<UploadStore>((set) => ({
   reset: () => set({ file: null, status: 'idle', progress: 0, errorMessage: null }),
 }))
 
+// ── Toast store ───────────────────────────────────────────────────────────────
+
+export type ToastType = 'success' | 'error' | 'info' | 'warning'
+
+export interface ToastItem {
+  id: string
+  type: ToastType
+  message: string
+}
+
+interface ToastStore {
+  toasts: ToastItem[]
+  addToast: (type: ToastType, message: string) => void
+  removeToast: (id: string) => void
+}
+
+export const useToastStore = create<ToastStore>((set, get) => ({
+  toasts: [],
+  addToast: (type, message) => {
+    const id = Math.random().toString(36).slice(2, 9)
+    set((state) => ({
+      toasts: [...state.toasts, { id, type, message }].slice(-3),
+    }))
+    setTimeout(() => get().removeToast(id), 3000)
+  },
+  removeToast: (id) =>
+    set((state) => ({ toasts: state.toasts.filter((t) => t.id !== id) })),
+}))
+
 // ── Session expiry handler — call from any hook or interceptor ────────────────
 
 export function handleSessionExpired() {

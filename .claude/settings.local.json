@@ -13,7 +13,9 @@
       "Bash(git stash:*)",
       "Bash(git commit:*)",
       "Bash(git add:*)",
-      "Bash(supabase functions:*)"
+      "Bash(supabase functions:*)",
+      "Bash(grep -i \"generar\\\\|generator\\\\|contract.*generator\" /c/contratoclear/src/App.tsx /c/contratoclear/src/pages/*.tsx)",
+      "Bash(ls:*)"
     ]
   }
 }
